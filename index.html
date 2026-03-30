@@ -661,7 +661,7 @@
   }
 
   function getBadge(stock) {
-    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
+    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние наборы' };
     if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
     if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
     return               { cls: 'badge-high',     label: 'Много на складе' };
