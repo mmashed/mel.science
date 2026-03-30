@@ -663,9 +663,9 @@
   }
 
   function getBadge(stock) {
-    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние наборы' };
+    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
     if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
-    if (stock < 100) return { cls: 'badge-mid',      label: 'Ещё есть' };
+    if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
     return               { cls: 'badge-high',     label: 'Много на складе' };
   }
 
@@ -793,9 +793,16 @@
 
   /* FORM SUBMIT */
   async function submitForm(form, successEl, bodyEl) {
-    const data = new FormData(form);
+    const formData = new FormData(form);
+    const object = {};
+    formData.forEach((val, key) => { object[key] = val; });
+
     try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(object)
+      });
       const json = await res.json();
       if (json.success) {
         if (bodyEl) bodyEl.style.display = 'none';
