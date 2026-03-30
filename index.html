@@ -310,6 +310,7 @@
       transition: background .15s;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
     .card:hover { background: #1a1a1a; }
     .card:hover .card-img img { transform: scale(1.04); }
@@ -399,11 +400,8 @@
       border: 1px solid var(--accent);
       color: var(--accent);
       padding: 8px 16px;
-      cursor: pointer;
-      transition: all .15s;
       white-space: nowrap;
     }
-    .card-btn:hover { background: var(--accent); color: var(--bg); }
 
     /* MODAL */
     .modal-overlay {
@@ -512,7 +510,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">SCIENCE<span>.</span>KIDS</a>
+  <a href="#" class="nav-logo">MEL<span>.</span>SALE</a>
   <button class="nav-cta" onclick="openModal('')">Оставить заявку</button>
 </nav>
 
@@ -588,8 +586,8 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">SCIENCE<span>.</span>KIDS</div>
-  <div class="footer-note">© апрель 2026 · Складские остатки MEL Science · Все права защищены</div>
+  <div class="footer-logo">MEL<span>.</span>SALE</div>
+  <div class="footer-note">© 2025 · Складские остатки MEL Science · Все права защищены</div>
 </footer>
 
 <!-- MODAL -->
@@ -682,6 +680,7 @@
       const card  = document.createElement('div');
       card.className = 'card reveal';
       card.style.transitionDelay = `${(i % 12) * 40}ms`;
+      card.onclick = () => openModal(p.name);
       card.innerHTML = `
         <div class="card-img">
           <img src="${p.img}" alt="${p.name}" loading="lazy"
@@ -693,7 +692,7 @@
           <div class="card-name">${p.name}</div>
           <div class="card-footer">
             <div class="card-price">${price}</div>
-            <button class="card-btn" onclick="openModal('${p.name.replace(/'/g, "\\'")}')">Заказать</button>
+            <span class="card-btn">Заказать</span>
           </div>
         </div>
       `;
