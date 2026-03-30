@@ -501,12 +501,10 @@
       footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
     }
     @media (max-width: 600px) {
-      .catalog-grid { grid-template-columns: 1fr 1fr; }
+      .catalog-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 36px; }
       .filter-btn { font-size: 10px; padding: 6px 12px; }
-    }
-    @media (max-width: 400px) {
-      .catalog-grid { grid-template-columns: 1fr; }
+      .card-price { font-size: 18px; }
     }
   </style>
 </head>
@@ -514,7 +512,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">SCIENCE<span>.</span>KIDS</a>
+  <a href="#" class="nav-logo">MEL<span>.</span>SALE</a>
   <button class="nav-cta" onclick="openModal('')">Оставить заявку</button>
 </nav>
 
@@ -590,7 +588,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">SCIENCE<span>.</span>KIDS</div>
+  <div class="footer-logo">MEL<span>.</span>SALE</div>
   <div class="footer-note">© 2025 · Складские остатки MEL Science · Все права защищены</div>
 </footer>
 
@@ -675,7 +673,7 @@
     const grid    = document.getElementById('catalog-grid');
     const counter = document.getElementById('catalog-count');
     const filtered = filter === 'all' ? products : products.filter(p => getCategory(p.name) === filter);
-    counter.textContent = `// ${filtered.length} позиций`;
+    counter.textContent = filter === 'all' ? '// 40+ позиций' : `// ${filtered.length} позиций`;
     grid.innerHTML = '';
     filtered.forEach((p, i) => {
       const badge = getBadge(p.stock);
