@@ -3,254 +3,890 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Контакты — Profitsol</title>
+  <title>MEL Science — Научные наборы</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #F7F7F5; --surface: #ffffff; --accent: #0A0A0A; --muted: #7A7A7A; --border: #E4E4E0; --radius: 16px; --font: 'Manrope', Arial, sans-serif; }
-    body { font-family: var(--font); background: var(--bg); color: var(--accent); -webkit-font-smoothing: antialiased; }
-
-    header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 20px 72px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
-    .header-logo { width: 180px; height: 60px; background: var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; justify-self: start; text-decoration: none; }
-    .header-logo span { font-size: 11px; color: var(--muted); }
-    nav { display: flex; align-items: center; gap: 28px; }
-    nav a { font-size: 14px; font-weight: 500; color: #4A4A4A; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
-    nav a:hover, nav a.active { color: var(--accent); }
-    .header-right { display: flex; align-items: center; gap: 24px; justify-self: end; }
-    .header-phone { font-size: 14px; font-weight: 500; color: #4A4A4A; text-decoration: none; white-space: nowrap; transition: color 0.2s; }
-    .header-phone:hover { color: var(--accent); }
-    .btn-dark { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); color: #fff; border: none; border-radius: 100px; font-family: var(--font); font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: opacity 0.2s; white-space: nowrap; flex-shrink: 0; }
-    .btn-dark:hover { opacity: 0.75; }
-    .btn-sm { padding: 10px 20px; font-size: 13px; line-height: 1.35; }
-
-    .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; justify-self: end; }
-    .burger span { display: block; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .burger.open span:nth-child(2) { opacity: 0; }
-    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
-    .mobile-menu.open { opacity: 1; pointer-events: all; }
-    .mobile-menu a { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
-    .mobile-menu a:hover { opacity: 0.5; }
-    .mobile-menu .mobile-phone { font-size: 16px; font-weight: 500; color: var(--muted); margin-top: 8px; }
-
-    .page-hero { padding: 48px 72px 40px; max-width: 1400px; margin: 0 auto; border-bottom: 1px solid var(--border); }
-    .page-hero-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-    .page-hero-title { font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
-    .page-hero-sub { margin-top: 14px; font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 480px; }
-
-    .contacts-wrap { max-width: 1400px; margin: 0 auto; padding: 56px 72px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
-
-    .reqs-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-    .reqs-card-header { padding: 24px 32px 20px; border-bottom: 1px solid var(--border); }
-    .reqs-card-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-    .reqs-list { list-style: none; }
-    .reqs-item { display: grid; grid-template-columns: 180px 1fr; gap: 16px; align-items: baseline; padding: 16px 32px; border-bottom: 1px solid var(--border); transition: background 0.2s; }
-    .reqs-item:last-child { border-bottom: none; }
-    .reqs-item:hover { background: var(--bg); }
-    .reqs-key { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
-    .reqs-val { font-size: 14px; font-weight: 600; color: var(--accent); line-height: 1.4; }
-    .reqs-val a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
-    .reqs-val a:hover { border-color: var(--accent); }
-
-    .cta-card { background: var(--accent); border-radius: var(--radius); padding: 40px 40px 36px; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 100px; }
-    .cta-card-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: #fff; line-height: 1.2; }
-    .cta-card-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-top: -8px; }
-    .cta-form { display: flex; flex-direction: column; gap: 10px; }
-    .cta-input { width: 100%; padding: 14px 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-family: var(--font); font-size: 14px; color: #fff; background: rgba(255,255,255,0.08); outline: none; transition: border-color 0.2s, background 0.2s; }
-    .cta-input:focus { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); }
-    .cta-input::placeholder { color: rgba(255,255,255,0.35); }
-    .cta-submit { width: 100%; padding: 15px; background: #fff; color: var(--accent); border: none; border-radius: 100px; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 4px; transition: opacity 0.2s; }
-    .cta-submit:hover { opacity: 0.85; }
-    .cta-hint { font-size: 12px; color: rgba(255,255,255,0.3); text-align: center; line-height: 1.5; }
-    .cta-success { display: none; text-align: center; padding: 32px 0; }
-    .cta-success-icon { font-size: 36px; color: #fff; margin-bottom: 12px; }
-    .cta-success-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .cta-success-text { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
-
-    /* СОГЛАСИЕ тёмное */
-    .consent-label-dark { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; cursor: pointer; }
-    .consent-label-dark input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 14px; height: 14px; accent-color: #fff; cursor: pointer; }
-    .consent-label-dark a { color: rgba(255,255,255,0.4); text-decoration: underline; }
-    .consent-label-dark.error { color: rgba(255,100,100,0.9); }
-    .consent-label-dark.error a { color: rgba(255,100,100,0.9); }
-
-    /* КУКИ */
-    .cookie-banner { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 300; background: var(--accent); color: #fff; border-radius: 100px; padding: 14px 20px 14px 28px; align-items: center; gap: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); font-size: 13px; font-weight: 500; white-space: nowrap; transition: opacity 0.3s; max-width: calc(100vw - 48px); }
-    .cookie-banner-text { color: rgba(255,255,255,0.75); }
-    .cookie-banner-btn { background: #fff; color: var(--accent); border: none; border-radius: 100px; padding: 8px 20px; font-family: var(--font); font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s; }
-    .cookie-banner-btn:hover { opacity: 0.8; }
-
-    footer { border-top: 1px solid var(--border); padding: 48px 72px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; align-items: start; }
-    .footer-left { display: flex; flex-direction: column; gap: 16px; }
-    .footer-logo { width: 140px; height: 48px; background: var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
-    .footer-logo span { font-size: 11px; color: var(--muted); }
-    .footer-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-    .footer-nav { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-    .footer-nav a { font-size: 14px; font-weight: 500; color: #4A4A4A; text-decoration: none; transition: color 0.2s; }
-    .footer-nav a:hover { color: var(--accent); }
-    .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
-    .footer-copy { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.5; }
-    .footer-reqs { font-size: 11px; color: #B0B0A8; text-align: right; line-height: 1.6; }
-
-    @media (max-width: 900px) {
-      header { padding: 16px 24px; grid-template-columns: 1fr auto; }
-      header nav, header .header-right { display: none; }
-      .burger { display: flex; }
-      .page-hero { padding: 36px 24px 28px; }
-      .contacts-wrap { grid-template-columns: 1fr; padding: 32px 24px 56px; }
-      .cta-card { position: static; }
-      footer { grid-template-columns: 1fr; padding: 40px 24px; }
-      .footer-right { align-items: flex-start; }
-      .footer-copy, .footer-reqs { text-align: left; }
-      .cookie-banner { white-space: normal; border-radius: 20px; bottom: 16px; flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px 24px; }
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #181818;
+      --line: #2a2a2a;
+      --accent: #c8ff00;
+      --accent2: #ff4d00;
+      --text: #f0f0f0;
+      --text-muted: #666;
+      --text-dim: #999;
+      --red: #ff2d2d;
+      --orange: #ff7a00;
+      --yellow: #ffd600;
+      --green: #00e676;
+      --card-bg: #131313;
     }
-    @media (max-width: 600px) { .reqs-item { grid-template-columns: 1fr; gap: 4px; } }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Tektur', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: .12em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-cta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+
+    .nav-cta:hover { background: #d6ff1a; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 40px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: 'MEL';
+      position: absolute;
+      right: -20px;
+      bottom: -60px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 320px;
+      color: rgba(255,255,255,.025);
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 6vw, 88px);
+      line-height: .95;
+      letter-spacing: .02em;
+      margin-bottom: 28px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--line);
+    }
+
+    .stat {
+      padding: 16px 24px;
+      border-right: 1px solid var(--line);
+      flex: 1;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: var(--accent);
+      letter-spacing: .04em;
+    }
+
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    /* ── HERO FORM ── */
+    .hero-form-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-box {
+      background: var(--bg3);
+      border: 1px solid var(--line);
+      padding: 36px;
+    }
+
+    .form-box-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+
+    .form-box-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+      margin-bottom: 28px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: 'Tektur', sans-serif;
+      font-size: 14px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color .15s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+
+    .field input:focus { border-color: var(--accent); }
+    .field input::placeholder { color: var(--text-muted); }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: .1em;
+      border: none;
+      padding: 16px;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover { background: #d6ff1a; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    .form-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+      letter-spacing: .06em;
+    }
+
+    /* ── CATALOG SECTION ── */
+    .catalog-section {
+      padding: 80px 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: .04em;
+    }
+
+    .section-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: .1em;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── GRID ── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      transition: background .15s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover { background: #1a1a1a; }
+
+    .card:hover .card-img img {
+      transform: scale(1.04);
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: #0f0f0f;
+      position: relative;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+      display: block;
+    }
+
+    .card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .1em;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      font-weight: 500;
+    }
+
+    .badge-critical { background: var(--red); color: #fff; }
+    .badge-low      { background: var(--orange); color: #fff; }
+    .badge-mid      { background: var(--yellow); color: #000; }
+    .badge-high     { background: var(--green); color: #000; }
+
+    .card-body {
+      padding: 20px 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--line);
+    }
+
+    .card-category {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: .04em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: .04em;
+      color: var(--accent);
+    }
+
+    .card-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .card-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.85);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg3);
+      border: 1px solid var(--line);
+      width: 100%;
+      max-width: 460px;
+      padding: 36px;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform .2s;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      transition: color .15s;
+    }
+
+    .modal-close:hover { color: var(--text); }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+
+    .modal-product {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: .08em;
+      margin-bottom: 24px;
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    /* ── SUCCESS STATE ── */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .form-success.show { display: block; }
+    .form-success-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .form-success-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+
+    .form-success-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: .06em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: .12em;
+      color: var(--text-muted);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 100px 20px 60px;
+        gap: 48px;
+      }
+      .hero::after { font-size: 180px; right: -10px; bottom: -30px; }
+      nav { padding: 16px 20px; }
+      .catalog-section { padding: 60px 20px; }
+      .hero-stats { flex-direction: column; gap: 0; }
+      .stat { border-right: none; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: none; }
+      footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .catalog-grid { grid-template-columns: 1fr 1fr; }
+      .section-title { font-size: 36px; }
+      .filter-bar { gap: 6px; }
+      .filter-btn { font-size: 10px; padding: 6px 12px; }
+    }
+
+    @media (max-width: 400px) {
+      .catalog-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="cookie-banner" id="cookieBanner">
-    <span class="cookie-banner-text">мы используем cookies для работы сайта.</span>
-    <button class="cookie-banner-btn" id="cookieOk">Хорошо</button>
-  </div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">MEL<span>.</span>SALE</a>
+  <button class="nav-cta" onclick="openModal('')">Оставить заявку</button>
+</nav>
 
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="/" onclick="closeMobile()">главная</a>
-    <a href="/services" onclick="closeMobile()">услуги</a>
-    <a href="/#pricing" onclick="closeMobile()">тарифы</a>
-    <a href="/contacts" onclick="closeMobile()">контакты</a>
-    <a href="tel:88002502562" class="mobile-phone">8 800 250 25 62</a>
-  </div>
-
-  <header>
-    <a href="/" class="header-logo"><span>логотип</span></a>
-    <nav>
-      <a href="/">главная</a>
-      <a href="/services">услуги</a>
-      <a href="/#pricing">тарифы</a>
-      <a href="/contacts" class="active">контакты</a>
-    </nav>
-    <div class="header-right">
-      <a href="tel:88002502562" class="header-phone">8 800 250 25 62</a>
-      <a href="#cta" class="btn-dark btn-sm">бесплатный<br/>экспресс-аудит</a>
-    </div>
-    <button class="burger" id="burger" aria-label="меню"><span></span><span></span><span></span></button>
-  </header>
-
-  <div class="page-hero">
-    <span class="page-hero-label">контакты</span>
-    <h1 class="page-hero-title">поработаем вместе?</h1>
-    <p class="page-hero-sub">оставьте заявку — ответим в течение 15 минут в рабочее время.</p>
-  </div>
-
-  <div class="contacts-wrap">
-    <div class="reqs-card">
-      <div class="reqs-card-header"><h2 class="reqs-card-title">О компании</h2></div>
-      <ul class="reqs-list">
-        <li class="reqs-item"><span class="reqs-key">Наименование</span><span class="reqs-val">ИП Пак Дмитрий Анатольевич</span></li>
-        <li class="reqs-item"><span class="reqs-key">ИНН</span><span class="reqs-val">231515970983</span></li>
-        <li class="reqs-item"><span class="reqs-key">ОГРНИП</span><span class="reqs-val">314231229500102</span></li>
-        <li class="reqs-item"><span class="reqs-key">Серия и номер свидетельства</span><span class="reqs-val">23 009169033</span></li>
-        <li class="reqs-item"><span class="reqs-key">Дата регистрации</span><span class="reqs-val">22.10.2014</span></li>
-        <li class="reqs-item"><span class="reqs-key">Телефон</span><span class="reqs-val"><a href="tel:88002502562">8 800 250-25-62</a></span></li>
-        <li class="reqs-item"><span class="reqs-key">E-mail руководителя</span><span class="reqs-val"><a href="mailto:d.pak@profitsol.ru">d.pak@profitsol.ru</a></span></li>
-      </ul>
-    </div>
-
-    <div class="cta-card" id="cta">
-      <div id="ctaFormWrap">
-        <div style="margin-bottom:20px;">
-          <p class="cta-card-title">оставьте заявку</p>
-          <p class="cta-card-sub">расскажите о задаче — разберём и предложим решение.</p>
-        </div>
-        <div class="cta-form">
-          <input class="cta-input" type="text" placeholder="имя" />
-          <input class="cta-input" type="tel" id="ctaPhone" placeholder="+7 (___) ___-__-__" />
-          <input class="cta-input" type="email" placeholder="e-mail" />
-          <label class="consent-label-dark" id="ctaConsentLabel">
-            <input type="checkbox" id="ctaConsent" />
-            <span>я даю согласие на <a href="/privacy">обработку персональных данных</a></span>
-          </label>
-          <button class="cta-submit" id="ctaSubmit">отправить заявку</button>
-          <p class="cta-hint">почти все поля необязательны: ответим в любом случае</p>
-        </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">// Складские остатки · Оригинал · Не реплика</p>
+    <h1 class="hero-title">Химия.<br>Физика.<br><em>Медицина.</em></h1>
+    <p class="hero-desc">
+      Научные и химические наборы для детей и взрослых. Оригинальные наборы MEL Science — складские остатки бренда, ушедшего из России. Оставьте заявку — свяжемся и согласуем доставку.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">от 1 300₽</div>
+        <div class="stat-label">стоимость набора</div>
       </div>
-      <div class="cta-success" id="ctaSuccess">
-        <div class="cta-success-icon">✓</div>
-        <p class="cta-success-title">заявка отправлена</p>
-        <p class="cta-success-text">свяжемся в рабочее время.<br/>обычно — в течение 15 минут.</p>
+      <div class="stat">
+        <div class="stat-val">4 000+</div>
+        <div class="stat-label">единиц на складе</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">40+</div>
+        <div class="stat-label">позиций в наличии</div>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="footer-left">
-      <a href="/" class="footer-logo"><span>логотип</span></a>
-      <p class="footer-desc">комплексное сопровождение 1С по всей России.</p>
+  <div class="hero-form-wrap">
+    <div class="form-box" id="hero-form-box">
+      <div class="form-body">
+        <h2 class="form-box-title">Быстрая заявка</h2>
+        <p class="form-box-sub">// Перезвоним или напишем в течение дня</p>
+        <form id="hero-form">
+          <input type="hidden" name="access_key" value="b19e7dd9-9b38-4009-a408-10fe3764d836" />
+          <input type="hidden" name="subject" value="Новая заявка — MEL Sale" />
+          <input type="hidden" name="product" value="" id="hero-product-field" />
+          <div class="field">
+            <label>Имя</label>
+            <input type="text" name="name" placeholder="Как вас зовут" required />
+          </div>
+          <div class="field">
+            <label>Телефон или почта</label>
+            <input type="text" name="contact" placeholder="+7 999 000-00-00 или mail@ya.ru" required />
+          </div>
+          <button type="submit" class="btn-submit">Отправить заявку</button>
+          <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
+        </form>
+      </div>
+      <div class="form-success" id="hero-success">
+        <div class="form-success-icon">✓</div>
+        <div class="form-success-title">Заявка принята</div>
+        <p class="form-success-text">// свяжемся в течение дня</p>
+      </div>
     </div>
-    <nav class="footer-nav">
-      <a href="/">главная</a>
-      <a href="/services">услуги</a>
-      <a href="/#pricing">тарифы</a>
-      <a href="/contacts">контакты</a>
-      <a href="/privacy">политика конфиденциальности</a>
-    </nav>
-    <div class="footer-right">
-      <p class="footer-copy">© 2026 ИП Пак Дмитрий Анатольевич.<br/>Все права защищены.</p>
-      <p class="footer-reqs">ИНН: 231515970983 | ОГРНИП: 314231229500102</p>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="catalog-section" id="catalog">
+  <div class="section-header">
+    <h2 class="section-title">Каталог</h2>
+    <span class="section-count" id="catalog-count"></span>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="Химия Лайт">Химия Лайт</button>
+    <button class="filter-btn" data-filter="Химия Про">Химия Про</button>
+    <button class="filter-btn" data-filter="Физика">Физика</button>
+    <button class="filter-btn" data-filter="Медицина">Медицина</button>
+  </div>
+
+  <div class="catalog-grid" id="catalog-grid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MEL<span>.</span>SALE</div>
+  <div class="footer-note">© 2025 · Складские остатки MEL Science · Все права защищены</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-form-body" id="modal-form-body">
+      <h2 class="modal-title">Оставить заявку</h2>
+      <p class="modal-product" id="modal-product-label" style="display:none"></p>
+      <form id="modal-form">
+        <input type="hidden" name="access_key" value="b19e7dd9-9b38-4009-a408-10fe3764d836" />
+        <input type="hidden" name="subject" id="modal-subject" value="Новая заявка — MEL Sale" />
+        <input type="hidden" name="product" id="modal-product-field" value="" />
+        <div class="field">
+          <label>Имя</label>
+          <input type="text" name="name" placeholder="Как вас зовут" required />
+        </div>
+        <div class="field">
+          <label>Телефон или почта</label>
+          <input type="text" name="contact" placeholder="+7 999 000-00-00 или mail@ya.ru" required />
+        </div>
+        <button type="submit" class="btn-submit">Отправить заявку</button>
+        <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
+      </form>
     </div>
-  </footer>
+    <div class="form-success" id="modal-success">
+      <div class="form-success-icon">✓</div>
+      <div class="form-success-title">Заявка принята</div>
+      <p class="form-success-text">// свяжемся в течение дня</p>
+    </div>
+  </div>
+</div>
 
-  <script>
-    const burger = document.getElementById('burger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    burger.addEventListener('click', () => {
-      const open = mobileMenu.classList.toggle('open');
-      burger.classList.toggle('open', open);
-      mobileMenu.style.display = open ? 'flex' : 'none';
-      document.body.style.overflow = open ? 'hidden' : '';
+<script>
+  /* ── DATA ── */
+  const products = [
+    { name: 'Химия Лайт: Олово Кубик',           stock: 9,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
+    { name: 'Химия Лайт: Сахарная Змея',          stock: 89,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png',                      med: false },
+    { name: 'Химия Про: Коррозия (RU 2021)',       stock: 159, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
+    { name: 'Химия Про: Диффузия V2',              stock: 143, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2', med: false },
+    { name: 'Физика: Люминесценция',               stock: 17,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/physics-luminescence/contents_image_l5j4db', med: false },
+    { name: 'Химия Лайт: Химия Кислорода',         stock: 633, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c',      med: false },
+    { name: 'Химия Лайт: Олово Кубик (EN)',        stock: 700, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
+    { name: 'Химия Лайт: Олово Кубик (EN, US)',    stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
+    { name: 'Химия Про: Пламя',                    stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',               med: false },
+    { name: 'Химия Про: Искусственное Море',        stock: 149, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey',      med: false },
+    { name: 'Химия Про: Жги',                      stock: 123, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',               med: false },
+    { name: 'Химия Про: Химия Материалов',          stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot',       med: false },
+    { name: 'Химия Про: Химия Зимы',               stock: 94,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',            med: false },
+    { name: 'Химия Про: Химия Зимы (EN)',           stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',            med: false },
+    { name: 'Химия Про: Цветная Химия',             stock: 103, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb',          med: false },
+    { name: 'Химия Про: Коррозия (RU 2022)',        stock: 233, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
+    { name: 'Химия Про: Египетская Ночь',           stock: 306, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d',             med: false },
+    { name: 'Химия Про: Чистая Вода',              stock: 196, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk',    med: false },
+    { name: 'Медицина: Аптека (EN)',               stock: 371, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje',  med: true  },
+    { name: 'Медицина: Терапия++ (EN)',             stock: 72,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
+    { name: 'Медицина: Ортодонтия (EN)',            stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-dentistry-part2/contents_image_q3wi4a', med: true  },
+    { name: 'Медицина: Терапия Расширенная (EN)',   stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
+    { name: 'Химия Про: Цианотипия',               stock: 14,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt',         med: false },
+    { name: 'Химия Про: Стартовый Набор',           stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
+    { name: 'Медицина: Стартовый Набор (EN)',       stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
+    { name: 'Химия Про: Олово',                    stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
+  ];
+
+  function getCategory(name) {
+    if (name.startsWith('Химия Лайт')) return 'Химия Лайт';
+    if (name.startsWith('Химия Про'))  return 'Химия Про';
+    if (name.startsWith('Физика'))     return 'Физика';
+    if (name.startsWith('Медицина'))   return 'Медицина';
+    return 'Прочее';
+  }
+
+  function getBadge(stock) {
+    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
+    if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
+    if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
+    return              { cls: 'badge-high',     label: 'Много на складе' };
+  }
+
+  function renderCatalog(filter) {
+    const grid = document.getElementById('catalog-grid');
+    const count = document.getElementById('catalog-count');
+    const filtered = filter === 'all' ? products : products.filter(p => getCategory(p.name) === filter);
+    count.textContent = `// ${filtered.length} позиций`;
+    grid.innerHTML = '';
+    filtered.forEach((p, i) => {
+      const badge  = getBadge(p.stock);
+      const price  = p.med ? 'от 1 800 ₽' : 'от 1 200 ₽';
+      const cat    = getCategory(p.name);
+      const card   = document.createElement('div');
+      card.className = 'card reveal';
+      card.style.transitionDelay = `${(i % 12) * 40}ms`;
+      card.innerHTML = `
+        <div class="card-img">
+          <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
+          <span class="card-badge ${badge.cls}">${badge.label}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-category">${cat}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-footer">
+            <div class="card-price">${price}</div>
+            <button class="card-btn" onclick="openModal('${p.name.replace(/'/g, "\\'")}')">Заказать</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
     });
-    function closeMobile() { mobileMenu.classList.remove('open'); burger.classList.remove('open'); mobileMenu.style.display = 'none'; document.body.style.overflow = ''; }
+    observeReveal();
+  }
 
-    const ctaSubmit   = document.getElementById('ctaSubmit');
-    const ctaFormWrap = document.getElementById('ctaFormWrap');
-    const ctaSuccess  = document.getElementById('ctaSuccess');
-    ctaSubmit.addEventListener('click', () => {
-      const consent = document.getElementById('ctaConsent');
-      const label   = document.getElementById('ctaConsentLabel');
-      if (!consent.checked) { label.classList.add('error'); consent.addEventListener('change', () => label.classList.remove('error'), { once: true }); return; }
-      ctaFormWrap.style.display = 'none';
-      ctaSuccess.style.display = 'block';
+  /* ── FILTERS ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCatalog(btn.dataset.filter);
     });
+  });
 
-    document.querySelectorAll('input[type="tel"]').forEach(input => {
-      input.addEventListener('input', function () {
-        let v = this.value.replace(/\D/g, '');
-        if (v.startsWith('8')) v = '7' + v.slice(1);
-        if (v.startsWith('7')) {
-          let r = '+7';
-          if (v.length > 1) r += ' (' + v.slice(1, 4);
-          if (v.length >= 4) r += ') ' + v.slice(4, 7);
-          if (v.length >= 7) r += '-' + v.slice(7, 9);
-          if (v.length >= 9) r += '-' + v.slice(9, 11);
-          this.value = r;
-        } else { this.value = v.length ? '+' + v.slice(0, 15) : ''; }
+  /* ── MODAL ── */
+  function openModal(productName) {
+    const overlay = document.getElementById('modal-overlay');
+    const label   = document.getElementById('modal-product-label');
+    const field   = document.getElementById('modal-product-field');
+    const subj    = document.getElementById('modal-subject');
+    document.getElementById('modal-success').classList.remove('show');
+    document.getElementById('modal-form-body').style.display = '';
+    document.getElementById('modal-form').reset();
+    if (productName) {
+      label.textContent = productName;
+      label.style.display = 'block';
+      field.value = productName;
+      subj.value = `Заявка на набор: ${productName}`;
+    } else {
+      label.style.display = 'none';
+      field.value = '';
+      subj.value = 'Новая заявка — MEL Sale';
+    }
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ── FORMS ── */
+  async function submitForm(form, successEl, bodyEl) {
+    const data = new FormData(form);
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+      const json = await res.json();
+      if (json.success) {
+        if (bodyEl) bodyEl.style.display = 'none';
+        successEl.classList.add('show');
+      } else {
+        alert('Ошибка при отправке. Попробуйте ещё раз.');
+      }
+    } catch {
+      alert('Ошибка сети. Проверьте подключение.');
+    }
+  }
+
+  document.getElementById('hero-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Отправляем...';
+    btn.disabled = true;
+    await submitForm(e.target, document.getElementById('hero-success'), e.target.closest('.form-body'));
+    btn.textContent = 'Отправить заявку';
+    btn.disabled = false;
+  });
+
+  document.getElementById('modal-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Отправляем...';
+    btn.disabled = true;
+    await submitForm(e.target, document.getElementById('modal-success'), document.getElementById('modal-form-body'));
+    btn.textContent = 'Отправить заявку';
+    btn.disabled = false;
+  });
+
+  /* ── SCROLL REVEAL ── */
+  function observeReveal() {
+    const els = document.querySelectorAll('.reveal:not(.visible)');
+    const io  = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
       });
-    });
+    }, { threshold: 0.08 });
+    els.forEach(el => io.observe(el));
+  }
 
-    (function () {
-      if (localStorage.getItem('cookiesOk')) return;
-      const banner = document.getElementById('cookieBanner');
-      banner.style.display = 'flex';
-      document.getElementById('cookieOk').addEventListener('click', () => {
-        localStorage.setItem('cookiesOk', '1');
-        banner.style.opacity = '0';
-        setTimeout(() => banner.remove(), 300);
-      });
-    })();
-  </script>
+  /* ── INIT ── */
+  renderCatalog('all');
+</script>
 </body>
 </html>
