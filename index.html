@@ -14,7 +14,6 @@
       --bg3: #181818;
       --line: #2a2a2a;
       --accent: #c8ff00;
-      --accent2: #ff4d00;
       --text: #f0f0f0;
       --text-muted: #666;
       --text-dim: #999;
@@ -26,7 +25,6 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -38,7 +36,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
@@ -49,7 +46,7 @@
       opacity: .4;
     }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -70,7 +67,6 @@
       color: var(--text);
       text-decoration: none;
     }
-
     .nav-logo span { color: var(--accent); }
 
     .nav-cta {
@@ -85,10 +81,9 @@
       cursor: pointer;
       transition: background .15s, transform .1s;
     }
-
     .nav-cta:hover { background: #d6ff1a; transform: translateY(-1px); }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       min-height: 100vh;
       padding: 120px 40px 80px;
@@ -130,11 +125,7 @@
       letter-spacing: .02em;
       margin-bottom: 28px;
     }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--accent);
-    }
+    .hero-title em { font-style: normal; color: var(--accent); }
 
     .hero-desc {
       color: var(--text-dim);
@@ -146,25 +137,20 @@
 
     .hero-stats {
       display: flex;
-      gap: 0;
       border: 1px solid var(--line);
     }
-
     .stat {
       padding: 16px 24px;
       border-right: 1px solid var(--line);
       flex: 1;
     }
-
     .stat:last-child { border-right: none; }
-
     .stat-val {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 26px;
       color: var(--accent);
       letter-spacing: .04em;
     }
-
     .stat-label {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -173,11 +159,8 @@
       letter-spacing: .1em;
     }
 
-    /* ── HERO FORM ── */
-    .hero-form-wrap {
-      position: relative;
-      z-index: 1;
-    }
+    /* FORM BOX */
+    .hero-form-wrap { position: relative; z-index: 1; }
 
     .form-box {
       background: var(--bg3);
@@ -200,9 +183,7 @@
       margin-bottom: 28px;
     }
 
-    .field {
-      margin-bottom: 16px;
-    }
+    .field { margin-bottom: 16px; }
 
     .field label {
       display: block;
@@ -227,7 +208,6 @@
       border-radius: 0;
       -webkit-appearance: none;
     }
-
     .field input:focus { border-color: var(--accent); }
     .field input::placeholder { color: var(--text-muted); }
 
@@ -244,9 +224,9 @@
       transition: background .15s, transform .1s;
       margin-top: 8px;
     }
-
     .btn-submit:hover { background: #d6ff1a; transform: translateY(-1px); }
     .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
     .form-note {
       font-family: 'IBM Plex Mono', monospace;
@@ -257,10 +237,25 @@
       letter-spacing: .06em;
     }
 
-    /* ── CATALOG SECTION ── */
-    .catalog-section {
-      padding: 80px 40px;
+    /* SUCCESS */
+    .form-success { display: none; text-align: center; padding: 20px 0; }
+    .form-success.show { display: block; }
+    .form-success-icon { font-size: 48px; margin-bottom: 12px; }
+    .form-success-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
     }
+    .form-success-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: .06em;
+    }
+
+    /* CATALOG */
+    .catalog-section { padding: 80px 40px; }
 
     .section-header {
       display: flex;
@@ -270,13 +265,11 @@
       border-bottom: 1px solid var(--line);
       padding-bottom: 20px;
     }
-
     .section-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 48px;
       letter-spacing: .04em;
     }
-
     .section-count {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 12px;
@@ -284,13 +277,8 @@
       letter-spacing: .1em;
     }
 
-    /* ── FILTER BAR ── */
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
+    /* FILTERS */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
 
     .filter-btn {
       font-family: 'IBM Plex Mono', monospace;
@@ -304,13 +292,9 @@
       cursor: pointer;
       transition: all .15s;
     }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
 
-    .filter-btn:hover, .filter-btn.active {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── GRID ── */
+    /* GRID */
     .catalog-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -318,22 +302,17 @@
       background: var(--line);
     }
 
-    /* ── CARD ── */
+    /* CARD */
     .card {
       background: var(--card-bg);
       display: flex;
       flex-direction: column;
       transition: background .15s;
-      cursor: pointer;
       position: relative;
       overflow: hidden;
     }
-
     .card:hover { background: #1a1a1a; }
-
-    .card:hover .card-img img {
-      transform: scale(1.04);
-    }
+    .card:hover .card-img img { transform: scale(1.04); }
 
     .card-img {
       width: 100%;
@@ -342,7 +321,6 @@
       background: #0f0f0f;
       position: relative;
     }
-
     .card-img img {
       width: 100%;
       height: 100%;
@@ -350,7 +328,6 @@
       transition: transform .4s ease;
       display: block;
     }
-
     .card-img-placeholder {
       width: 100%;
       height: 100%;
@@ -365,8 +342,7 @@
 
     .card-badge {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 12px; left: 12px;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
       letter-spacing: .1em;
@@ -374,7 +350,6 @@
       padding: 4px 10px;
       font-weight: 500;
     }
-
     .badge-critical { background: var(--red); color: #fff; }
     .badge-low      { background: var(--orange); color: #fff; }
     .badge-mid      { background: var(--yellow); color: #000; }
@@ -387,7 +362,6 @@
       flex-direction: column;
       border-top: 1px solid var(--line);
     }
-
     .card-category {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -396,7 +370,6 @@
       letter-spacing: .12em;
       margin-bottom: 6px;
     }
-
     .card-name {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 20px;
@@ -405,21 +378,18 @@
       margin-bottom: 16px;
       flex: 1;
     }
-
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
-
     .card-price {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 22px;
       letter-spacing: .04em;
       color: var(--accent);
     }
-
     .card-btn {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -433,13 +403,9 @@
       transition: all .15s;
       white-space: nowrap;
     }
+    .card-btn:hover { background: var(--accent); color: var(--bg); }
 
-    .card-btn:hover {
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    /* ── MODAL ── */
+    /* MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -454,11 +420,7 @@
       transition: opacity .2s;
       backdrop-filter: blur(4px);
     }
-
-    .modal-overlay.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
 
     .modal {
       background: var(--bg3);
@@ -470,7 +432,6 @@
       transform: translateY(20px);
       transition: transform .2s;
     }
-
     .modal-overlay.open .modal { transform: translateY(0); }
 
     .modal-close {
@@ -484,7 +445,6 @@
       line-height: 1;
       transition: color .15s;
     }
-
     .modal-close:hover { color: var(--text); }
 
     .modal-title {
@@ -493,7 +453,6 @@
       letter-spacing: .06em;
       margin-bottom: 6px;
     }
-
     .modal-product {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -504,34 +463,7 @@
       padding-left: 10px;
     }
 
-    /* ── SUCCESS STATE ── */
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .form-success.show { display: block; }
-    .form-success-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-    }
-
-    .form-success-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: .06em;
-      margin-bottom: 8px;
-    }
-
-    .form-success-text {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: .06em;
-    }
-
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       border-top: 1px solid var(--line);
       padding: 32px 40px;
@@ -539,16 +471,13 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .footer-logo {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 18px;
       letter-spacing: .12em;
       color: var(--text-muted);
     }
-
     .footer-logo span { color: var(--accent); }
-
     .footer-note {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
@@ -556,41 +485,26 @@
       letter-spacing: .08em;
     }
 
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── RESPONSIVE ── */
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-        padding: 100px 20px 60px;
-        gap: 48px;
-      }
+      .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; gap: 48px; }
       .hero::after { font-size: 180px; right: -10px; bottom: -30px; }
       nav { padding: 16px 20px; }
       .catalog-section { padding: 60px 20px; }
-      .hero-stats { flex-direction: column; gap: 0; }
+      .hero-stats { flex-direction: column; }
       .stat { border-right: none; border-bottom: 1px solid var(--line); }
       .stat:last-child { border-bottom: none; }
       footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
     }
-
     @media (max-width: 600px) {
       .catalog-grid { grid-template-columns: 1fr 1fr; }
       .section-title { font-size: 36px; }
-      .filter-bar { gap: 6px; }
       .filter-btn { font-size: 10px; padding: 6px 12px; }
     }
-
     @media (max-width: 400px) {
       .catalog-grid { grid-template-columns: 1fr; }
     }
@@ -629,21 +543,21 @@
   </div>
 
   <div class="hero-form-wrap">
-    <div class="form-box" id="hero-form-box">
-      <div class="form-body">
+    <div class="form-box">
+      <div id="hero-form-body">
         <h2 class="form-box-title">Быстрая заявка</h2>
         <p class="form-box-sub">// Перезвоним или напишем в течение дня</p>
         <form id="hero-form">
           <input type="hidden" name="access_key" value="b19e7dd9-9b38-4009-a408-10fe3764d836" />
           <input type="hidden" name="subject" value="Новая заявка — MEL Sale" />
-          <input type="hidden" name="product" value="" id="hero-product-field" />
+          <input type="hidden" name="product" value="" />
           <div class="field">
             <label>Имя</label>
-            <input type="text" name="name" placeholder="Как вас зовут" required />
+            <input type="text" name="name" placeholder="Как вас зовут" />
           </div>
           <div class="field">
-            <label>Телефон или почта</label>
-            <input type="text" name="contact" placeholder="+7 999 000-00-00 или mail@ya.ru" required />
+            <label>Телефон <span style="color:var(--accent)">*</span></label>
+            <input type="tel" name="contact" id="phone-hero" placeholder="+7 900 000-00-00" required autocomplete="tel" />
           </div>
           <button type="submit" class="btn-submit">Отправить заявку</button>
           <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
@@ -664,7 +578,6 @@
     <h2 class="section-title">Каталог</h2>
     <span class="section-count" id="catalog-count"></span>
   </div>
-
   <div class="filter-bar">
     <button class="filter-btn active" data-filter="all">Все</button>
     <button class="filter-btn" data-filter="Химия Лайт">Химия Лайт</button>
@@ -672,7 +585,6 @@
     <button class="filter-btn" data-filter="Физика">Физика</button>
     <button class="filter-btn" data-filter="Медицина">Медицина</button>
   </div>
-
   <div class="catalog-grid" id="catalog-grid"></div>
 </section>
 
@@ -686,7 +598,7 @@
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-form-body" id="modal-form-body">
+    <div id="modal-form-body">
       <h2 class="modal-title">Оставить заявку</h2>
       <p class="modal-product" id="modal-product-label" style="display:none"></p>
       <form id="modal-form">
@@ -695,11 +607,11 @@
         <input type="hidden" name="product" id="modal-product-field" value="" />
         <div class="field">
           <label>Имя</label>
-          <input type="text" name="name" placeholder="Как вас зовут" required />
+          <input type="text" name="name" placeholder="Как вас зовут" />
         </div>
         <div class="field">
-          <label>Телефон или почта</label>
-          <input type="text" name="contact" placeholder="+7 999 000-00-00 или mail@ya.ru" required />
+          <label>Телефон <span style="color:var(--accent)">*</span></label>
+          <input type="tel" name="contact" id="phone-modal" placeholder="+7 900 000-00-00" required autocomplete="tel" />
         </div>
         <button type="submit" class="btn-submit">Отправить заявку</button>
         <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
@@ -714,34 +626,34 @@
 </div>
 
 <script>
-  /* ── DATA ── */
+  /* DATA */
   const products = [
-    { name: 'Химия Лайт: Олово Кубик',           stock: 9,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
-    { name: 'Химия Лайт: Сахарная Змея',          stock: 89,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png',                      med: false },
-    { name: 'Химия Про: Коррозия (RU 2021)',       stock: 159, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
+    { name: 'Химия Лайт: Олово Кубик',           stock: 9,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',              med: false },
+    { name: 'Химия Лайт: Сахарная Змея',          stock: 89,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png',                       med: false },
+    { name: 'Химия Про: Коррозия (RU 2021)',       stock: 159, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',     med: false },
     { name: 'Химия Про: Диффузия V2',              stock: 143, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2', med: false },
     { name: 'Физика: Люминесценция',               stock: 17,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/physics-luminescence/contents_image_l5j4db', med: false },
-    { name: 'Химия Лайт: Химия Кислорода',         stock: 633, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c',      med: false },
-    { name: 'Химия Лайт: Олово Кубик (EN)',        stock: 700, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
-    { name: 'Химия Лайт: Олово Кубик (EN, US)',    stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
-    { name: 'Химия Про: Пламя',                    stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',               med: false },
-    { name: 'Химия Про: Искусственное Море',        stock: 149, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey',      med: false },
-    { name: 'Химия Про: Жги',                      stock: 123, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',               med: false },
-    { name: 'Химия Про: Химия Материалов',          stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot',       med: false },
-    { name: 'Химия Про: Химия Зимы',               stock: 94,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',            med: false },
-    { name: 'Химия Про: Химия Зимы (EN)',           stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',            med: false },
-    { name: 'Химия Про: Цветная Химия',             stock: 103, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb',          med: false },
-    { name: 'Химия Про: Коррозия (RU 2022)',        stock: 233, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
-    { name: 'Химия Про: Египетская Ночь',           stock: 306, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d',             med: false },
-    { name: 'Химия Про: Чистая Вода',              stock: 196, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk',    med: false },
-    { name: 'Медицина: Аптека (EN)',               stock: 371, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje',  med: true  },
-    { name: 'Медицина: Терапия++ (EN)',             stock: 72,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
-    { name: 'Медицина: Ортодонтия (EN)',            stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-dentistry-part2/contents_image_q3wi4a', med: true  },
-    { name: 'Медицина: Терапия Расширенная (EN)',   stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
-    { name: 'Химия Про: Цианотипия',               stock: 14,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt',         med: false },
-    { name: 'Химия Про: Стартовый Набор',           stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',    med: false },
-    { name: 'Медицина: Стартовый Набор (EN)',       stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',         med: true  },
-    { name: 'Химия Про: Олово',                    stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',             med: false },
+    { name: 'Химия Лайт: Химия Кислорода',         stock: 633, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c',       med: false },
+    { name: 'Химия Лайт: Олово Кубик (EN)',        stock: 700, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',              med: false },
+    { name: 'Химия Лайт: Олово Кубик (EN, US)',    stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',              med: false },
+    { name: 'Химия Про: Пламя',                    stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',                med: false },
+    { name: 'Химия Про: Искусственное Море',        stock: 149, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey',       med: false },
+    { name: 'Химия Про: Жги',                      stock: 123, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg',                med: false },
+    { name: 'Химия Про: Химия Материалов',          stock: 134, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot',        med: false },
+    { name: 'Химия Про: Химия Зимы',               stock: 94,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',             med: false },
+    { name: 'Химия Про: Химия Зимы (EN)',           stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj',             med: false },
+    { name: 'Химия Про: Цветная Химия',             stock: 103, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb',           med: false },
+    { name: 'Химия Про: Коррозия (RU 2022)',        stock: 233, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',     med: false },
+    { name: 'Химия Про: Египетская Ночь',           stock: 306, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d',              med: false },
+    { name: 'Химия Про: Чистая Вода',              stock: 196, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk',     med: false },
+    { name: 'Медицина: Аптека (EN)',               stock: 371, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje',   med: true  },
+    { name: 'Медицина: Терапия++ (EN)',             stock: 72,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',          med: true  },
+    { name: 'Медицина: Ортодонтия (EN)',            stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-dentistry-part2/contents_image_q3wi4a',  med: true  },
+    { name: 'Медицина: Терапия Расширенная (EN)',   stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',          med: true  },
+    { name: 'Химия Про: Цианотипия',               stock: 14,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt',          med: false },
+    { name: 'Химия Про: Стартовый Набор',           stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx',     med: false },
+    { name: 'Медицина: Стартовый Набор (EN)',       stock: 0,   img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae',          med: true  },
+    { name: 'Химия Про: Олово',                    stock: 136, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj',              med: false },
   ];
 
   function getCategory(name) {
@@ -753,28 +665,29 @@
   }
 
   function getBadge(stock) {
-    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние наборы' };
+    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
     if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
     if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
-    return              { cls: 'badge-high',     label: 'Много на складе' };
+    return               { cls: 'badge-high',     label: 'Много на складе' };
   }
 
   function renderCatalog(filter) {
-    const grid = document.getElementById('catalog-grid');
-    const count = document.getElementById('catalog-count');
+    const grid    = document.getElementById('catalog-grid');
+    const counter = document.getElementById('catalog-count');
     const filtered = filter === 'all' ? products : products.filter(p => getCategory(p.name) === filter);
-    count.textContent = `// ${filtered.length} позиций`;
+    counter.textContent = `// ${filtered.length} позиций`;
     grid.innerHTML = '';
     filtered.forEach((p, i) => {
-      const badge  = getBadge(p.stock);
-      const price  = p.med ? 'от 1 800 ₽' : 'от 1 200 ₽';
-      const cat    = getCategory(p.name);
-      const card   = document.createElement('div');
+      const badge = getBadge(p.stock);
+      const price = p.med ? 'от 1 800 ₽' : 'от 1 200 ₽';
+      const cat   = getCategory(p.name);
+      const card  = document.createElement('div');
       card.className = 'card reveal';
       card.style.transitionDelay = `${(i % 12) * 40}ms`;
       card.innerHTML = `
         <div class="card-img">
-          <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
+          <img src="${p.img}" alt="${p.name}" loading="lazy"
+            onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
           <span class="card-badge ${badge.cls}">${badge.label}</span>
         </div>
         <div class="card-body">
@@ -791,7 +704,7 @@
     observeReveal();
   }
 
-  /* ── FILTERS ── */
+  /* FILTERS */
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -800,25 +713,71 @@
     });
   });
 
-  /* ── MODAL ── */
+  /* PHONE MASK */
+  function initPhone(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+
+    input.addEventListener('focus', function () {
+      this.setCustomValidity('');
+      if (!this.value) this.value = '+7 ';
+    });
+
+    input.addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.startsWith('8')) v = '7' + v.slice(1);
+      if (v.startsWith('9')) v = '7' + v;
+      if (!v.startsWith('7')) v = '7' + v;
+      v = v.slice(0, 11);
+      let out = '';
+      if (v.length >= 1) out  = '+7';
+      if (v.length > 1)  out += ' ' + v.slice(1, 4);
+      if (v.length > 4)  out += ' ' + v.slice(4, 7);
+      if (v.length > 7)  out += '-' + v.slice(7, 9);
+      if (v.length > 9)  out += '-' + v.slice(9, 11);
+      this.value = out;
+    });
+
+    input.addEventListener('blur', function () {
+      const digits = this.value.replace(/\D/g, '');
+      if (this.value === '+7 ' || this.value === '') {
+        this.value = '';
+        return;
+      }
+      if (digits.length < 11) {
+        this.setCustomValidity('Введите полный номер телефона');
+        this.reportValidity();
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+  }
+
+  /* MODAL */
   function openModal(productName) {
     const overlay = document.getElementById('modal-overlay');
-    const label   = document.getElementById('modal-product-label');
-    const field   = document.getElementById('modal-product-field');
-    const subj    = document.getElementById('modal-subject');
     document.getElementById('modal-success').classList.remove('show');
     document.getElementById('modal-form-body').style.display = '';
     document.getElementById('modal-form').reset();
+
+    const phoneModal = document.getElementById('phone-modal');
+    if (phoneModal) { phoneModal.value = ''; phoneModal.setCustomValidity(''); }
+
+    const label = document.getElementById('modal-product-label');
+    const field = document.getElementById('modal-product-field');
+    const subj  = document.getElementById('modal-subject');
+
     if (productName) {
-      label.textContent = productName;
+      label.textContent   = productName;
       label.style.display = 'block';
       field.value = productName;
-      subj.value = `Заявка на набор: ${productName}`;
+      subj.value  = `Заявка на набор: ${productName}`;
     } else {
       label.style.display = 'none';
       field.value = '';
-      subj.value = 'Новая заявка — MEL Sale';
+      subj.value  = 'Новая заявка — MEL Sale';
     }
+
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -834,7 +793,7 @@
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* ── FORMS ── */
+  /* FORM SUBMIT */
   async function submitForm(form, successEl, bodyEl) {
     const data = new FormData(form);
     try {
@@ -856,7 +815,7 @@
     const btn = e.target.querySelector('.btn-submit');
     btn.textContent = 'Отправляем...';
     btn.disabled = true;
-    await submitForm(e.target, document.getElementById('hero-success'), e.target.closest('.form-body'));
+    await submitForm(e.target, document.getElementById('hero-success'), document.getElementById('hero-form-body'));
     btn.textContent = 'Отправить заявку';
     btn.disabled = false;
   });
@@ -871,10 +830,9 @@
     btn.disabled = false;
   });
 
-  /* ── SCROLL REVEAL ── */
+  /* SCROLL REVEAL */
   function observeReveal() {
-    const els = document.querySelectorAll('.reveal:not(.visible)');
-    const io  = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
@@ -882,11 +840,13 @@
         }
       });
     }, { threshold: 0.08 });
-    els.forEach(el => io.observe(el));
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => io.observe(el));
   }
 
-  /* ── INIT ── */
+  /* INIT */
   renderCatalog('all');
+  initPhone('phone-hero');
+  initPhone('phone-modal');
 </script>
 </body>
 </html>
