@@ -142,6 +142,333 @@
   </div>
 </div>
 
-<script src="main.js"></script>
+<script>
+  const descriptions = {
+    'Сахарная Змея':        'Вырастите огромную чёрную змею из обычного сахара — эффектный опыт, который объясняет, что происходит при горении и разложении органики.',
+    'Коррозия':             'Узнайте, как одни металлы защищают другие от ржавчины, и посмотрите, как электричество буквально разбирает железную полоску на части.',
+    'Диффузия':             'Йод убегает сквозь пластик, в чашке Петри вырастают химические рифы, а с помощью простой реакции можно выявить отпечатки пальцев — всё это диффузия в действии.',
+    'Ультрафиолет':         'Синтезируйте светящееся вещество с нуля, заставьте хлорофилл из зелёных листьев светиться красным и управляйте свечением с помощью кислоты.',
+    'Олово 1 опыт':         'Вырастите красивое металлическое дерево из олова прямо в чашке Петри — эффектный опыт о том, как электрический ток превращает ионы в металл.',
+    'Химия Кислорода':      'Поджигайте тлеющую лучину без спичек и меняйте цвет раствора простым встряхиванием — два захватывающих опыта со свойствами кислорода.',
+    'Пламя':                'Набор для изучения химии горения — наблюдайте, как разные вещества горят по-разному и узнайте, что происходит внутри пламени.',
+    'Искусственное Море':   'Вырастите химические водоросли в стакане, создайте цветных медуз в чашке Петри и превратите морскую волну в камень с помощью жидкого стекла.',
+    'Жги':                  'Мыльная пена, которая горит, и железная вата, которую можно поджечь — набор разрушает стереотипы о том, что может и что не может гореть.',
+    'Химия Материалов':     'Вода превращает порошок в камень, два раствора образуют резиновых червей, а йод помогает различать виды пластика — всё это в одном наборе.',
+    'Химия Зимы':           'Украсьте ёлку «снегом» из соли и создайте искусственный снег из суперабсорбента — зимние опыты о кристаллах и водопоглощающих веществах.',
+    'Цветная Химия':        'Меняйте цвет раствора встряхиванием, устраивайте химическое шоу с молоком и красителем, изучайте pH-индикаторы — яркая химия с неожиданными результатами.',
+    'Египетская Ночь':      'Воссоздайте мгновенно темнеющее «небо» в стакане и заставьте луну появиться в сумерках — эффектные опыты о скорости химических реакций.',
+    'Чистая Вода':          'Соберите два вида водяных фильтров своими руками, очистите воду от тяжёлых металлов и получите гремучий газ электролизом.',
+    'Аптека':               'Сделайте шипучие таблетки на таблеточном прессе, протестируйте их состав и приготовьте капсулу и суппозиторий — настоящая фармацевтическая лаборатория дома.',
+    'Терапия: базис врача': 'Измерьте кислород в крови, давление и реакцию зрачков — первичный осмотр пациента шаг за шагом, как на настоящем терапевтическом приёме.',
+    'Ортодонтия':           'Расшифруйте панорамный рентген зубов, снимите слепки челюсти из альгината и силикона и отлейте гипсовую модель — как в настоящем стоматологическом кабинете.',
+    'Терапия: Клетка Пастера': 'Вырастите дрожжи, выделите их ДНК и проведите реакцию, которую используют в реальной фармацевтике — глубокое погружение в биохимию и фармакологию.',
+    'Цианотипия':           'Освойте фотографическую технику XIX века — создайте «синечертёжные» копии с помощью света, нарисуйте картину светодиодом и изучите берлинскую лазурь.',
+    'Стартовый Набор':      'Стартовый набор для первого знакомства с профессиональной химией от MEL Science — идеальное начало для юного исследователя.',
+    'Олово 2 опыта':        'Вырастите дендритное оловянное дерево с помощью электричества и превратите цинковый шарик в ёжика — красивые опыты о реактивности металлов.',
+    'Физика Света':         'Разберите и исследуйте настоящий жидкокристаллический экран — узнайте, как работает технология, которая окружает нас повсюду.',
+    'Пушка':                'Собери механическую пушку и разберись, как физика помогает попасть точно в цель — опыты с баллистикой и механикой для юных инженеров.',
+  };
+
+  const products = [
+    { name: 'Сахарная Змея',        cat: 'Химия Лайт', stock: 89,  price: 800,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png' },
+    { name: 'Коррозия',             cat: 'Химия Про',  stock: 392, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx' },
+    { name: 'Диффузия',             cat: 'Химия Про',  stock: 143, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2' },
+    { name: 'Ультрафиолет',         cat: 'Физика',     stock: 17,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/physics-luminescence/contents_image_l5j4db' },
+    { name: 'Химия Кислорода',      cat: 'Химия Лайт', stock: 633, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c' },
+    { name: 'Олово 1 опыт',         cat: 'Химия Лайт', stock: 700, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+    { name: 'Искусственное Море',   cat: 'Химия Про',  stock: 149, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey' },
+    { name: 'Жги',                  cat: 'Химия Про',  stock: 123, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg' },
+    { name: 'Химия Материалов',     cat: 'Химия Про',  stock: 134, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot' },
+    { name: 'Химия Зимы',           cat: 'Химия Про',  stock: 94,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj' },
+    { name: 'Цветная Химия',        cat: 'Химия Про',  stock: 103, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb' },
+    { name: 'Египетская Ночь',      cat: 'Химия Про',  stock: 306, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d' },
+    { name: 'Чистая Вода',          cat: 'Химия Про',  stock: 196, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk' },
+    { name: 'Аптека',               cat: 'Медицина',   stock: 371, price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
+    { name: 'Терапия: базис врача', cat: 'Медицина',   stock: 72,  price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
+    { name: 'Цианотипия',           cat: 'Химия Про',  stock: 14,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt' },
+    { name: 'Стартовый Набор',      cat: 'Химия Про',  stock: 136, price: 1500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1984/v1/mel2_0/chemistry/starter-kit' },
+    { name: 'Физика Света',         cat: 'Физика',     stock: 60,  price: 1000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
+    { name: 'Пушка',                cat: 'Физика',     stock: 15,  price: 1000, img: 'https://avatars.mds.yandex.net/i?id=b29ce759d881afc2369d6e9e74a084d1_l-4055830-images-thumbs&n=13' },
+    { name: 'Олово 2 опыта',        cat: 'Химия Про',  stock: 136, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+  ];
+
+  /* ── CART ── */
+  let cart = {};
+  function formatPrice(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
+  function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
+  function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
+
+  function addToCart(p) {
+    if (cart[p.name]) cart[p.name].qty++;
+    else cart[p.name] = { name: p.name, img: p.img, price: p.price, qty: 1 };
+    updateCartUI();
+  }
+
+  function removeFromCart(name) { delete cart[name]; updateCartUI(); renderCartModal(); }
+  function changeQty(name, delta) {
+    if (!cart[name]) return;
+    cart[name].qty += delta;
+    if (cart[name].qty <= 0) delete cart[name];
+    updateCartUI(); renderCartModal();
+  }
+
+  function updateCartUI() {
+    const count = cartCount();
+    document.getElementById('nav-cart-count').textContent = count;
+    document.getElementById('nav-cart-count').classList.toggle('hidden', count === 0);
+    document.getElementById('float-cart').classList.toggle('hidden', count === 0);
+    document.getElementById('float-cart-count').textContent = count;
+    document.querySelectorAll('.card-btn-cart').forEach(btn => {
+      const n = btn.dataset.name;
+      btn.classList.toggle('in-cart', !!cart[n]);
+      btn.textContent = cart[n] ? `В корзине (${cart[n].qty})` : 'В корзину';
+    });
+    const dcb = document.getElementById('detail-cart-btn');
+    if (dcb && dcb.dataset.name) {
+      dcb.classList.toggle('in-cart', !!cart[dcb.dataset.name]);
+      dcb.textContent = cart[dcb.dataset.name] ? `В корзине (${cart[dcb.dataset.name].qty})` : 'В корзину';
+    }
+  }
+
+  /* ── CATALOG ── */
+  function getBadge(stock) {
+    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
+    if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
+    if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
+    return               { cls: 'badge-high',     label: 'Много на складе' };
+  }
+
+  function renderCatalog(filter) {
+    const grid    = document.getElementById('catalog-grid');
+    const counter = document.getElementById('catalog-count');
+    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+    counter.textContent = filter === 'all' ? `// ${products.length} позиций` : `// ${filtered.length} позиций`;
+    grid.innerHTML = '';
+    filtered.forEach((p, i) => {
+      const badge   = getBadge(p.stock);
+      const desc    = descriptions[p.name] || '';
+      const inCart  = !!cart[p.name];
+      const safeName = p.name.replace(/"/g, '&quot;');
+      const card    = document.createElement('div');
+      card.className = 'card reveal';
+      card.style.transitionDelay = `${(i % 12) * 40}ms`;
+      card.innerHTML = `
+        <div class="card-img">
+          <img src="${p.img}" alt="${p.name}" loading="lazy"
+            onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
+          <span class="card-badge ${badge.cls}">${badge.label}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-category">${p.cat}</div>
+          <div class="card-name">${p.name}</div>
+          ${desc ? `<div class="card-desc">${desc}</div>` : ''}
+          <div class="card-footer">
+            <div class="card-price">${formatPrice(p.price)}</div>
+            <div class="card-actions">
+              <span class="card-btn" data-action="detail">Подробнее</span>
+              <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
+            </div>
+          </div>
+        </div>`;
+      card.addEventListener('click', e => {
+        const btn = e.target.closest('[data-action]');
+        if (btn && btn.dataset.action === 'cart') { addToCart(p); return; }
+        openDetailModal(p);
+      });
+      grid.appendChild(card);
+    });
+    observeReveal();
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCatalog(btn.dataset.filter);
+    });
+  });
+
+  /* ── PHONE MASK ── */
+  function initPhone(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener('focus', function () { this.setCustomValidity(''); if (!this.value) this.value = '+7 '; });
+    input.addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.startsWith('8')) v = '7' + v.slice(1);
+      if (v.startsWith('9')) v = '7' + v;
+      if (!v.startsWith('7')) v = '7' + v;
+      v = v.slice(0, 11);
+      let out = '';
+      if (v.length >= 1) out  = '+7';
+      if (v.length > 1)  out += ' ' + v.slice(1, 4);
+      if (v.length > 4)  out += ' ' + v.slice(4, 7);
+      if (v.length > 7)  out += '-' + v.slice(7, 9);
+      if (v.length > 9)  out += '-' + v.slice(9, 11);
+      this.value = out;
+    });
+    input.addEventListener('blur', function () {
+      const digits = this.value.replace(/\D/g, '');
+      if (this.value === '+7 ' || this.value === '') { this.value = ''; return; }
+      if (digits.length < 11) { this.setCustomValidity('Введите полный номер телефона'); this.reportValidity(); }
+      else this.setCustomValidity('');
+    });
+  }
+
+  /* ── ORDER MODAL ── */
+  function openOrderModal(productName) {
+    closeDetailModal();
+    document.getElementById('order-success').classList.remove('show');
+    document.getElementById('order-form-body').style.display = '';
+    document.getElementById('order-form').reset();
+    const ph = document.getElementById('phone-order');
+    if (ph) { ph.value = ''; ph.setCustomValidity(''); }
+    const label = document.getElementById('order-product-label');
+    const field = document.getElementById('order-product-field');
+    const subj  = document.getElementById('order-subject');
+    if (productName) {
+      label.textContent = productName; label.style.display = 'block';
+      field.value = productName; subj.value = `Заявка на набор: ${productName}`;
+    } else {
+      label.style.display = 'none'; field.value = ''; subj.value = 'Новая заявка — Science Kids';
+    }
+    document.getElementById('order-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOrderModal() { document.getElementById('order-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeOrderOutside(e) { if (e.target === document.getElementById('order-overlay')) closeOrderModal(); }
+
+  /* ── DETAIL MODAL ── */
+  function openDetailModal(p) {
+    document.getElementById('detail-img').src = p.img;
+    document.getElementById('detail-img').alt = p.name;
+    document.getElementById('detail-category').textContent = p.cat;
+    document.getElementById('detail-name').textContent = p.name;
+    document.getElementById('detail-desc').textContent = descriptions[p.name] || '';
+    document.getElementById('detail-price').textContent = formatPrice(p.price);
+    const dcb = document.getElementById('detail-cart-btn');
+    dcb.dataset.name = p.name;
+    dcb.classList.toggle('in-cart', !!cart[p.name]);
+    dcb.textContent = cart[p.name] ? `В корзине (${cart[p.name].qty})` : 'В корзину';
+    dcb.onclick = () => addToCart(p);
+    document.getElementById('detail-order-btn').onclick = () => openOrderModal(p.name);
+    document.getElementById('detail-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDetailModal() { document.getElementById('detail-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeDetailOutside(e) { if (e.target === document.getElementById('detail-overlay')) closeDetailModal(); }
+
+  /* ── CART MODAL ── */
+  function renderCartModal() {
+    const body     = document.getElementById('cart-modal-body');
+    const formWrap = document.getElementById('cart-form-wrap');
+    const items    = Object.values(cart);
+    if (!items.length) {
+      body.innerHTML = '<div class="cart-empty">// корзина пуста</div>';
+      formWrap.style.display = 'none';
+      return;
+    }
+    let html = '<div class="cart-items">';
+    items.forEach(item => {
+      const sn = item.name.replace(/'/g, "\\'");
+      html += `<div class="cart-item">
+        <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.display='none'" />
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${formatPrice(item.price)}</div>
+        </div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty('${sn}',-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${sn}',1)">+</button>
+          <button class="cart-remove" onclick="removeFromCart('${sn}')">×</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    html += `<div class="cart-summary"><span class="cart-total-label">Итого</span><span class="cart-total-val">${formatPrice(cartTotal())}</span></div>`;
+    body.innerHTML = html;
+    document.getElementById('cart-success').classList.remove('show');
+    formWrap.style.display = '';
+  }
+
+  function openCartModal() {
+    renderCartModal();
+    document.getElementById('cart-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCartModal() { document.getElementById('cart-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeCartOutside(e) { if (e.target === document.getElementById('cart-overlay')) closeCartModal(); }
+
+  async function submitCart() {
+    const phone  = document.getElementById('phone-cart');
+    const name   = document.getElementById('cart-name').value.trim();
+    const digits = phone.value.replace(/\D/g, '');
+    if (digits.length < 11) { phone.setCustomValidity('Введите полный номер телефона'); phone.reportValidity(); return; }
+    phone.setCustomValidity('');
+    const items = Object.values(cart);
+    if (!items.length) return;
+    const lines = items.map(i => `— ${i.name} × ${i.qty} (${formatPrice(i.price * i.qty)})`).join('\n');
+    const body = {
+      access_key: 'b19e7dd9-9b38-4009-a408-10fe3764d836',
+      subject: 'Заказ из корзины — Science Kids',
+      name: name || 'не указано',
+      contact: phone.value,
+      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}`
+    };
+    const btn = document.getElementById('cart-submit-btn');
+    btn.textContent = 'Отправляем...'; btn.disabled = true;
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) });
+      const json = await res.json();
+      if (json.success) {
+        document.getElementById('cart-modal-body').style.display = 'none';
+        document.getElementById('cart-form-wrap').style.display = 'none';
+        document.getElementById('cart-success').classList.add('show');
+        cart = {}; updateCartUI();
+      } else alert('Ошибка при отправке. Попробуйте ещё раз.');
+    } catch { alert('Ошибка сети. Проверьте подключение.'); }
+    btn.textContent = 'Оформить заказ'; btn.disabled = false;
+  }
+
+  /* ── FORMS ── */
+  async function submitForm(form, successEl, bodyEl) {
+    const obj = {};
+    new FormData(form).forEach((v, k) => { obj[k] = v; });
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(obj) });
+      const json = await res.json();
+      if (json.success) { if (bodyEl) bodyEl.style.display = 'none'; successEl.classList.add('show'); }
+      else alert('Ошибка при отправке. Попробуйте ещё раз.');
+    } catch { alert('Ошибка сети. Проверьте подключение.'); }
+  }
+
+  document.getElementById('hero-form').addEventListener('submit', async e => {
+    e.preventDefault(); const btn = e.target.querySelector('.btn-submit'); btn.textContent = 'Отправляем...'; btn.disabled = true;
+    await submitForm(e.target, document.getElementById('hero-success'), document.getElementById('hero-form-body'));
+    btn.textContent = 'Отправить заявку'; btn.disabled = false;
+  });
+
+  document.getElementById('order-form').addEventListener('submit', async e => {
+    e.preventDefault(); const btn = e.target.querySelector('.btn-submit'); btn.textContent = 'Отправляем...'; btn.disabled = true;
+    await submitForm(e.target, document.getElementById('order-success'), document.getElementById('order-form-body'));
+    btn.textContent = 'Отправить заявку'; btn.disabled = false;
+  });
+
+  /* ── REVEAL ── */
+  function observeReveal() {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => io.observe(el));
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeOrderModal(); closeDetailModal(); closeCartModal(); } });
+
+  renderCatalog('all');
+  initPhone('phone-hero');
+  initPhone('phone-order');
+  initPhone('phone-cart');
+</script>
 </body>
 </html>
