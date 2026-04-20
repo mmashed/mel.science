@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О бренде — Science Kids</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/icons/favicon.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="about-hero-left">
+    <p class="hero-eyebrow">// О бренде · MEL Science</p>
+    <h1 class="about-hero-title">Научные<br>открытия<br><em>у вас дома</em></h1>
+    <p class="about-hero-desc">Ценное время с семьёй и масса удовольствия вместе с научными наборами от MEL Science. Все наборы тестируются в лабораториях и сертифицированы как безопасные для детей и пригодные для домашнего использования.</p>
+    <a href="index.html#catalog" class="about-cta">Посмотреть каталог</a>
+  </div>
+  <div class="about-hero-right">
+    <div id="atom-canvas-container"></div>
+  </div>
+</section>
+
+<!-- TECHNOLOGIES -->
+<section class="catalog-section">
+  <div class="section-header">
+    <h2 class="section-title">Технологии, которые учат</h2>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <div class="feature-num">// 01</div>
+      <div class="feature-title">Цифровые впечатления</div>
+      <div class="feature-desc">Вместе с практическими наборами дети получают доступ к иммерсивным возможностям: интерактивному мобильному приложению, виртуальной и дополненной реальности. Позвольте детям полностью погрузиться в мир науки.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:40ms">
+      <div class="feature-num">// 02</div>
+      <div class="feature-title">Видеоинструкции</div>
+      <div class="feature-desc">Больше никаких скучных инструкций — приложение проведёт ребёнка через все этапы работы с наборами с помощью интерактивных пошаговых подсказок. Всё понятно, наглядно и интересно.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:80ms">
+      <div class="feature-num">// 03</div>
+      <div class="feature-title">Виртуальная реальность</div>
+      <div class="feature-desc">В виртуальной реальности наука становится настолько реальной, что её почти можно потрогать. Дети оказываются внутри молекул, путешествуют по атомным структурам и наблюдают явления, невидимые в обычной жизни.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:120ms">
+      <div class="feature-num">// 04</div>
+      <div class="feature-title">Дополненная реальность</div>
+      <div class="feature-desc">Сделайте серьёзную науку похожей на игру. AR-уроки позволяют изучать STEM-наборы глубже — виртуальные объекты оживают прямо на столе ребёнка.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="catalog-section">
+  <div class="section-header">
+    <h2 class="section-title">Почему выбирают MEL Science</h2>
+    <span class="section-count">// 5 причин</span>
+  </div>
+  <div class="why-list">
+    <div class="why-item reveal">
+      <div class="why-title">Безопасность на первом месте</div>
+      <div class="why-desc">Все наборы проходят лабораторные тесты и сертифицированы как безопасные для детей.</div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-title">Разная тематика</div>
+      <div class="why-desc">Каждый набор — это новые открытия и эксперименты: химия, физика, медицина и многое другое.</div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-title">Интересно всем</div>
+      <div class="why-desc">Направления рассчитаны на разные возрасты — от 5 до 10+ лет. Найдётся набор для каждого.</div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-title">Ценное время с семьёй</div>
+      <div class="why-desc">Эксперименты — отличный повод провести время вместе и создать общие воспоминания.</div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-title">Современные технологии обучения</div>
+      <div class="why-desc">Мобильное приложение, VR и AR делают обучение захватывающим и по-настоящему запоминающимся.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <h2 class="cta-strip-title">Закажите набор<br><em>прямо сейчас.</em></h2>
+  <a href="index.html#catalog" class="about-cta">Посмотреть каталог</a>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="components/layout.js"></script>
+<script>
+  /* ── 3D ATOM ── */
+  (function () {
+    const container = document.getElementById('atom-canvas-container');
+    const W = container.clientWidth || 420;
+    const H = W;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 5.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    const atomGroup = new THREE.Group();
+    scene.add(atomGroup);
+
+    function makeRing(rotX, rotY, rotZ) {
+      const geo = new THREE.TorusGeometry(1.55, 0.028, 16, 120);
+      const mat = new THREE.MeshBasicMaterial({ color: 0xEFEFEF });
+      const ring = new THREE.Mesh(geo, mat);
+      ring.rotation.set(rotX, rotY, rotZ);
+      return ring;
+    }
+
+    const ring1 = makeRing(Math.PI / 2, 0, 0);
+    const ring2 = makeRing(Math.PI / 2, 0, THREE.MathUtils.degToRad(60));
+    const ring3 = makeRing(Math.PI / 2, 0, THREE.MathUtils.degToRad(-60));
+    atomGroup.add(ring1, ring2, ring3);
+
+    function makeElectron() {
+      const geo = new THREE.SphereGeometry(0.08, 16, 16);
+      const mat = new THREE.MeshBasicMaterial({ color: 0xC8FE02 });
+      return new THREE.Mesh(geo, mat);
+    }
+    const e1 = makeElectron(), e2 = makeElectron(), e3 = makeElectron();
+    scene.add(e1, e2, e3);
+
+    const nucleusGeo = new THREE.SphereGeometry(0.22, 32, 32);
+    const nucleusMat = new THREE.MeshBasicMaterial({ color: 0xC8FE02 });
+    const nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
+    atomGroup.add(nucleus);
+
+    const glowCanvas = document.createElement('canvas');
+    glowCanvas.width = 128; glowCanvas.height = 128;
+    const gc = glowCanvas.getContext('2d');
+    const grad = gc.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0,   'rgba(200,254,2,0.85)');
+    grad.addColorStop(0.2, 'rgba(200,254,2,0.4)');
+    grad.addColorStop(0.6, 'rgba(200,254,2,0.08)');
+    grad.addColorStop(1,   'rgba(200,254,2,0)');
+    gc.fillStyle = grad; gc.fillRect(0, 0, 128, 128);
+    const glowTex = new THREE.CanvasTexture(glowCanvas);
+    const glowMat = new THREE.SpriteMaterial({ map: glowTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+    const glowSprite = new THREE.Sprite(glowMat);
+    glowSprite.scale.set(1.2, 1.2, 1);
+    atomGroup.add(glowSprite);
+
+    function makeRingGlow(rotX, rotY, rotZ) {
+      const geo = new THREE.TorusGeometry(1.55, 0.09, 8, 120);
+      const mat = new THREE.MeshBasicMaterial({ color: 0xEFEFEF, transparent: true, opacity: 0.06, blending: THREE.AdditiveBlending, depthWrite: false });
+      const m = new THREE.Mesh(geo, mat);
+      m.rotation.set(rotX, rotY, rotZ);
+      return m;
+    }
+    atomGroup.add(makeRingGlow(Math.PI / 2, 0, 0));
+    atomGroup.add(makeRingGlow(Math.PI / 2, 0, THREE.MathUtils.degToRad(60)));
+    atomGroup.add(makeRingGlow(Math.PI / 2, 0, THREE.MathUtils.degToRad(-60)));
+
+    let targetRotX = 0.3, targetRotY = 0.3;
+    let currentRotX = 0.3, currentRotY = 0.3;
+    let isDragging = false, lastX = 0, lastY = 0, autoSpin = true;
+
+    container.addEventListener('mousedown', e => { isDragging = true; autoSpin = false; lastX = e.clientX; lastY = e.clientY; });
+    window.addEventListener('mouseup', () => { isDragging = false; setTimeout(() => autoSpin = true, 2000); });
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) {
+        const rect = container.getBoundingClientRect();
+        targetRotY =  ((e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2)) * 0.5;
+        targetRotX = -((e.clientY - rect.top  - rect.height / 2) / (rect.height / 2)) * 0.5;
+      } else {
+        targetRotY += (e.clientX - lastX) * 0.012;
+        targetRotX += (e.clientY - lastY) * 0.012;
+        lastX = e.clientX; lastY = e.clientY;
+      }
+    });
+    container.addEventListener('touchstart', e => { isDragging = true; autoSpin = false; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; e.preventDefault(); }, { passive: false });
+    window.addEventListener('touchend', () => { isDragging = false; setTimeout(() => autoSpin = true, 2000); });
+    window.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      targetRotY += (e.touches[0].clientX - lastX) * 0.012;
+      targetRotX += (e.touches[0].clientY - lastY) * 0.012;
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    });
+
+    function electronPos(t, ring, speed, offset) {
+      const angle = t * speed + offset;
+      const r = 1.55;
+      const lp = new THREE.Vector3(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+      lp.applyEuler(ring.rotation);
+      lp.applyEuler(atomGroup.rotation);
+      return lp;
+    }
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.012;
+      if (autoSpin) targetRotY += 0.003;
+      currentRotX += (targetRotX - currentRotX) * 0.07;
+      currentRotY += (targetRotY - currentRotY) * 0.07;
+      atomGroup.rotation.x = currentRotX;
+      atomGroup.rotation.y = currentRotY;
+      e1.position.copy(electronPos(t, ring1, 0.9, 0));
+      e2.position.copy(electronPos(t, ring2, 0.75, 2.1));
+      e3.position.copy(electronPos(t, ring3, 0.6, 4.2));
+      const pulse = 1 + 0.08 * Math.sin(t * 2);
+      nucleus.scale.set(pulse, pulse, pulse);
+      glowSprite.scale.set(1.2 * pulse, 1.2 * pulse, 1);
+      renderer.render(scene, camera);
+    }
+    animate();
+  })();
+
+  function observeReveal() {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => io.observe(el));
+  }
+
+  observeReveal();
+</script>
+</body>
+</html>
