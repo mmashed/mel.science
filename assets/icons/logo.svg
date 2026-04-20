@@ -1,11 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 28" width="210" height="28" role="img" aria-label="Science Kids">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;display=swap');
-    </style>
-  </defs>
-  <text font-family="'Bebas Neue', Impact, sans-serif" font-size="22" letter-spacing="2.64" fill="#f0f0f0" y="22">
-    <tspan>SCIENCE</tspan><tspan fill="#c8ff00">.</tspan><tspan>KIDS</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160">
+  <rect width="480" height="160" fill="#0B0C0C"/>
+
+  <!-- Atom icon -->
+  <g transform="translate(80 80)">
+    <!-- Orbit 1 -->
+    <ellipse cx="0" cy="0" rx="46" ry="18" fill="none" stroke="#EFEFEF" stroke-width="3"/>
+    <!-- Orbit 2 -->
+    <ellipse cx="0" cy="0" rx="46" ry="18" fill="none" stroke="#EFEFEF" stroke-width="3" transform="rotate(60)"/>
+    <!-- Orbit 3 -->
+    <ellipse cx="0" cy="0" rx="46" ry="18" fill="none" stroke="#EFEFEF" stroke-width="3" transform="rotate(-60)"/>
+    <!-- Nucleus -->
+    <circle cx="0" cy="0" r="7" fill="#C8FE02"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700" fill="#EFEFEF">
+    <text x="160" y="78" font-size="34" letter-spacing="-1">SCIENCE</text>
+    <text x="160" y="116" font-size="34" letter-spacing="-1" fill="#C8FE02">KIDS<tspan fill="#C8FE02">.</tspan></text>
+  </g>
 </svg>
