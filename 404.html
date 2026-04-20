@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Страница не найдена · Science Kids</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/icons/favicon.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page-404">
+
+<div id="site-header"></div>
+
+<div id="scene">
+  <div id="drop-zone"></div>
+</div>
+
+<div id="message">
+  <p id="hint">// перетащите фрагменты, чтобы собрать</p>
+  <p id="msg-text">
+    Такой страницы не существует
+    <span>// страница не найдена</span>
+  </p>
+  <a href="index.html#catalog" id="catalog-link">
+    <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 7h12M8 3l5 4-5 4" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Перейти в каталог
+  </a>
+</div>
+
+<div id="counter"><span id="snapped-count">0</span> / <span id="total-count">0</span></div>
+
+<script>
+(function() {
+  const vw = Math.max(window.innerWidth || document.documentElement.clientWidth || 1280, 320);
+  const PW = Math.min(vw * 0.82, 640);
+  const PH = Math.round(PW * 0.42);
+  const COLS = 3, ROWS = 2;
+  const PIECE_W = PW / COLS;
+  const PIECE_H = PH / ROWS;
+  const TAB = Math.min(PIECE_W, PIECE_H) * 0.22;
+  const SNAP_R = 40;
+  const BG = '#0a0a0a';
+  const FG = '#f0f0f0';
+  const ACCENT = '#c8ff00';
+
+  function getEdges() {
+    return { top: 0, bottom: 0, left: 0, right: 0 };
+  }
+
+  function piecePath(ctx, ox, oy, w, h, edges, t) {
+    const q = 0.33, q2 = 0.67;
+    ctx.beginPath();
+    ctx.moveTo(ox, oy);
+
+    if (edges.top === 0) {
+      ctx.lineTo(ox + w, oy);
+    } else {
+      const d = -edges.top;
+      ctx.lineTo(ox + w * q, oy);
+      ctx.bezierCurveTo(ox+w*q, oy+d*t*0.5, ox+w*0.42, oy+d*t, ox+w*0.5, oy+d*t);
+      ctx.bezierCurveTo(ox+w*0.58, oy+d*t, ox+w*q2, oy+d*t*0.5, ox+w*q2, oy);
+      ctx.lineTo(ox + w, oy);
+    }
+
+    if (edges.right === 0) {
+      ctx.lineTo(ox + w, oy + h);
+    } else {
+      const d = edges.right;
+      ctx.lineTo(ox + w, oy + h * q);
+      ctx.bezierCurveTo(ox+w-d*t*0.5, oy+h*q, ox+w-d*t, oy+h*0.42, ox+w-d*t, oy+h*0.5);
+      ctx.bezierCurveTo(ox+w-d*t, oy+h*0.58, ox+w-d*t*0.5, oy+h*q2, ox+w, oy+h*q2);
+      ctx.lineTo(ox + w, oy + h);
+    }
+
+    if (edges.bottom === 0) {
+      ctx.lineTo(ox, oy + h);
+    } else {
+      const d = edges.bottom;
+      ctx.lineTo(ox + w * q2, oy + h);
+      ctx.bezierCurveTo(ox+w*q2, oy+h+d*t*0.5, ox+w*0.58, oy+h+d*t, ox+w*0.5, oy+h+d*t);
+      ctx.bezierCurveTo(ox+w*0.42, oy+h+d*t, ox+w*q, oy+h+d*t*0.5, ox+w*q, oy+h);
+      ctx.lineTo(ox, oy + h);
+    }
+
+    if (edges.left === 0) {
+      ctx.lineTo(ox, oy);
+    } else {
+      const d = -edges.left;
+      ctx.lineTo(ox, oy + h * q2);
+      ctx.bezierCurveTo(ox+d*t*0.5, oy+h*q2, ox+d*t, oy+h*0.58, ox+d*t, oy+h*0.5);
+      ctx.bezierCurveTo(ox+d*t, oy+h*0.42, ox+d*t*0.5, oy+h*q, ox, oy+h*q);
+      ctx.lineTo(ox, oy);
+    }
+
+    ctx.closePath();
+  }
+
+  const src = document.createElement('canvas');
+  src.width = PW; src.height = PH;
+  const sx = src.getContext('2d');
+
+  sx.fillStyle = BG;
+  sx.fillRect(0, 0, PW, PH);
+
+  const fontSize = PH * 0.95;
+
+  document.fonts.ready.then(() => {
+    sx.font = `${fontSize}px 'Bebas Neue', sans-serif`;
+    sx.fillStyle = FG;
+    sx.textAlign = 'center';
+    sx.textBaseline = 'middle';
+
+    const grd = sx.createRadialGradient(PW*0.5, PH*0.5, 0, PW*0.5, PH*0.5, PW*0.35);
+    grd.addColorStop(0, 'rgba(200,255,0,0.12)');
+    grd.addColorStop(1, 'rgba(200,255,0,0)');
+    sx.fillStyle = grd;
+    sx.fillRect(0, 0, PW, PH);
+
+    sx.fillStyle = FG;
+    sx.fillText('404', PW / 2, PH / 2);
+
+    initPuzzle();
+  });
+
+  const dropZone = document.getElementById('drop-zone');
+  dropZone.style.width = PW + 'px';
+  dropZone.style.height = PH + 'px';
+
+  const ghostCanvas = document.createElement('canvas');
+  ghostCanvas.width = PW; ghostCanvas.height = PH;
+  ghostCanvas.className = 'ghost-canvas';
+  const gx = ghostCanvas.getContext('2d');
+  dropZone.appendChild(ghostCanvas);
+
+  let pieces = [];
+  let snappedCount = 0;
+  const totalCount = COLS * ROWS;
+  document.getElementById('total-count').textContent = totalCount;
+
+  function getDropZoneOrigin() {
+    const rect = dropZone.getBoundingClientRect();
+    return { x: rect.left, y: rect.top };
+  }
+
+  function initPuzzle() {
+    gx.clearRect(0, 0, PW, PH);
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const edges = getEdges(col, row);
+        const ox = col * PIECE_W;
+        const oy = row * PIECE_H;
+        gx.save();
+        piecePath(gx, ox, oy, PIECE_W, PIECE_H, edges, TAB);
+        gx.fillStyle = FG;
+        gx.fill();
+        gx.strokeStyle = 'rgba(200,255,0,0.4)';
+        gx.lineWidth = 1.5;
+        gx.setLineDash([4, 6]);
+        gx.stroke();
+        gx.restore();
+      }
+    }
+    gx.save();
+    gx.globalAlpha = 0.06;
+    gx.drawImage(src, 0, 0);
+    gx.restore();
+
+    const viewW = window.innerWidth;
+    const viewH = window.innerHeight;
+    const dzOrigin = getDropZoneOrigin();
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        createPiece(col, row, dzOrigin, viewW, viewH);
+      }
+    }
+  }
+
+  function createPiece(col, row, dzOrigin, viewW, viewH) {
+    const edges = getEdges(col, row);
+    const ox = col * PIECE_W;
+    const oy = row * PIECE_H;
+
+    const bx = ox - TAB - 4;
+    const by = oy - TAB - 4;
+    const bw = PIECE_W + TAB * 2 + 8;
+    const bh = PIECE_H + TAB * 2 + 8;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = bw;
+    canvas.height = bh;
+    const ctx = canvas.getContext('2d');
+
+    ctx.save();
+    piecePath(ctx, TAB + 4, TAB + 4, PIECE_W, PIECE_H, edges, TAB);
+    ctx.clip();
+    ctx.drawImage(src, bx, by, bw, bh, 0, 0, bw, bh);
+    ctx.strokeStyle = 'rgba(200,255,0,0.18)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    piecePath(ctx, TAB + 4, TAB + 4, PIECE_W, PIECE_H, edges, TAB);
+    ctx.strokeStyle = 'rgba(240,240,240,0.2)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+
+    const el = document.createElement('div');
+    el.className = 'piece';
+    el.style.setProperty('--drag-tilt', `${(Math.random() * 6 - 3)}deg`);
+    el.appendChild(canvas);
+    document.getElementById('scene').appendChild(el);
+
+    const margin = 60;
+    const scatter = [
+      [margin, margin, viewW * 0.35, viewH * 0.3],
+      [viewW * 0.65, margin, viewW - margin - bw, viewH * 0.3],
+      [margin, viewH * 0.65, viewW * 0.35, viewH - margin - bh],
+      [viewW * 0.65, viewH * 0.65, viewW - margin - bw, viewH - margin - bh]
+    ];
+    const [sx1, sy1, sx2, sy2] = scatter[(col * ROWS + row) % 4];
+    const startX = sx1 + Math.random() * Math.max(0, sx2 - sx1 - bw);
+    const startY = sy1 + Math.random() * Math.max(0, sy2 - sy1 - bh);
+
+    el.style.left = startX + 'px';
+    el.style.top = startY + 'px';
+    el.style.width = bw + 'px';
+    el.style.height = bh + 'px';
+
+    function getTargetPos() {
+      const dz = getDropZoneOrigin();
+      return { x: dz.x + ox - TAB - 4, y: dz.y + oy - TAB - 4 };
+    }
+
+    let dragging = false;
+    let startMouseX, startMouseY, startElemX, startElemY;
+    const tiltDir = Math.random() > 0.5 ? 1 : -1;
+
+    function onDown(e) {
+      if (el.classList.contains('snapped')) return;
+      dragging = true;
+      el.classList.add('dragging');
+      el.style.zIndex = 100;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startMouseX = clientX;
+      startMouseY = clientY;
+      startElemX = parseFloat(el.style.left);
+      startElemY = parseFloat(el.style.top);
+      e.preventDefault();
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - startMouseX;
+      const dy = clientY - startMouseY;
+      const speed = Math.sqrt(dx*dx + dy*dy) * 0.01;
+      el.style.setProperty('--drag-tilt', `${tiltDir * Math.min(speed * 3, 8)}deg`);
+      el.style.left = (startElemX + dx) + 'px';
+      el.style.top  = (startElemY + dy) + 'px';
+      e.preventDefault();
+    }
+
+    function onUp() {
+      if (!dragging) return;
+      dragging = false;
+      el.classList.remove('dragging');
+      el.style.setProperty('--drag-tilt', '0deg');
+
+      const target = getTargetPos();
+      const currX = parseFloat(el.style.left);
+      const currY = parseFloat(el.style.top);
+      const dist = Math.hypot(currX - target.x, currY - target.y);
+
+      if (dist < SNAP_R) {
+        el.classList.add('snapped');
+        el.style.left = target.x + 'px';
+        el.style.top = target.y + 'px';
+        el.style.zIndex = 5;
+        el.classList.add('snap-anim');
+        setTimeout(() => el.classList.remove('snap-anim'), 600);
+        snappedCount++;
+        document.getElementById('snapped-count').textContent = snappedCount;
+        if (snappedCount === totalCount) onSolved();
+      }
+    }
+
+    el.addEventListener('mousedown', onDown);
+    el.addEventListener('touchstart', onDown, { passive: false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+
+    pieces.push({ el, col, row, getTargetPos });
+  }
+
+  function onSolved() {
+    document.getElementById('hint').classList.add('hidden');
+    pieces.forEach(p => {
+      p.el.style.filter = 'drop-shadow(0 0 30px rgba(200,255,0,0.9))';
+      setTimeout(() => { p.el.style.filter = ''; }, 800);
+    });
+    setTimeout(() => {
+      document.getElementById('hint').textContent = '// собрано! но страница всё равно не найдена';
+      document.getElementById('hint').classList.remove('hidden');
+    }, 900);
+  }
+})();
+</script>
+
+<script src="components/layout.js"></script>
+</body>
+</html>
