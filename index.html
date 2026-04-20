@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science Kids — Научные наборы</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/icons/favicon.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -11,15 +14,7 @@
 </head>
 <body>
 
-<nav>
-  <a href="#" class="nav-logo">SCIENCE<span>.</span>KIDS</a>
-  <div class="nav-right">
-    <button class="cart-btn" onclick="openCartModal()">
-      Корзина <span class="cart-count hidden" id="nav-cart-count">0</span>
-    </button>
-    <button class="nav-cta" onclick="openOrderModal('')">Оставить заявку</button>
-  </div>
-</nav>
+<div id="site-header"></div>
 
 <section class="hero">
   <div class="hero-left">
@@ -70,10 +65,7 @@
   <div class="catalog-grid" id="catalog-grid"></div>
 </section>
 
-<footer>
-  <div class="footer-logo">SCIENCE<span>.</span>KIDS</div>
-  <div class="footer-note">© 2026 · Складские остатки MEL Science · Все права защищены</div>
-</footer>
+<div id="site-footer"></div>
 
 <button class="float-cart hidden" id="float-cart" onclick="openCartModal()">
   Корзина <span class="float-cart-count" id="float-cart-count">0</span>
@@ -142,6 +134,7 @@
   </div>
 </div>
 
+<script src="components/layout.js"></script>
 <script>
   const descriptions = {
     'Сахарная Змея':        'Вырастите огромную чёрную змею из обычного сахара — эффектный опыт, который объясняет, что происходит при горении и разложении органики.',

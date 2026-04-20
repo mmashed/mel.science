@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 28" width="210" height="28" role="img" aria-label="Science Kids">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;display=swap');
+    </style>
+  </defs>
+  <text font-family="'Bebas Neue', Impact, sans-serif" font-size="22" letter-spacing="2.64" fill="#f0f0f0" y="22">
+    <tspan>SCIENCE</tspan><tspan fill="#c8ff00">.</tspan><tspan>KIDS</tspan>
+  </text>
+</svg>
