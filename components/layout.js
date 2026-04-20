@@ -14,6 +14,7 @@
     headerEl.innerHTML = '<nav>'
       + '<a href="index.html" class="nav-logo" aria-label="Science Kids">' + NAV_LOGO + '</a>'
       + '<div class="nav-right">'
+      + '<a href="about-melscience.html" class="nav-link">О MEL Science</a>'
       + '<button class="cart-btn" onclick="openCartModal()">'
       + 'Корзина <span class="cart-count hidden" id="nav-cart-count">0</span>'
       + '</button>'
