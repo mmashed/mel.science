@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Atom Icon</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0B0C0C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  #canvas-container {
+    width: 420px;
+    height: 420px;
+    cursor: grab;
+  }
+  #canvas-container:active {
+    cursor: grabbing;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const container = document.getElementById('canvas-container');
+  const W = 420, H = 420;
+
+  // Scene
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.set(0, 0, 5.5);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setClearColor(0x0B0C0C, 1);
+  container.appendChild(renderer.domElement);
+
+  // Group for the whole atom
+  const atomGroup = new THREE.Group();
+  scene.add(atomGroup);
+
+  // Create orbit ring (torus)
+  function makeRing(rotX, rotY, rotZ) {
+    const geo = new THREE.TorusGeometry(1.55, 0.028, 16, 120);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xEFEFEF });
+    const ring = new THREE.Mesh(geo, mat);
+    ring.rotation.set(rotX, rotY, rotZ);
+    return ring;
+  }
+
+  // 3 rings: flat, 60deg, -60deg — matching SVG ellipses
+  const ring1 = makeRing(Math.PI / 2, 0, 0);
+  const ring2 = makeRing(Math.PI / 2, 0, THREE.MathUtils.degToRad(60));
+  const ring3 = makeRing(Math.PI / 2, 0, THREE.MathUtils.degToRad(-60));
+
+  atomGroup.add(ring1, ring2, ring3);
+
+  // Electrons — small glowing spheres on each ring
+  function makeElectron() {
+    const geo = new THREE.SphereGeometry(0.08, 16, 16);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xC8FE02 });
+    return new THREE.Mesh(geo, mat);
+  }
+
+  const e1 = makeElectron();
+  const e2 = makeElectron();
+  const e3 = makeElectron();
+  scene.add(e1, e2, e3);
+
+  // Nucleus
+  const nucleusGeo = new THREE.SphereGeometry(0.22, 32, 32);
+  const nucleusMat = new THREE.MeshBasicMaterial({ color: 0xC8FE02 });
+  const nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
+  atomGroup.add(nucleus);
+
+  // Nucleus glow (additive sprite)
+  const glowCanvas = document.createElement('canvas');
+  glowCanvas.width = 128; glowCanvas.height = 128;
+  const gc = glowCanvas.getContext('2d');
+  const grad = gc.createRadialGradient(64,64,0, 64,64,64);
+  grad.addColorStop(0,   'rgba(200,254,2,0.85)');
+  grad.addColorStop(0.2, 'rgba(200,254,2,0.4)');
+  grad.addColorStop(0.6, 'rgba(200,254,2,0.08)');
+  grad.addColorStop(1,   'rgba(200,254,2,0)');
+  gc.fillStyle = grad;
+  gc.fillRect(0, 0, 128, 128);
+  const glowTex = new THREE.CanvasTexture(glowCanvas);
+  const glowMat = new THREE.SpriteMaterial({ map: glowTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+  const glowSprite = new THREE.Sprite(glowMat);
+  glowSprite.scale.set(1.2, 1.2, 1);
+  atomGroup.add(glowSprite);
+
+  // Ring glow — subtle bloom for each ring
+  function makeRingGlow(rotX, rotY, rotZ) {
+    const geo = new THREE.TorusGeometry(1.55, 0.09, 8, 120);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0xEFEFEF,
+      transparent: true,
+      opacity: 0.06,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const m = new THREE.Mesh(geo, mat);
+    m.rotation.set(rotX, rotY, rotZ);
+    return m;
+  }
+  atomGroup.add(makeRingGlow(Math.PI/2,0,0));
+  atomGroup.add(makeRingGlow(Math.PI/2,0,THREE.MathUtils.degToRad(60)));
+  atomGroup.add(makeRingGlow(Math.PI/2,0,THREE.MathUtils.degToRad(-60)));
+
+  // ---- Interaction ----
+  let targetRotX = 0.3, targetRotY = 0.3;
+  let currentRotX = 0.3, currentRotY = 0.3;
+  let isDragging = false;
+  let lastX = 0, lastY = 0;
+  let autoSpin = true;
+
+  container.addEventListener('mousedown', e => {
+    isDragging = true;
+    autoSpin = false;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    // Resume auto-spin after 2s
+    setTimeout(() => autoSpin = true, 2000);
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) {
+      // Parallax tilt based on mouse position
+      const rect = container.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      targetRotY = ((e.clientX - cx) / (rect.width / 2)) * 0.5;
+      targetRotX = -((e.clientY - cy) / (rect.height / 2)) * 0.5;
+    } else {
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      targetRotY += dx * 0.012;
+      targetRotX += dy * 0.012;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }
+  });
+
+  // Touch
+  container.addEventListener('touchstart', e => {
+    isDragging = true;
+    autoSpin = false;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+    e.preventDefault();
+  }, { passive: false });
+  window.addEventListener('touchend', () => {
+    isDragging = false;
+    setTimeout(() => autoSpin = true, 2000);
+  });
+  window.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - lastX;
+    const dy = e.touches[0].clientY - lastY;
+    targetRotY += dx * 0.012;
+    targetRotX += dy * 0.012;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  });
+
+  // ---- Electron positions on rings ----
+  function electronPos(t, ring, speed, offset) {
+    // ring ring's world matrix
+    const angle = t * speed + offset;
+    const r = 1.55;
+    // local position on torus path
+    const lp = new THREE.Vector3(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+    lp.applyEuler(ring.rotation);
+    lp.applyEuler(atomGroup.rotation);
+    return lp;
+  }
+
+  // ---- Animate ----
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.012;
+
+    // Auto-spin
+    if (autoSpin) {
+      targetRotY += 0.003;
+    }
+
+    // Smooth rotation
+    currentRotX += (targetRotX - currentRotX) * 0.07;
+    currentRotY += (targetRotY - currentRotY) * 0.07;
+    atomGroup.rotation.x = currentRotX;
+    atomGroup.rotation.y = currentRotY;
+
+    // Electron orbit positions (computed in world space after group rotation)
+    const pos1 = electronPos(t, ring1, 0.9, 0);
+    const pos2 = electronPos(t, ring2, 0.75, 2.1);
+    const pos3 = electronPos(t, ring3, 0.6, 4.2);
+
+    e1.position.copy(pos1);
+    e2.position.copy(pos2);
+    e3.position.copy(pos3);
+
+    // Subtle nucleus pulse
+    const pulse = 1 + 0.08 * Math.sin(t * 2);
+    nucleus.scale.set(pulse, pulse, pulse);
+    glowSprite.scale.set(1.2 * pulse, 1.2 * pulse, 1);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>
