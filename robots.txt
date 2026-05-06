@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /reference/
+
+Sitemap: https://science-kids.ru/sitemap.xml
