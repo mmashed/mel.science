@@ -1,0 +1,14 @@
+.benefits-section { padding: 80px 40px; border-bottom: 1px solid var(--line); }
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
+.benefit-card { background: var(--bg2); padding: 32px 28px; }
+.benefit-icon { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+.benefit-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .04em; margin-bottom: 10px; }
+.benefit-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+@media (max-width: 900px) {
+  .benefits-section { padding: 60px 20px; }
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .benefits-grid { grid-template-columns: 1fr; }
+}
