@@ -47,11 +47,87 @@ footer { border-top: 1px solid var(--line); padding: 32px 40px; display: flex; j
 .nav-dropdown-item:last-child { border-bottom: none; }
 .nav-dropdown-item:hover { color: var(--accent); background: var(--bg2); }
 
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  z-index: 101;
+}
+.nav-burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  transition: transform .3s ease, opacity .2s ease, width .25s ease;
+  transform-origin: center;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; width: 0; }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 55px;
+  left: 0; right: 0; bottom: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  z-index: 99;
+  padding: 40px 24px 40px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.nav-mobile.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+.nav-mobile-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+.nav-mobile-links { display: flex; flex-direction: column; }
+.nav-mobile-link {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  letter-spacing: .04em;
+  color: var(--text);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  transition: color .15s;
+  line-height: 1;
+}
+.nav-mobile-link:hover { color: var(--accent); }
+.nav-mobile-link--gap { margin-top: 32px; }
+
+.nav-mobile-actions {
+  margin-top: auto;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nav-mobile-actions .cart-btn { width: 100%; justify-content: center; padding: 14px 18px; }
+.nav-mobile-actions .nav-cta { width: 100%; padding: 14px 22px; text-align: center; }
+
 @media (max-width: 900px) {
   nav { padding: 16px 20px; }
   .catalog-section { padding: 60px 20px; }
   footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
 }
-@media (max-width: 600px) {
-  .nav-cta { padding: 8px 14px; font-size: 10px; }
+@media (max-width: 768px) {
+  .nav-right { display: none; }
+  .nav-burger { display: flex; }
 }

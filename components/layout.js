@@ -28,8 +28,41 @@
       + '</button>'
       + '<button class="nav-cta" onclick="openOrderModal(\'\')">Оставить заявку</button>'
       + '</div>'
-      + '</nav>';
+      + '<button class="nav-burger" id="nav-burger" aria-label="Меню" onclick="toggleMobileNav()">'
+      + '<span></span><span></span><span></span>'
+      + '</button>'
+      + '</nav>'
+      + '<div class="nav-mobile" id="nav-mobile">'
+      + '<div class="nav-mobile-links">'
+      + '<span class="nav-mobile-label">Каталог</span>'
+      + '<a href="chemistry.html" class="nav-mobile-link">Химия</a>'
+      + '<a href="physics.html" class="nav-mobile-link">Физика</a>'
+      + '<a href="medicine.html" class="nav-mobile-link">Медицина</a>'
+      + '<a href="about-melscience.html" class="nav-mobile-link nav-mobile-link--gap">О MEL Science</a>'
+      + '</div>'
+      + '<div class="nav-mobile-actions">'
+      + '<button class="cart-btn" onclick="closeMobileNav(); openCartModal()">Корзина</button>'
+      + '<button class="nav-cta" onclick="closeMobileNav(); openOrderModal(\'\')">Оставить заявку</button>'
+      + '</div>'
+      + '</div>';
   }
+
+  window.toggleMobileNav = function () {
+    var menu = document.getElementById('nav-mobile');
+    var burger = document.getElementById('nav-burger');
+    var isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    burger.classList.toggle('open', !isOpen);
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  };
+
+  window.closeMobileNav = function () {
+    var menu = document.getElementById('nav-mobile');
+    var burger = document.getElementById('nav-burger');
+    if (menu) { menu.classList.remove('open'); }
+    if (burger) { burger.classList.remove('open'); }
+    document.body.style.overflow = '';
+  };
 
   var footerEl = document.getElementById('site-footer');
   if (footerEl) {
