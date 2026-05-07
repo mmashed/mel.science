@@ -58,6 +58,14 @@ footer { border-top: 1px solid var(--line); padding: 40px 40px 32px; }
 .nav-dropdown-item:last-child { border-bottom: none; }
 .nav-dropdown-item:hover { color: var(--accent); background: var(--bg2); }
 
+.check-field { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.check-field input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 15px; height: 15px; min-width: 15px; border: 1px solid var(--line); background: var(--bg2); cursor: pointer; margin-top: 1px; transition: border-color .15s, background .15s; position: relative; }
+.check-field input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.check-field input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid var(--bg); border-top: none; border-left: none; transform: rotate(45deg); }
+.check-field label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .06em; line-height: 1.6; cursor: pointer; }
+.check-field label a { color: var(--accent); text-decoration: none; }
+.check-field label a:hover { text-decoration: underline; }
+
 .nav-burger {
   display: none;
   flex-direction: column;
