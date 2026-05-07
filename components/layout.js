@@ -67,8 +67,24 @@
   var footerEl = document.getElementById('site-footer');
   if (footerEl) {
     footerEl.innerHTML = '<footer>'
+      + '<div class="footer-top">'
+      + '<div class="footer-left">'
       + '<div class="footer-logo">' + FOOTER_LOGO + '</div>'
+      + '<div class="footer-links">'
+      + '<a href="public-offer.html">Публичная оферта</a>'
+      + '<a href="privacy.html">Политика конфиденциальности</a>'
+      + '</div>'
+      + '</div>'
+      + '<div class="footer-right">'
+      + '<div class="footer-company">ИП Янко Виталий Сергеевич</div>'
+      + '<div class="footer-req">ИНН: 781711142300 · ОГРНИП: 316784700098653</div>'
+      + '<div class="footer-req">г. Санкт-Петербург, п. Металлострой, ул. Полевая, 25, 137</div>'
+      + '<a href="mailto:yanko@softwarelead.pro" class="footer-req footer-email">yanko@softwarelead.pro</a>'
+      + '</div>'
+      + '</div>'
+      + '<div class="footer-bottom">'
       + '<div class="footer-note">© 2026 · Складские остатки MEL Science · Все права защищены</div>'
+      + '</div>'
       + '</footer>';
   }
 })();
