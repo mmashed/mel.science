@@ -8,6 +8,9 @@
 .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
 .hero-form-wrap { padding: 80px 60px; display: flex; align-items: center; justify-content: center; }
 
+/* ── FIRE LABEL ── */
+.bundle-fire-label { display: inline-block; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 16px; }
+
 /* ── HERO GALLERY ── */
 .bundle-gallery { display: flex; flex-direction: column; gap: 1px; background: var(--line); width: 100%; height: 100%; }
 .bundle-gallery-main { flex: 1; overflow: hidden; }
@@ -28,11 +31,12 @@
 /* ── BUNDLE SETS ── */
 .bundle-sets-section { padding: 80px 40px; border-bottom: 1px solid var(--line); }
 .bundle-sets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
-.bundle-set-item { background: var(--bg2); padding: 28px 24px; position: relative; overflow: hidden; }
+.bundle-set-item { background: var(--bg2); padding: 28px 24px; position: relative; overflow: hidden; transition: padding-right .35s ease; }
+.bundle-set-item:hover { padding-right: 114px; }
 .bundle-set-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: .04em; }
 .bundle-set-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 8px; }
-.bundle-set-hover-img { position: absolute; top: 0; right: 0; width: 120px; height: 120px; object-fit: cover; opacity: 0; transition: opacity .3s; pointer-events: none; }
-.bundle-set-item:hover .bundle-set-hover-img { opacity: 1; }
+.bundle-set-hover-img { position: absolute; top: 0; right: 0; width: 90px; height: 100%; object-fit: cover; opacity: 0; transform: translateX(100%); transition: transform .35s ease, opacity .3s; pointer-events: none; }
+.bundle-set-item:hover .bundle-set-hover-img { transform: translateX(0); opacity: 1; }
 
 /* ── BUNDLE CTA (hero bottom) ── */
 .bundle-cta { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
@@ -53,6 +57,17 @@
 .btn-bundle-order:hover { color: var(--accent); border-color: var(--accent); }
 .bundle-order-form { background: var(--bg2); padding: 60px 48px; border-left: 1px solid var(--line); }
 
+/* ── OTHER BUNDLES ── */
+.other-bundles-section { padding: 80px 40px; border-bottom: 1px solid var(--line); }
+.other-bundles-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
+.other-bundle-link { background: var(--bg2); display: block; text-decoration: none; color: var(--text); overflow: hidden; transition: background .15s; }
+.other-bundle-link:hover { background: var(--bg3); }
+.other-bundle-link img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: opacity .4s ease; }
+.other-bundle-link:hover img { opacity: .8; }
+.other-bundle-meta { padding: 16px 20px 20px; }
+.other-bundle-name { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: .04em; line-height: 1.2; }
+.other-bundle-price { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .08em; margin-top: 6px; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
@@ -63,6 +78,9 @@
   .bundle-sets-grid { grid-template-columns: repeat(2, 1fr); }
   .bundle-order-grid { grid-template-columns: 1fr; }
   .bundle-order-form { border-left: none; border-top: 1px solid var(--line); }
+  .other-bundles-grid { grid-template-columns: repeat(2, 1fr); }
+  .bundle-set-item:hover { padding-right: 24px; }
+  .bundle-set-hover-img { display: none; }
 }
 @media (max-width: 600px) {
   .hero-left { padding: 48px 20px; }
@@ -78,4 +96,5 @@
   .bundle-order-info { padding: 40px 24px; }
   .bundle-price-big { font-size: 52px; }
   .bundle-order-form { padding: 40px 24px; }
+  .other-bundles-section { padding: 60px 20px; }
 }
