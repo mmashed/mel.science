@@ -1,0 +1,81 @@
+/* ── BUNDLE HERO ── */
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; border-bottom: 1px solid var(--line); }
+.hero-left { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+.hero-stats { display: flex; gap: 0; margin-top: 40px; }
+.stat { padding: 20px 28px; border: 1px solid var(--line); border-right: none; }
+.stat:last-child { border-right: 1px solid var(--line); }
+.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); letter-spacing: .04em; }
+.stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
+.hero-form-wrap { padding: 80px 60px; display: flex; align-items: center; justify-content: center; }
+
+/* ── HERO GALLERY ── */
+.bundle-gallery { display: flex; flex-direction: column; gap: 1px; background: var(--line); width: 100%; height: 100%; }
+.bundle-gallery-main { flex: 1; overflow: hidden; }
+.bundle-gallery-main img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .4s ease; }
+.bundle-gallery-thumbs { display: flex; gap: 1px; background: var(--line); height: 120px; }
+.bundle-gallery-thumb { flex: 1; overflow: hidden; cursor: pointer; }
+.bundle-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .4s ease; }
+.bundle-gallery-thumb:hover img, .bundle-gallery-thumb.active img { opacity: 0.7; }
+
+/* ── BENEFITS ── */
+.benefits-section { padding: 80px 40px; border-bottom: 1px solid var(--line); }
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
+.benefit-card { background: var(--bg2); padding: 32px 28px; }
+.benefit-icon { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+.benefit-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .04em; margin-bottom: 10px; }
+.benefit-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+/* ── BUNDLE SETS ── */
+.bundle-sets-section { padding: 80px 40px; border-bottom: 1px solid var(--line); }
+.bundle-sets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
+.bundle-set-item { background: var(--bg2); padding: 28px 24px; position: relative; overflow: hidden; }
+.bundle-set-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: .04em; }
+.bundle-set-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 8px; }
+.bundle-set-hover-img { position: absolute; top: 0; right: 0; width: 120px; height: 120px; object-fit: cover; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.bundle-set-item:hover .bundle-set-hover-img { opacity: 1; }
+
+/* ── BUNDLE CTA (hero bottom) ── */
+.bundle-cta { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+
+/* ── HERO GALLERY WRAP ── */
+.hero-gallery-wrap { display: flex; align-items: stretch; }
+
+/* ── BUNDLE ORDER SECTION ── */
+.bundle-order-section { padding: 80px 40px; }
+.bundle-order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+.bundle-order-info { background: var(--bg2); padding: 60px 48px; }
+.bundle-price-big { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--accent); letter-spacing: .02em; line-height: 1; }
+.bundle-price-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 12px; margin-bottom: 40px; }
+.bundle-actions { display: flex; flex-direction: column; gap: 12px; }
+.btn-bundle-cart { display: block; padding: 16px 24px; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; border: none; cursor: pointer; transition: opacity .15s; text-align: center; }
+.btn-bundle-cart:hover { opacity: .85; }
+.btn-bundle-order { display: block; padding: 16px 24px; background: none; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--line); cursor: pointer; transition: color .15s, border-color .15s; text-align: center; }
+.btn-bundle-order:hover { color: var(--accent); border-color: var(--accent); }
+.bundle-order-form { background: var(--bg2); padding: 60px 48px; border-left: 1px solid var(--line); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--line); }
+  .hero-form-wrap { padding: 60px 24px; }
+  .bundle-gallery { height: 420px; }
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .bundle-sets-grid { grid-template-columns: repeat(2, 1fr); }
+  .bundle-order-grid { grid-template-columns: 1fr; }
+  .bundle-order-form { border-left: none; border-top: 1px solid var(--line); }
+}
+@media (max-width: 600px) {
+  .hero-left { padding: 48px 20px; }
+  .hero-form-wrap { padding: 48px 20px; }
+  .hero-stats { flex-direction: column; }
+  .stat { border: 1px solid var(--line); border-bottom: none; }
+  .stat:last-child { border-bottom: 1px solid var(--line); }
+  .benefits-section { padding: 60px 20px; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .bundle-sets-section { padding: 60px 20px; }
+  .bundle-sets-grid { grid-template-columns: 1fr; }
+  .bundle-order-section { padding: 60px 20px; }
+  .bundle-order-info { padding: 40px 24px; }
+  .bundle-price-big { font-size: 52px; }
+  .bundle-order-form { padding: 40px 24px; }
+}
