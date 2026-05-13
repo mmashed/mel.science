@@ -68,8 +68,7 @@
   </div>
   <div class="filter-bar">
     <button class="filter-btn active" data-filter="all">Все</button>
-    <button class="filter-btn" data-filter="Химия Лайт">Химия Лайт</button>
-    <button class="filter-btn" data-filter="Химия Про">Химия Про</button>
+    <button class="filter-btn" data-filter="Химия">Химия</button>
     <button class="filter-btn" data-filter="Физика">Физика</button>
     <button class="filter-btn" data-filter="Медицина">Медицина</button>
   </div>
@@ -95,6 +94,8 @@
         <input type="hidden" name="product" id="order-product-field" value="" />
         <div class="field"><label>Имя</label><input type="text" name="name" placeholder="Как вас зовут" /></div>
         <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" name="contact" id="phone-order" placeholder="+7 900 000-00-00" required autocomplete="tel" /></div>
+        <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" name="city" id="city-order" placeholder="Москва" required /></div>
+        <div class="field"><label>Адрес доставки</label><input type="text" name="address" id="address-order" placeholder="Улица, дом, квартира" /></div>
         <div class="check-field">
           <input type="checkbox" id="agree-privacy-order" required />
           <label for="agree-privacy-order">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -142,6 +143,8 @@
     <div id="cart-form-wrap" style="display:none">
       <div class="field"><label>Имя</label><input type="text" id="cart-name" placeholder="Как вас зовут" /></div>
       <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" id="phone-cart" placeholder="+7 900 000-00-00" autocomplete="tel" /></div>
+      <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" id="cart-city" placeholder="Москва" /></div>
+      <div class="field"><label>Адрес доставки</label><input type="text" id="cart-address" placeholder="Улица, дом, квартира" /></div>
       <div class="check-field">
         <input type="checkbox" id="cart-agree-privacy" />
         <label for="cart-agree-privacy">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -190,30 +193,24 @@
   };
 
   const products = [
-    { name: 'Сахарная Змея',        cat: 'Химия Лайт', stock: 89,  price: 800,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png' },
-    { name: 'Коррозия',             cat: 'Химия Про',  stock: 392, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx' },
-    { name: 'Диффузия',             cat: 'Химия Про',  stock: 143, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2' },
-    { name: 'Ультрафиолет',         cat: 'Физика',     stock: 17,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/physics-luminescence/contents_image_l5j4db' },
-    { name: 'Химия Кислорода',      cat: 'Химия Лайт', stock: 633, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c' },
-    { name: 'Олово 1 опыт',         cat: 'Химия Лайт', stock: 700, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
-    { name: 'Искусственное Море',   cat: 'Химия Про',  stock: 149, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey' },
-    { name: 'Жги',                  cat: 'Химия Про',  stock: 123, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg' },
-    { name: 'Химия Материалов',     cat: 'Химия Про',  stock: 134, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot' },
-    { name: 'Химия Зимы',           cat: 'Химия Про',  stock: 94,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj' },
-    { name: 'Цветная Химия',        cat: 'Химия Про',  stock: 103, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb' },
-    { name: 'Египетская Ночь',      cat: 'Химия Про',  stock: 306, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d' },
-    { name: 'Чистая Вода',          cat: 'Химия Про',  stock: 196, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk' },
-    { name: 'Аптека',               cat: 'Медицина',   stock: 371, price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
-    { name: 'Терапия: базис врача', cat: 'Медицина',   stock: 72,  price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
-    { name: 'Цианотипия',           cat: 'Химия Про',  stock: 14,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt' },
-    { name: 'Стартовый Набор',      cat: 'Химия Про',  stock: 136, price: 1500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1984/v1/mel2_0/chemistry/starter-kit' },
-    { name: 'Физика Света',         cat: 'Физика',     stock: 60,  price: 1000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
-    { name: 'Пушка',                cat: 'Физика',     stock: 15,  price: 1000, img: 'https://avatars.mds.yandex.net/i?id=b29ce759d881afc2369d6e9e74a084d1_l-4055830-images-thumbs&n=13' },
-    { name: 'Олово 2 опыта',        cat: 'Химия Про',  stock: 136, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+    { name: 'Ультрафиолет',         cat: 'Физика',   stock: 17,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/physics-luminescence/contents_image_l5j4db' },
+    { name: 'Физика Света',         cat: 'Физика',   stock: 60,  price: 1000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
+    { name: 'Пушка',                cat: 'Физика',   stock: 15,  price: 1000, img: 'https://avatars.mds.yandex.net/i?id=b29ce759d881afc2369d6e9e74a084d1_l-4055830-images-thumbs&n=13' },
+    { name: 'Аптека',               cat: 'Медицина', stock: 371, price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
+    { name: 'Терапия: базис врача', cat: 'Медицина', stock: 72,  price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
+  ];
+
+  const bundles = [
+    { name: 'Химия ПРО 8 в 1 + стартовый набор',        cat: 'Химия Про', price: 8900,  tag: '// 8+1 наборов',       desc: '8 профессиональных наборов MEL Science плюс стартовый набор — всё в одной посылке. Коррозия, диффузия, море, материалы, зима, цвет, египетская ночь, оловянное дерево.',                  img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778592077/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._14_59_41_l0aelt.png',  url: '/chemistry/bundle-pro-8' },
+    { name: 'Химия ПРО 8 в 1. Огонь + стартовый набор', cat: 'Химия Про', price: 9900,  tag: '// С огнём · 8+1 наборов',             desc: '8 наборов MEL Science с «Жги» — опыты с горением, которые взрывают мозг. Плюс стартовый набор.',                                                                                          img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591929/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._14_07_56_pi9w7j.png',  url: '/chemistry/bundle-fire-8' },
+    { name: 'Химия ПРО 10 в 1 + стартовый набор',       cat: 'Химия Про', price: 10900, tag: '// 10+1 наборов · С огнём',             desc: '10 профессиональных наборов плюс стартовый — программа на полгода. Включает «Жги» и «Чистую Воду», все ключевые темы химии Про.',                                                         img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591828/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_05_31_kpkf5f.png',  url: '/chemistry/bundle-pro-10' },
+    { name: 'Химия Комбо ПРО 12 в 1 + стартовый набор', cat: 'Химия Про', price: 13000, tag: '// 12+1 наборов · Редкие наборы',       desc: '12 профессиональных наборов MEL Science плюс стартовый — максимальное погружение. Включает редкие наборы: Цианотипия, Этюд в ультрафиолете.',                                          img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591696/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_32_06_gmkrzy.png',  url: '/chemistry/bundle-combo-12' },
+    { name: 'Химия Супер Про 14 в 1 + стартовый набор', cat: 'Химия Про', price: 14000, tag: '// 14+1 наборов · Полная коллекция',    desc: '14 профессиональных наборов MEL Science плюс стартовый — полная коллекция химии Про. Всё, что было выпущено.',                                                                              img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778590647/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_39_57_kdkxz1.png',  url: '/chemistry/bundle-super-14' },
   ];
 
   /* ── CART ── */
-  let cart = {};
+  let cart = JSON.parse(localStorage.getItem('sk_cart') || '{}');
+  function saveCart() { localStorage.setItem('sk_cart', JSON.stringify(cart)); }
   function formatPrice(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
   function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
   function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
@@ -221,15 +218,15 @@
   function addToCart(p) {
     if (cart[p.name]) cart[p.name].qty++;
     else cart[p.name] = { name: p.name, img: p.img, price: p.price, qty: 1 };
-    updateCartUI();
+    saveCart(); updateCartUI();
   }
 
-  function removeFromCart(name) { delete cart[name]; updateCartUI(); renderCartModal(); }
+  function removeFromCart(name) { delete cart[name]; saveCart(); updateCartUI(); renderCartModal(); }
   function changeQty(name, delta) {
     if (!cart[name]) return;
     cart[name].qty += delta;
     if (cart[name].qty <= 0) delete cart[name];
-    updateCartUI(); renderCartModal();
+    saveCart(); updateCartUI(); renderCartModal();
   }
 
   function updateCartUI() {
@@ -258,45 +255,85 @@
     return               { cls: 'badge-high',     label: 'Много на складе' };
   }
 
+  function makeBundleCard(b, i) {
+    const inCart = !!cart[b.name];
+    const safeName = b.name.replace(/"/g, '&quot;');
+    const card = document.createElement('div');
+    card.className = 'card reveal';
+    card.style.transitionDelay = `${(i % 12) * 40}ms`;
+    card.innerHTML = `
+      <div class="card-img">
+        <img src="${b.img}" alt="${b.name}" loading="lazy"
+          onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
+        <span class="card-badge badge-high">до 50 единиц</span>
+      </div>
+      <div class="card-body">
+        <div class="card-category">${b.cat}</div>
+        <div class="card-tag">${b.tag}</div>
+        <div class="card-name">${b.name}</div>
+        <div class="card-desc">${b.desc}</div>
+        <div class="card-footer">
+          <div class="card-price">${formatPrice(b.price)}</div>
+          <div class="card-actions">
+            <span class="card-btn" data-action="detail">Подробнее</span>
+            <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[b.name].qty})` : 'В корзину'}</span>
+          </div>
+        </div>
+      </div>`;
+    card.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (btn && btn.dataset.action === 'cart') { addToCart(b); return; }
+      window.location.href = b.url;
+    });
+    return card;
+  }
+
   function renderCatalog(filter) {
     const grid    = document.getElementById('catalog-grid');
     const counter = document.getElementById('catalog-count');
-    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
-    counter.textContent = filter === 'all' ? `// ${products.length} позиций` : `// ${filtered.length} позиций`;
     grid.innerHTML = '';
-    filtered.forEach((p, i) => {
-      const badge   = getBadge(p.stock);
-      const desc    = descriptions[p.name] || '';
-      const inCart  = !!cart[p.name];
-      const safeName = p.name.replace(/"/g, '&quot;');
-      const card    = document.createElement('div');
-      card.className = 'card reveal';
-      card.style.transitionDelay = `${(i % 12) * 40}ms`;
-      card.innerHTML = `
-        <div class="card-img">
-          <img src="${p.img}" alt="${p.name}" loading="lazy"
-            onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
-          <span class="card-badge ${badge.cls}">${badge.label}</span>
-        </div>
-        <div class="card-body">
-          <div class="card-category">${p.cat}</div>
-          <div class="card-name">${p.name}</div>
-          ${desc ? `<div class="card-desc">${desc}</div>` : ''}
-          <div class="card-footer">
-            <div class="card-price">${formatPrice(p.price)}</div>
-            <div class="card-actions">
-              <span class="card-btn" data-action="detail">Подробнее</span>
-              <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
-            </div>
+    let idx = 0;
+    if (filter === 'all' || filter === 'Химия') {
+      bundles.forEach(b => { grid.appendChild(makeBundleCard(b, idx++)); });
+    }
+    if (filter !== 'Химия') {
+      const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+      filtered.forEach(p => {
+        const badge    = getBadge(p.stock);
+        const desc     = descriptions[p.name] || '';
+        const inCart   = !!cart[p.name];
+        const safeName = p.name.replace(/"/g, '&quot;');
+        const card     = document.createElement('div');
+        card.className = 'card reveal';
+        card.style.transitionDelay = `${(idx % 12) * 40}ms`;
+        card.innerHTML = `
+          <div class="card-img">
+            <img src="${p.img}" alt="${p.name}" loading="lazy"
+              onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
+            <span class="card-badge ${badge.cls}">${badge.label}</span>
           </div>
-        </div>`;
-      card.addEventListener('click', e => {
-        const btn = e.target.closest('[data-action]');
-        if (btn && btn.dataset.action === 'cart') { addToCart(p); return; }
-        openDetailModal(p);
+          <div class="card-body">
+            <div class="card-category">${p.cat}</div>
+            <div class="card-name">${p.name}</div>
+            ${desc ? `<div class="card-desc">${desc}</div>` : ''}
+            <div class="card-footer">
+              <div class="card-price">${formatPrice(p.price)}</div>
+              <div class="card-actions">
+                <span class="card-btn" data-action="detail">Подробнее</span>
+                <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
+              </div>
+            </div>
+          </div>`;
+        card.addEventListener('click', e => {
+          const btn = e.target.closest('[data-action]');
+          if (btn && btn.dataset.action === 'cart') { addToCart(p); return; }
+          openDetailModal(p);
+        });
+        grid.appendChild(card);
+        idx++;
       });
-      grid.appendChild(card);
-    });
+    }
+    counter.textContent = `// ${grid.children.length} позиций`;
     observeReveal();
   }
 
@@ -426,6 +463,11 @@
     const digits = phone.value.replace(/\D/g, '');
     if (digits.length < 11) { phone.setCustomValidity('Введите полный номер телефона'); phone.reportValidity(); return; }
     phone.setCustomValidity('');
+    const cityInput = document.getElementById('cart-city');
+    const cityVal   = cityInput ? cityInput.value.trim() : '';
+    if (!cityVal) { if (cityInput) { cityInput.setCustomValidity('Укажите город'); cityInput.reportValidity(); } return; }
+    if (cityInput) cityInput.setCustomValidity('');
+    const addrVal = (document.getElementById('cart-address') || {value:''}).value.trim();
     const privacyChk = document.getElementById('cart-agree-privacy');
     const offerChk   = document.getElementById('cart-agree-offer');
     if (!privacyChk.checked) { privacyChk.setCustomValidity('Необходимо ваше согласие'); privacyChk.reportValidity(); return; }
@@ -440,7 +482,7 @@
       subject: 'Заказ из корзины — Science Kids',
       name: name || 'не указано',
       contact: phone.value,
-      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}`
+      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}\n\nДоставка: ${cityVal}${addrVal ? ', ' + addrVal : ''}`
     };
     const btn = document.getElementById('cart-submit-btn');
     btn.textContent = 'Отправляем...'; btn.disabled = true;
@@ -451,7 +493,7 @@
         document.getElementById('cart-modal-body').style.display = 'none';
         document.getElementById('cart-form-wrap').style.display = 'none';
         document.getElementById('cart-success').classList.add('show');
-        cart = {}; updateCartUI();
+        cart = {}; saveCart(); updateCartUI();
       } else alert('Ошибка при отправке. Попробуйте ещё раз.');
     } catch { alert('Ошибка сети. Проверьте подключение.'); }
     btn.textContent = 'Оформить заказ'; btn.disabled = false;
@@ -495,6 +537,7 @@
   initPhone('phone-hero');
   initPhone('phone-order');
   initPhone('phone-cart');
+  updateCartUI();
 </script>
 </body>
 </html>

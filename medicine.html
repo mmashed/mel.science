@@ -145,6 +145,8 @@
         <input type="hidden" name="product" id="order-product-field" value="" />
         <div class="field"><label>Имя</label><input type="text" name="name" placeholder="Как вас зовут" /></div>
         <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" name="contact" id="phone-order" placeholder="+7 900 000-00-00" required autocomplete="tel" /></div>
+        <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" name="city" id="city-order" placeholder="Москва" required /></div>
+        <div class="field"><label>Адрес доставки</label><input type="text" name="address" id="address-order" placeholder="Улица, дом, квартира" /></div>
         <div class="check-field">
           <input type="checkbox" id="agree-privacy-order" required />
           <label for="agree-privacy-order">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -192,6 +194,8 @@
     <div id="cart-form-wrap" style="display:none">
       <div class="field"><label>Имя</label><input type="text" id="cart-name" placeholder="Как вас зовут" /></div>
       <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" id="phone-cart" placeholder="+7 900 000-00-00" autocomplete="tel" /></div>
+      <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" id="cart-city" placeholder="Москва" /></div>
+      <div class="field"><label>Адрес доставки</label><input type="text" id="cart-address" placeholder="Улица, дом, квартира" /></div>
       <div class="check-field">
         <input type="checkbox" id="cart-agree-privacy" />
         <label for="cart-agree-privacy">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -224,7 +228,8 @@
   ];
 
   /* ── CART ── */
-  let cart = {};
+  let cart = JSON.parse(localStorage.getItem('sk_cart') || '{}');
+  function saveCart() { localStorage.setItem('sk_cart', JSON.stringify(cart)); }
   function formatPrice(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
   function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
   function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
@@ -232,15 +237,15 @@
   function addToCart(p) {
     if (cart[p.name]) cart[p.name].qty++;
     else cart[p.name] = { name: p.name, img: p.img, price: p.price, qty: 1 };
-    updateCartUI();
+    saveCart(); updateCartUI();
   }
 
-  function removeFromCart(name) { delete cart[name]; updateCartUI(); renderCartModal(); }
+  function removeFromCart(name) { delete cart[name]; saveCart(); updateCartUI(); renderCartModal(); }
   function changeQty(name, delta) {
     if (!cart[name]) return;
     cart[name].qty += delta;
     if (cart[name].qty <= 0) delete cart[name];
-    updateCartUI(); renderCartModal();
+    saveCart(); updateCartUI(); renderCartModal();
   }
 
   function updateCartUI() {
@@ -428,6 +433,11 @@
     const digits = phone.value.replace(/\D/g, '');
     if (digits.length < 11) { phone.setCustomValidity('Введите полный номер телефона'); phone.reportValidity(); return; }
     phone.setCustomValidity('');
+    const cityInput = document.getElementById('cart-city');
+    const cityVal   = cityInput ? cityInput.value.trim() : '';
+    if (!cityVal) { if (cityInput) { cityInput.setCustomValidity('Укажите город'); cityInput.reportValidity(); } return; }
+    if (cityInput) cityInput.setCustomValidity('');
+    const addrVal = (document.getElementById('cart-address') || {value:''}).value.trim();
     const privacyChk = document.getElementById('cart-agree-privacy');
     const offerChk   = document.getElementById('cart-agree-offer');
     if (!privacyChk.checked) { privacyChk.setCustomValidity('Необходимо ваше согласие'); privacyChk.reportValidity(); return; }
@@ -442,7 +452,7 @@
       subject: 'Заказ из корзины — Science Kids',
       name: name || 'не указано',
       contact: phone.value,
-      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}`
+      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}\n\nДоставка: ${cityVal}${addrVal ? ', ' + addrVal : ''}`
     };
     const btn = document.getElementById('cart-submit-btn');
     btn.textContent = 'Отправляем...'; btn.disabled = true;
@@ -453,7 +463,7 @@
         document.getElementById('cart-modal-body').style.display = 'none';
         document.getElementById('cart-form-wrap').style.display = 'none';
         document.getElementById('cart-success').classList.add('show');
-        cart = {}; updateCartUI();
+        cart = {}; saveCart(); updateCartUI();
       } else alert('Ошибка при отправке. Попробуйте ещё раз.');
     } catch { alert('Ошибка сети. Проверьте подключение.'); }
     btn.textContent = 'Оформить заказ'; btn.disabled = false;
@@ -498,6 +508,7 @@
   initPhone('phone-order');
   initPhone('phone-cart');
   observeReveal();
+  updateCartUI();
 </script>
 </body>
 </html>
