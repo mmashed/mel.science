@@ -133,13 +133,8 @@
 
 <section class="catalog-section" id="catalog">
   <div class="section-header">
-    <h2 class="section-title">Химические наборы</h2>
+    <h2 class="section-title">Химические комплекты</h2>
     <span class="section-count" id="catalog-count"></span>
-  </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" data-filter="all">Все химические</button>
-    <button class="filter-btn" data-filter="Химия Лайт">Химия Лайт</button>
-    <button class="filter-btn" data-filter="Химия Про">Химия Про</button>
   </div>
   <div class="catalog-grid" id="catalog-grid"></div>
 </section>
@@ -249,22 +244,12 @@
     'Олово 2 опыта':        'Вырастите дендритное оловянное дерево с помощью электричества и превратите цинковый шарик в ёжика — красивые опыты о реактивности металлов.',
   };
 
-  const products = [
-    { name: 'Сахарная Змея',        cat: 'Химия Лайт', stock: 89,  price: 800,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png' },
-    { name: 'Коррозия',             cat: 'Химия Про',  stock: 392, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx' },
-    { name: 'Диффузия',             cat: 'Химия Про',  stock: 143, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2' },
-    { name: 'Химия Кислорода',      cat: 'Химия Лайт', stock: 633, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c' },
-    { name: 'Олово 1 опыт',         cat: 'Химия Лайт', stock: 700, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
-    { name: 'Искусственное Море',   cat: 'Химия Про',  stock: 149, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey' },
-    { name: 'Жги',                  cat: 'Химия Про',  stock: 123, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg' },
-    { name: 'Химия Материалов',     cat: 'Химия Про',  stock: 134, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot' },
-    { name: 'Химия Зимы',           cat: 'Химия Про',  stock: 94,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj' },
-    { name: 'Цветная Химия',        cat: 'Химия Про',  stock: 103, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb' },
-    { name: 'Египетская Ночь',      cat: 'Химия Про',  stock: 306, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d' },
-    { name: 'Чистая Вода',          cat: 'Химия Про',  stock: 196, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk' },
-    { name: 'Цианотипия',           cat: 'Химия Про',  stock: 14,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt' },
-    { name: 'Стартовый Набор',      cat: 'Химия Про',  stock: 136, price: 1500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1984/v1/mel2_0/chemistry/starter-kit' },
-    { name: 'Олово 2 опыта',        cat: 'Химия Про',  stock: 136, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+  const bundles = [
+    { name: 'Химия ПРО 8 в 1 + стартовый набор',        cat: 'Химия Про', price: 8900,  tag: '// 9 наборов · Для детей 10+',       desc: '8 профессиональных наборов MEL Science плюс стартовый набор — всё в одной посылке. Коррозия, диффузия, море, материалы, зима, цвет, египетская ночь, оловянное дерево.',                  img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778592077/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._14_59_41_l0aelt.png',  url: '/chemistry/bundle-pro-8' },
+    { name: 'Химия ПРО 8 в 1. Огонь + стартовый набор', cat: 'Химия Про', price: 9900,  tag: '// С огнём · 9 наборов',             desc: '8 наборов MEL Science с «Жги» — опыты с горением, которые взрывают мозг. Плюс стартовый набор.',                                                                                          img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591929/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._14_07_56_pi9w7j.png',  url: '/chemistry/bundle-fire-8' },
+    { name: 'Химия ПРО 10 в 1 + стартовый набор',       cat: 'Химия Про', price: 10900, tag: '// 11 наборов · С огнём',             desc: '10 профессиональных наборов плюс стартовый — программа на полгода. Включает «Жги» и «Чистую Воду», все ключевые темы химии Про.',                                                         img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591828/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_05_31_kpkf5f.png',  url: '/chemistry/bundle-pro-10' },
+    { name: 'Химия Комбо ПРО 12 в 1 + стартовый набор', cat: 'Химия Про', price: 13000, tag: '// 13 наборов · Редкие наборы',       desc: '12 профессиональных наборов MEL Science плюс стартовый — максимальное погружение. Включает редкие наборы: Цианотипия, Этюд в ультрафиолете.',                                          img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591696/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_32_06_gmkrzy.png',  url: '/chemistry/bundle-combo-12' },
+    { name: 'Химия Супер Про 14 в 1 + стартовый набор', cat: 'Химия Про', price: 14000, tag: '// 15 наборов · Полная коллекция',    desc: '14 профессиональных наборов MEL Science плюс стартовый — полная коллекция химии Про. Всё, что было выпущено.',                                                                              img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778590647/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_39_57_kdkxz1.png',  url: '/chemistry/bundle-super-14' },
   ];
 
   /* ── CART ── */
@@ -313,57 +298,45 @@
     return               { cls: 'badge-high',     label: 'Много на складе' };
   }
 
-  function renderCatalog(filter) {
+  function renderCatalog() {
     const grid    = document.getElementById('catalog-grid');
     const counter = document.getElementById('catalog-count');
-    const filtered = filter === 'all'
-      ? products.filter(p => p.cat === 'Химия Лайт' || p.cat === 'Химия Про')
-      : products.filter(p => p.cat === filter);
-    counter.textContent = `// ${filtered.length} позиций`;
     grid.innerHTML = '';
-    filtered.forEach((p, i) => {
-      const badge   = getBadge(p.stock);
-      const desc    = descriptions[p.name] || '';
-      const inCart  = !!cart[p.name];
-      const safeName = p.name.replace(/"/g, '&quot;');
-      const card    = document.createElement('div');
+    bundles.forEach((b, i) => {
+      const inCart   = !!cart[b.name];
+      const safeName = b.name.replace(/"/g, '&quot;');
+      const card     = document.createElement('div');
       card.className = 'card reveal';
       card.style.transitionDelay = `${(i % 12) * 40}ms`;
       card.innerHTML = `
         <div class="card-img">
-          <img src="${p.img}" alt="${p.name}" loading="lazy"
+          <img src="${b.img}" alt="${b.name}" loading="lazy"
             onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
-          <span class="card-badge ${badge.cls}">${badge.label}</span>
+          <span class="card-badge badge-high">до 50 единиц</span>
         </div>
         <div class="card-body">
-          <div class="card-category">${p.cat}</div>
-          <div class="card-name">${p.name}</div>
-          ${desc ? `<div class="card-desc">${desc}</div>` : ''}
+          <div class="card-category">${b.cat}</div>
+          <div class="card-tag">${b.tag}</div>
+          <div class="card-name">${b.name}</div>
+          <div class="card-desc">${b.desc}</div>
           <div class="card-footer">
-            <div class="card-price">${formatPrice(p.price)}</div>
+            <div class="card-price">${formatPrice(b.price)}</div>
             <div class="card-actions">
               <span class="card-btn" data-action="detail">Подробнее</span>
-              <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
+              <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[b.name].qty})` : 'В корзину'}</span>
             </div>
           </div>
         </div>`;
       card.addEventListener('click', e => {
         const btn = e.target.closest('[data-action]');
-        if (btn && btn.dataset.action === 'cart') { addToCart(p); return; }
-        openDetailModal(p);
+        if (btn && btn.dataset.action === 'cart') { addToCart(b); return; }
+        window.location.href = b.url;
       });
       grid.appendChild(card);
     });
+    counter.textContent = `// ${bundles.length} комплектов`;
     observeReveal();
   }
-
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderCatalog(btn.dataset.filter);
-    });
-  });
 
   /* ── PHONE MASK ── */
   function initPhone(id) {
@@ -548,7 +521,7 @@
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeOrderModal(); closeDetailModal(); closeCartModal(); } });
 
-  renderCatalog('all');
+  renderCatalog();
   initPhone('phone-hero');
   initPhone('phone-order');
   initPhone('phone-cart');
