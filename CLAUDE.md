@@ -8,61 +8,62 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development
 
-Сборка не требуется. Открывать файлы напрямую в браузере или через любой статический сервер:
+Сборка не требуется. Открывать через любой статический сервер:
 
 ```bash
-# Python
 python -m http.server 8080 --directory mel.science
-
-# Node
+# или
 npx serve mel.science
 ```
 
 Тестирование — ручное в браузере. Автоматизированных тестов нет.
 
+## Deploy
+
+Деплой через GitHub Actions → FTP на Beget (`.github/workflows/deploy.yml`). Каждый `push` в `main` автоматически обновляет сайт. Секреты: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+
+Clean URLs на хостинге обеспечивает `.htaccess` (Apache/Beget). На Vercel — `vercel.json`.
+
 ## Architecture
 
 ```
 mel.science/
-├── index.html               # Главная: каталог товаров, вся логика корзины/модалок
-├── about-melscience.html    # Страница о бренде (3D-атом на Three.js)
+├── index.html               # Главная: каталог всех товаров, корзина, модалки
+├── chemistry.html           # Каталог химии: 5 карточек бандлов
+├── physics.html             # Каталог физики
+├── medicine.html            # Каталог медицины
+├── old-catalog.html         # Все наборы по отдельности (noindex, для внутреннего use)
+├── about-melscience.html    # О бренде (3D-атом на Three.js)
 ├── 404.html                 # Интерактивная 404 (пазл на canvas)
-├── vercel.json              # cleanUrls: true — убирает .html в продакшене
+├── chemistry/               # Страницы бандлов (bundle-pro-8, bundle-fire-8, bundle-pro-10, bundle-combo-12, bundle-super-14)
 ├── styles/
-│   ├── global.css           # Переменные, reset, nav, footer, .catalog-section, reveal
-│   ├── catalog.css          # Hero, карточки, фильтры, модалки, корзина (index.html)
-│   ├── about.css            # Стили страницы about-melscience.html
-│   └── 404.css              # Стили пазла 404.html
+│   ├── global.css           # Переменные, reset, nav, footer, .catalog-section, .reveal
+│   ├── catalog.css          # Hero, карточки, фильтры, модалки, корзина
+│   ├── bundle.css           # Стили страниц бандлов (hero, benefits, sets-grid, other-bundles)
+│   ├── chemistry.css        # Стили chemistry.html
+│   ├── physics.css / medicine.css / about.css / legal.css / 404.css
 ├── components/
 │   └── layout.js            # IIFE: вставляет nav в #site-header, footer в #site-footer
-└── assets/icons/            # SVG/PNG фавиконы
+└── assets/icons/
 ```
 
-**Новая страница:** создать `pagename.html` + `styles/pagename.css`, подключить оба файла:
-```html
-<link rel="stylesheet" href="styles/global.css" />
-<link rel="stylesheet" href="styles/pagename.css" />
-```
-Пути — относительные (не root-relative), чтобы работало и при открытии через `file://`.
+Страницы бандлов живут в `chemistry/` и подключают CSS относительными путями: `../styles/global.css`, `../styles/bundle.css`, `../components/layout.js`.
 
 ## CSS-архитектура
 
-`global.css` содержит всё, что используется на нескольких страницах: переменные, nav, footer, `.catalog-section` / `.section-header` / `.section-title` / `.section-count`, `.hero-eyebrow`, `.reveal`. Страничные CSS содержат только то, что уникально для этой страницы, включая свои `@media`-блоки.
+`global.css` — всё переиспользуемое: переменные, nav, footer, `.catalog-section` / `.section-header` / `.section-title` / `.section-count`, `.hero-eyebrow`, `.reveal`. Страничные CSS содержат только уникальное для этой страницы.
 
 ## Design System
 
-**Цвета (CSS-переменные):**
-- `--bg / --bg2 / --bg3`: `#0a0a0a / #111 / #181818` — фоны
-- `--accent`: `#c8ff00` — единственный акцентный цвет (кнопки, цены, выделения)
-- `--line`: `#2a2a2a` — все рамки и разделители
+**Цвета:**
+- `--bg / --bg2 / --bg3`: `#0a0a0a / #111 / #181818`
+- `--accent`: `#c8ff00` — кнопки, цены, выделения
+- `--line`: `#2a2a2a` — рамки и разделители
 - `--text / --text-muted / --text-dim`: `#f0f0f0 / #666 / #999`
 
-**Шрифты** (подключены через Google Fonts):
-- `Bebas Neue` — заголовки и дисплейные элементы
-- `Tektur` — основной текст
-- `IBM Plex Mono` — метки, кнопки, монопространственные подписи (всегда `uppercase`)
+**Шрифты:** `Bebas Neue` — заголовки; `Tektur` — основной текст; `IBM Plex Mono` — метки/кнопки (всегда `uppercase`).
 
-**Правила стиля:** border-radius нигде не используется. Переходы: `.15s` для цвета/рамки, `.4s ease` для изображений.
+`border-radius` нигде не используется. Переходы: `.15s` для цвета/рамки, `.4s ease` для изображений.
 
 ## Key Patterns
 
@@ -76,6 +77,21 @@ mel.science/
 </section>
 ```
 
+**Корзина (localStorage):** Корзина общая для всех страниц, хранится в `localStorage` под ключом `sk_cart`.
+```javascript
+let cart = JSON.parse(localStorage.getItem('sk_cart') || '{}');
+function saveCart() { localStorage.setItem('sk_cart', JSON.stringify(cart)); }
+
+function addToCart(p) {
+  if (cart[p.name]) cart[p.name].qty++;
+  else cart[p.name] = { name: p.name, img: p.img, price: p.price, qty: 1 };
+  saveCart(); updateCartUI();
+}
+function removeFromCart(name) { delete cart[name]; saveCart(); updateCartUI(); renderCartModal(); }
+// На каждой странице в конце init-блока обязательно:
+updateCartUI();
+```
+
 **Форма с Web3Forms** (ключ: `b19e7dd9-9b38-4009-a408-10fe3764d836`):
 ```html
 <div class="form-box">
@@ -83,13 +99,14 @@ mel.science/
     <form id="FORM-id">
       <input type="hidden" name="access_key" value="b19e7dd9-9b38-4009-a408-10fe3764d836" />
       <input type="hidden" name="subject" value="Тема" />
-      <!-- поля .field > label + input -->
       <button type="submit" class="btn-submit">Отправить</button>
     </form>
   </div>
-  <div class="form-success" id="FORM-success"><!-- успех --></div>
+  <div class="form-success" id="FORM-success"></div>
 </div>
 ```
+
+Форма заказа всегда включает поля: Имя, Телефон (`initPhone('id')`), Город (обязательно), Адрес доставки (необязательно). Город валидируется вручную в `submitCart()` перед отправкой.
 
 **Модалка:**
 ```html
@@ -99,12 +116,12 @@ mel.science/
   </div>
 </div>
 ```
-JS: добавить/убрать класс `open` на overlay + переключить `document.body.style.overflow = 'hidden'`.
+JS: добавить/убрать класс `open` на overlay + `document.body.style.overflow = 'hidden'`.
 
-**Анимация появления:** добавить класс `reveal` на элементы, вызвать `observeReveal()` после рендера.
+**Анимация:** класс `reveal` на элементы + вызов `observeReveal()` после рендера.
 
-**Маска телефона:** `initPhone('input-id')` — форматирует `+7 XXX XXX-XX-XX`, валидирует 11 цифр.
+**Маска телефона:** `initPhone('input-id')` — `+7 XXX XXX-XX-XX`, валидация 11 цифр.
 
 ## Data
 
-Все товары захардкожены в массиве `products` в `index.html`. Изображения хранятся на Cloudinary CDN. `reference/mel-science-page.md` — маркетинговые тексты оригинального сайта MEL Science.
+Товары захардкожены: каталожные страницы — в массиве `products`, бандлы — непосредственно в HTML. Изображения на Cloudinary CDN. `reference/mel-science-page.md` — маркетинговые тексты MEL Science.
