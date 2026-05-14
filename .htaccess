@@ -1,13 +1,14 @@
 RewriteEngine On
+DirectorySlash Off
+
+# Serve .html files without extension (runs before trailing slash redirect)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
 
 # Redirect trailing slash to no-slash
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)/$ /$1 [R=301,L]
-
-# Serve .html files without extension
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html [L]
 
 # 404 page
 ErrorDocument 404 /404.html
