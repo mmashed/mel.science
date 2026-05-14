@@ -1,4 +1,3 @@
-Options -Indexes
 RewriteEngine On
 
 # Redirect trailing slash to no-slash (unless directory)
