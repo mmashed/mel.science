@@ -103,17 +103,10 @@ if ($state === 'COMPLETE') {
     ));
     @file_get_contents('https://api.web3forms.com/submit', false, $ctx);
 
-    // Send to Google Sheets
+    // Google Sheets: update status of existing row to "Оплачен"
     if (!empty($sheets_url)) {
         $sheets_payload = json_encode(array(
-            'type'     => 'Заказ',
-            'name'     => $snap_name,
-            'phone'    => $snap_phone,
-            'email'    => $snap_email,
-            'city'     => $snap_city,
-            'address'  => $snap_address,
-            'items'    => $items_str,
-            'amount'   => $amount . ' руб.',
+            'action'   => 'paid',
             'order_id' => $order_id,
         ), JSON_UNESCAPED_UNICODE);
         $sheets_ctx = stream_context_create(array('http' => array(

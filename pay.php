@@ -105,6 +105,48 @@ $order_snapshot = array(
 );
 file_put_contents($orders_dir . '/' . $order_id . '.json', json_encode($order_snapshot, JSON_UNESCAPED_UNICODE));
 
+// --- Notify on checkout start ---
+$items_label = array();
+foreach ($items as $it) {
+    $items_label[] = (isset($it['name']) ? $it['name'] : 'Товар') . ' x' . (isset($it['qty']) ? $it['qty'] : 1);
+}
+$items_str_pay = implode(', ', $items_label);
+
+// Web3Forms: new order pending
+$wf_pending = json_encode(array(
+    'access_key' => $w3f_key,
+    'subject'    => "Новый заказ (ожидает оплаты) — {$order_id}",
+    'name'       => $name ?: 'Без имени',
+    'message'    => "Заказ: {$order_id}\nСумма: {$amount} руб.\nТовары: {$items_str_pay}\nТелефон: {$contact}\nEmail: {$email}\nГород: {$city}\nАдрес: {$address}",
+), JSON_UNESCAPED_UNICODE);
+$wf_ctx = stream_context_create(array('http' => array(
+    'method' => 'POST', 'header' => "Content-Type: application/json\r\nAccept: application/json\r\n",
+    'content' => $wf_pending, 'timeout' => 3, 'ignore_errors' => true,
+)));
+@file_get_contents('https://api.web3forms.com/submit', false, $wf_ctx);
+
+// Google Sheets: insert row with status "Ожидает оплаты"
+if (!empty($sheets_url)) {
+    $sheets_pending = json_encode(array(
+        'action'   => 'new_row',
+        'type'     => 'Заказ',
+        'name'     => $name,
+        'phone'    => $contact,
+        'email'    => $email,
+        'city'     => $city,
+        'address'  => $address,
+        'items'    => $items_str_pay,
+        'amount'   => $amount . ' руб.',
+        'order_id' => $order_id,
+        'status'   => 'Ожидает оплаты',
+    ), JSON_UNESCAPED_UNICODE);
+    $sh_ctx = stream_context_create(array('http' => array(
+        'method' => 'POST', 'header' => "Content-Type: application/json\r\n",
+        'content' => $sheets_pending, 'timeout' => 3, 'ignore_errors' => true,
+    )));
+    @file_get_contents($sheets_url, false, $sh_ctx);
+}
+
 $params = array(
     'merchant'            => $merchant_id,
     'amount'              => $amount,
