@@ -107,9 +107,7 @@ if ($email)     { $params['receipt_contact'] = $email; }
 if ($test_mode) { $params['testing']         = '1'; }
 
 // --- Signature ---
-// callback_url is a service field: Modulbank excludes it from signature computation
 $sig_params = array_filter($params, function($v) { return $v !== '' && $v !== null; });
-unset($sig_params['callback_url']);
 ksort($sig_params, SORT_STRING);
 $parts = array();
 foreach ($sig_params as $k => $v) {

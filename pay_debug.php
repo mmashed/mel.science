@@ -73,7 +73,6 @@ if ($email)     { $params['receipt_contact'] = $email; }
 if ($test_mode) { $params['testing']         = '1'; }
 
 $sig_params = array_filter($params, function($v) { return $v !== '' && $v !== null; });
-unset($sig_params['callback_url']);
 ksort($sig_params, SORT_STRING);
 
 echo "=== PARAMS INCLUDED IN SIGNATURE ===\n";
