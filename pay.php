@@ -112,19 +112,6 @@ foreach ($items as $it) {
 }
 $items_str_pay = implode(', ', $items_label);
 
-// Web3Forms: new order pending
-$wf_pending = json_encode(array(
-    'access_key' => $w3f_key,
-    'subject'    => "Новый заказ (ожидает оплаты) — {$order_id}",
-    'name'       => $name ?: 'Без имени',
-    'message'    => "Заказ: {$order_id}\nСумма: {$amount} руб.\nТовары: {$items_str_pay}\nТелефон: {$contact}\nEmail: {$email}\nГород: {$city}\nАдрес: {$address}",
-), JSON_UNESCAPED_UNICODE);
-$wf_ctx = stream_context_create(array('http' => array(
-    'method' => 'POST', 'header' => "Content-Type: application/json\r\nAccept: application/json\r\n",
-    'content' => $wf_pending, 'timeout' => 3, 'ignore_errors' => true,
-)));
-@file_get_contents('https://api.web3forms.com/submit', false, $wf_ctx);
-
 // Google Sheets: insert row with status "Ожидает оплаты"
 if (!empty($sheets_url)) {
     $sheets_pending = json_encode(array(
