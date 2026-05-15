@@ -16,6 +16,14 @@ function show_error($msg) {
     exit;
 }
 
+function post_val($key, $default) {
+    return isset($_POST[$key]) ? $_POST[$key] : $default;
+}
+
+function item_val($item, $key, $default) {
+    return isset($item[$key]) ? $item[$key] : $default;
+}
+
 // --- Config ---
 $config = __DIR__ . '/config.php';
 if (!file_exists($config)) {
@@ -29,12 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // --- Input ---
-$cart_raw = trim($_POST['cart'] ?? '');
-$name     = mb_substr(trim($_POST['name']    ?? ''), 0, 100);
-$contact  = mb_substr(trim($_POST['contact'] ?? ''), 0, 15);
-$email    = mb_substr(trim($_POST['email']   ?? ''), 0, 64);
-$city     = mb_substr(trim($_POST['city']    ?? ''), 0, 100);
-$address  = mb_substr(trim($_POST['address'] ?? ''), 0, 200);
+$cart_raw = trim(post_val('cart', ''));
+$name     = mb_substr(trim(post_val('name',    '')), 0, 100);
+$contact  = mb_substr(trim(post_val('contact', '')), 0, 15);
+$email    = mb_substr(trim(post_val('email',   '')), 0, 64);
+$city     = mb_substr(trim(post_val('city',    '')), 0, 100);
+$address  = mb_substr(trim(post_val('address', '')), 0, 200);
 
 if (!$cart_raw || !$contact || !$city) {
     show_error('Не заполнены обязательные поля: телефон и город.');
@@ -48,8 +56,8 @@ if (!is_array($items) || count($items) === 0) {
 // --- Total ---
 $total = 0.0;
 foreach ($items as $item) {
-    $price = max(0.0, (float)($item['price'] ?? 0));
-    $qty   = max(1,   (int)  ($item['qty']   ?? 1));
+    $price = max(0.0, (float)item_val($item, 'price', 0));
+    $qty   = max(1,   (int)item_val($item,   'qty',   1));
     $total += $price * $qty;
 }
 if ($total <= 0) {
@@ -58,19 +66,19 @@ if ($total <= 0) {
 $amount = number_format($total, 2, '.', '');
 
 // --- Receipt items ---
-$receipt = [];
+$receipt = array();
 foreach ($items as $item) {
-    $price = max(0.0, (float)($item['price'] ?? 0));
-    $qty   = max(1,   (int)  ($item['qty']   ?? 1));
-    $receipt[] = [
-        'name'           => mb_substr((string)($item['name'] ?? 'Товар'), 0, 128),
+    $price = max(0.0, (float)item_val($item, 'price', 0));
+    $qty   = max(1,   (int)item_val($item,   'qty',   1));
+    $receipt[] = array(
+        'name'           => mb_substr((string)item_val($item, 'name', 'Товар'), 0, 128),
         'quantity'       => $qty,
         'price'          => round($price, 2),
         'sno'            => $sno,
         'vat'            => 'none',
         'payment_method' => 'full_payment',
         'payment_object' => 'commodity',
-    ];
+    );
 }
 $receipt_json = json_encode($receipt, JSON_UNESCAPED_UNICODE);
 
@@ -80,7 +88,7 @@ $salt      = bin2hex(openssl_random_pseudo_bytes(4));
 $ts        = (string)time();
 $key       = $test_mode ? $test_secret_key : $secret_key;
 
-$params = [
+$params = array(
     'merchant'            => $merchant_id,
     'amount'              => $amount,
     'order_id'            => $order_id,
@@ -92,17 +100,17 @@ $params = [
     'unix_timestamp'      => $ts,
     'salt'                => $salt,
     'client_phone'        => $contact,
-];
+);
 
-if ($name)  $params['client_name']     = $name;
-if ($email) $params['client_email']    = $email;
-if ($email) $params['receipt_contact'] = $email;
-if ($test_mode) $params['testing']     = '1';
+if ($name)      { $params['client_name']     = $name; }
+if ($email)     { $params['client_email']    = $email; }
+if ($email)     { $params['receipt_contact'] = $email; }
+if ($test_mode) { $params['testing']         = '1'; }
 
 // --- Signature ---
 $sig_params = array_filter($params, function($v) { return $v !== '' && $v !== null; });
 ksort($sig_params);
-$parts = [];
+$parts = array();
 foreach ($sig_params as $k => $v) {
     $parts[] = $k . '=' . base64_encode((string)$v);
 }
@@ -137,7 +145,7 @@ header('Content-Type: text/html; charset=utf-8');
     <p>Переходим на страницу оплаты&hellip;</p>
     <form id="pay-form" method="POST" action="https://pay.modulbank.ru/pay">
 <?php foreach ($params as $k => $v): ?>
-      <input type="hidden" name="<?= htmlspecialchars($k, ENT_QUOTES) ?>" value="<?= htmlspecialchars((string)$v, ENT_QUOTES) ?>" />
+      <input type="hidden" name="<?php echo htmlspecialchars($k, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars((string)$v, ENT_QUOTES); ?>" />
 <?php endforeach; ?>
     </form>
   </div>
