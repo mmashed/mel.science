@@ -47,20 +47,43 @@ if (!hash_equals($expected_sig, $received_sig)) {
 $state = isset($data['state']) ? $data['state'] : '';
 
 if ($state === 'COMPLETE') {
-    $order_id = isset($data['order_id'])      ? $data['order_id']      : '';
-    $amount   = isset($data['amount'])        ? $data['amount']        : '';
-    $currency = isset($data['currency'])      ? $data['currency']      : 'RUB';
-    $tx_id    = isset($data['transaction_id'])? $data['transaction_id']: '';
-    $method   = isset($data['payment_method'])? $data['payment_method']: '';
-    $phone    = isset($data['client_phone'])  ? $data['client_phone']  : '';
-    $email    = isset($data['client_email'])  ? $data['client_email']  : '';
+    $order_id = isset($data['order_id'])       ? $data['order_id']       : '';
+    $amount   = isset($data['amount'])         ? $data['amount']         : '';
+    $currency = isset($data['currency'])       ? $data['currency']       : 'RUB';
+    $tx_id    = isset($data['transaction_id']) ? $data['transaction_id'] : '';
+    $method   = isset($data['payment_method']) ? $data['payment_method'] : '';
+    $phone    = isset($data['client_phone'])   ? $data['client_phone']   : '';
+    $email    = isset($data['client_email'])   ? $data['client_email']   : '';
+
+    // Read saved order snapshot (city, address, items saved by pay.php)
+    $snap = array();
+    $order_file = __DIR__ . '/orders/' . $order_id . '.json';
+    if (file_exists($order_file)) {
+        $snap = json_decode(file_get_contents($order_file), true) ?: array();
+        unlink($order_file);
+    }
+    $snap_name    = isset($snap['name'])    ? $snap['name']    : (isset($data['client_name']) ? $data['client_name'] : '');
+    $snap_phone   = isset($snap['phone'])   ? $snap['phone']   : $phone;
+    $snap_email   = isset($snap['email'])   ? $snap['email']   : $email;
+    $snap_city    = isset($snap['city'])    ? $snap['city']    : '';
+    $snap_address = isset($snap['address']) ? $snap['address'] : '';
+    $snap_items   = isset($snap['items'])   && is_array($snap['items']) ? $snap['items'] : array();
+    $items_parts  = array();
+    foreach ($snap_items as $it) {
+        $items_parts[] = (isset($it['name']) ? $it['name'] : 'Товар') . ' x' . (isset($it['qty']) ? $it['qty'] : 1);
+    }
+    $items_str = implode(', ', $items_parts);
 
     $msg = "Оплачен заказ: {$order_id}\n"
          . "Сумма: {$amount} {$currency}\n"
+         . "Имя: {$snap_name}\n"
+         . "Телефон: {$snap_phone}\n"
+         . ($snap_email   ? "Email: {$snap_email}\n"     : '')
+         . ($snap_city    ? "Город: {$snap_city}\n"      : '')
+         . ($snap_address ? "Адрес: {$snap_address}\n"   : '')
+         . ($items_str    ? "Товары: {$items_str}\n"     : '')
          . "Транзакция: {$tx_id}\n"
-         . "Метод оплаты: {$method}\n"
-         . ($phone ? "Телефон: {$phone}\n" : '')
-         . ($email ? "Email: {$email}\n"   : '');
+         . "Метод: {$method}\n";
 
     $payload = json_encode(array(
         'access_key' => $w3f_key,
@@ -82,23 +105,16 @@ if ($state === 'COMPLETE') {
 
     // Send to Google Sheets
     if (!empty($sheets_url)) {
-        $receipt_arr = json_decode(isset($data['receipt_items']) ? $data['receipt_items'] : '[]', true);
-        $items_str = '';
-        if (is_array($receipt_arr)) {
-            $parts = array();
-            foreach ($receipt_arr as $it) {
-                $parts[] = (isset($it['name']) ? $it['name'] : 'Товар') . ' x' . (isset($it['quantity']) ? $it['quantity'] : 1);
-            }
-            $items_str = implode(', ', $parts);
-        }
         $sheets_payload = json_encode(array(
             'type'     => 'Заказ',
-            'name'     => isset($data['client_name'])  ? $data['client_name']  : '',
-            'phone'    => $phone,
-            'email'    => $email,
+            'name'     => $snap_name,
+            'phone'    => $snap_phone,
+            'email'    => $snap_email,
+            'city'     => $snap_city,
+            'address'  => $snap_address,
+            'items'    => $items_str,
             'amount'   => $amount . ' руб.',
             'order_id' => $order_id,
-            'items'    => $items_str,
         ), JSON_UNESCAPED_UNICODE);
         $sheets_ctx = stream_context_create(array('http' => array(
             'method'        => 'POST',

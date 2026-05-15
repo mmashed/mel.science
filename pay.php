@@ -88,6 +88,23 @@ $salt      = bin2hex(openssl_random_pseudo_bytes(4));
 $ts        = (string)time();
 $key       = $test_mode ? $test_secret_key : $secret_key;
 
+// --- Save order data for callback ---
+$orders_dir = __DIR__ . '/orders';
+if (!is_dir($orders_dir)) {
+    mkdir($orders_dir, 0755, true);
+    file_put_contents($orders_dir . '/.htaccess', "Deny from all\n");
+}
+$order_snapshot = array(
+    'name'    => $name,
+    'phone'   => $contact,
+    'email'   => $email,
+    'city'    => $city,
+    'address' => $address,
+    'items'   => $items,
+    'amount'  => $amount,
+);
+file_put_contents($orders_dir . '/' . $order_id . '.json', json_encode($order_snapshot, JSON_UNESCAPED_UNICODE));
+
 $params = array(
     'merchant'            => $merchant_id,
     'amount'              => $amount,
