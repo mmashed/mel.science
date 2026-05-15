@@ -23,5 +23,5 @@ $sno = 'usn_income';
 $w3f_key = 'b19e7dd9-9b38-4009-a408-10fe3764d836';
 
 // URL Google Apps Script для записи заявок в таблицу:
-$sheets_url = 'https://script.google.com/macros/s/AKfycbySyEIHNP6Lp264MvtlHK7P3TuuSL-4nHaH74H9lEZnR-7xTMGl1iJ_SJqbHjE3CUJT/exec';
+$sheets_url = 'https://script.google.com/macros/s/AKfycbxOvJskB0s3kFSaM2bQbpDNOZ_ODauHX2730JauNPCFOoCKphBdlFdXqUNCkCEig52N/exec';
 ?>
