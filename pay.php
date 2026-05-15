@@ -99,7 +99,7 @@ if ($email) $params['receipt_contact'] = $email;
 if ($test_mode) $params['testing']     = '1';
 
 // --- Signature ---
-$sig_params = array_filter($params, static fn($v) => $v !== '' && $v !== null);
+$sig_params = array_filter($params, function($v) { return $v !== '' && $v !== null; });
 ksort($sig_params);
 $parts = [];
 foreach ($sig_params as $k => $v) {

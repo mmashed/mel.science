@@ -32,7 +32,7 @@ $is_test = isset($data['testing']) && (string)$data['testing'] === '1';
 $key     = $is_test ? $test_secret_key : $secret_key;
 
 // Recompute signature from callback fields
-$sig_params = array_filter($data, static fn($v) => $v !== '' && $v !== null);
+$sig_params = array_filter($data, function($v) { return $v !== '' && $v !== null; });
 ksort($sig_params);
 $parts = [];
 foreach ($sig_params as $k => $v) {
