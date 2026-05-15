@@ -79,6 +79,36 @@ if ($state === 'COMPLETE') {
         ),
     ));
     @file_get_contents('https://api.web3forms.com/submit', false, $ctx);
+
+    // Send to Google Sheets
+    if (!empty($sheets_url)) {
+        $receipt_arr = json_decode(isset($data['receipt_items']) ? $data['receipt_items'] : '[]', true);
+        $items_str = '';
+        if (is_array($receipt_arr)) {
+            $parts = array();
+            foreach ($receipt_arr as $it) {
+                $parts[] = (isset($it['name']) ? $it['name'] : 'Товар') . ' x' . (isset($it['quantity']) ? $it['quantity'] : 1);
+            }
+            $items_str = implode(', ', $parts);
+        }
+        $sheets_payload = json_encode(array(
+            'type'     => 'Заказ',
+            'name'     => isset($data['client_name'])  ? $data['client_name']  : '',
+            'phone'    => $phone,
+            'email'    => $email,
+            'amount'   => $amount . ' руб.',
+            'order_id' => $order_id,
+            'items'    => $items_str,
+        ), JSON_UNESCAPED_UNICODE);
+        $sheets_ctx = stream_context_create(array('http' => array(
+            'method'        => 'POST',
+            'header'        => "Content-Type: application/json\r\n",
+            'content'       => $sheets_payload,
+            'timeout'       => 5,
+            'ignore_errors' => true,
+        )));
+        @file_get_contents($sheets_url, false, $sheets_ctx);
+    }
 }
 
 http_response_code(200);

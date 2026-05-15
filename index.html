@@ -40,13 +40,10 @@
           <input type="hidden" name="subject" value="Новая заявка — Science Kids" />
           <div class="field"><label>Имя</label><input type="text" name="name" placeholder="Как вас зовут" /></div>
           <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" name="contact" id="phone-hero" placeholder="+7 900 000-00-00" required autocomplete="tel" /></div>
+          <div class="field"><label>Ваш вопрос</label><textarea name="question" placeholder="Напишите вопрос или оставьте пустым" rows="3" style="width:100%;background:var(--bg3);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;padding:10px;resize:vertical"></textarea></div>
           <div class="check-field">
             <input type="checkbox" id="agree-privacy-hero" required />
             <label for="agree-privacy-hero">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
-          </div>
-          <div class="check-field">
-            <input type="checkbox" id="agree-offer-hero" required />
-            <label for="agree-offer-hero">Принимаю <a href="public-offer" target="_blank">публичную оферту</a></label>
           </div>
           <button type="submit" class="btn-submit">Отправить заявку</button>
           <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
@@ -96,13 +93,10 @@
         <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" name="contact" id="phone-order" placeholder="+7 900 000-00-00" required autocomplete="tel" /></div>
         <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" name="city" id="city-order" placeholder="Москва" required /></div>
         <div class="field"><label>Адрес доставки</label><input type="text" name="address" id="address-order" placeholder="Улица, дом, квартира" /></div>
+        <div class="field"><label>Ваш вопрос</label><textarea name="question" placeholder="Напишите вопрос или оставьте пустым" rows="3" style="width:100%;background:var(--bg3);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;padding:10px;resize:vertical"></textarea></div>
         <div class="check-field">
           <input type="checkbox" id="agree-privacy-order" required />
           <label for="agree-privacy-order">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
-        </div>
-        <div class="check-field">
-          <input type="checkbox" id="agree-offer-order" required />
-          <label for="agree-offer-order">Принимаю <a href="public-offer" target="_blank">публичную оферту</a></label>
         </div>
         <button type="submit" class="btn-submit">Отправить заявку</button>
         <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
@@ -490,13 +484,19 @@
   }
 
   /* ── FORMS ── */
+  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbySyEIHNP6Lp264MvtlHK7P3TuuSL-4nHaH74H9lEZnR-7xTMGl1iJ_SJqbHjE3CUJT/exec';
+
   async function submitForm(form, successEl, bodyEl) {
     const obj = {};
     new FormData(form).forEach((v, k) => { obj[k] = v; });
     try {
       const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(obj) });
       const json = await res.json();
-      if (json.success) { if (bodyEl) bodyEl.style.display = 'none'; successEl.classList.add('show'); }
+      if (json.success) {
+        if (bodyEl) bodyEl.style.display = 'none';
+        successEl.classList.add('show');
+        fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', redirect: 'follow', body: JSON.stringify({ type: 'Звонок', name: obj.name || '', phone: obj.contact || '', question: obj.question || '' }) }).catch(function() {});
+      }
       else alert('Ошибка при отправке. Попробуйте ещё раз.');
     } catch { alert('Ошибка сети. Проверьте подключение.'); }
   }
