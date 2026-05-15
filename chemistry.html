@@ -209,6 +209,7 @@
       <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" id="phone-cart" placeholder="+7 900 000-00-00" autocomplete="tel" /></div>
       <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" id="cart-city" placeholder="Москва" /></div>
       <div class="field"><label>Адрес доставки</label><input type="text" id="cart-address" placeholder="Улица, дом, квартира" /></div>
+      <div class="field"><label>E-mail для чека</label><input type="email" id="cart-email" placeholder="example@mail.ru" autocomplete="email" /></div>
       <div class="check-field">
         <input type="checkbox" id="cart-agree-privacy" />
         <label for="cart-agree-privacy">Соглашаюсь с <a href="privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -218,7 +219,7 @@
         <label for="cart-agree-offer">Принимаю <a href="public-offer" target="_blank">публичную оферту</a></label>
       </div>
       <button class="btn-submit" id="cart-submit-btn" onclick="submitCart()">Оформить заказ</button>
-      <p class="form-note">нажимая кнопку, вы соглашаетесь на обратный звонок</p>
+      <p class="form-note">нажимая кнопку, вы переходите к оплате картой или СБП</p>
     </div>
     <div class="form-success" id="cart-success">
       <div class="form-success-icon">✓</div>
@@ -455,7 +456,7 @@
   function closeCartModal() { document.getElementById('cart-overlay').classList.remove('open'); document.body.style.overflow = ''; }
   function closeCartOutside(e) { if (e.target === document.getElementById('cart-overlay')) closeCartModal(); }
 
-  async function submitCart() {
+  function submitCart() {
     const phone  = document.getElementById('phone-cart');
     const name   = document.getElementById('cart-name').value.trim();
     const digits = phone.value.replace(/\D/g, '');
@@ -465,7 +466,8 @@
     const cityVal   = cityInput ? cityInput.value.trim() : '';
     if (!cityVal) { if (cityInput) { cityInput.setCustomValidity('Укажите город'); cityInput.reportValidity(); } return; }
     if (cityInput) cityInput.setCustomValidity('');
-    const addrVal = (document.getElementById('cart-address') || {value:''}).value.trim();
+    const addrVal  = (document.getElementById('cart-address') || {value:''}).value.trim();
+    const emailVal = (document.getElementById('cart-email')   || {value:''}).value.trim();
     const privacyChk = document.getElementById('cart-agree-privacy');
     const offerChk   = document.getElementById('cart-agree-offer');
     if (!privacyChk.checked) { privacyChk.setCustomValidity('Необходимо ваше согласие'); privacyChk.reportValidity(); return; }
@@ -474,27 +476,15 @@
     offerChk.setCustomValidity('');
     const items = Object.values(cart);
     if (!items.length) return;
-    const lines = items.map(i => `— ${i.name} × ${i.qty} (${formatPrice(i.price * i.qty)})`).join('\n');
-    const body = {
-      access_key: 'b19e7dd9-9b38-4009-a408-10fe3764d836',
-      subject: 'Заказ из корзины — Science Kids',
-      name: name || 'не указано',
-      contact: phone.value,
-      message: `Корзина:\n${lines}\n\nИтого позиций: ${cartCount()}\nСумма: ${formatPrice(cartTotal())}\n\nДоставка: ${cityVal}${addrVal ? ', ' + addrVal : ''}`
-    };
     const btn = document.getElementById('cart-submit-btn');
-    btn.textContent = 'Отправляем...'; btn.disabled = true;
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) });
-      const json = await res.json();
-      if (json.success) {
-        document.getElementById('cart-modal-body').style.display = 'none';
-        document.getElementById('cart-form-wrap').style.display = 'none';
-        document.getElementById('cart-success').classList.add('show');
-        cart = {}; saveCart(); updateCartUI();
-      } else alert('Ошибка при отправке. Попробуйте ещё раз.');
-    } catch { alert('Ошибка сети. Проверьте подключение.'); }
-    btn.textContent = 'Оформить заказ'; btn.disabled = false;
+    btn.textContent = 'Переходим к оплате...'; btn.disabled = true;
+    const form = document.createElement('form');
+    form.method = 'POST'; form.action = '/pay.php';
+    const fields = { cart: JSON.stringify(items), name, contact: phone.value, email: emailVal, city: cityVal, address: addrVal };
+    Object.entries(fields).forEach(([k, v]) => {
+      const inp = document.createElement('input'); inp.type = 'hidden'; inp.name = k; inp.value = v; form.appendChild(inp);
+    });
+    document.body.appendChild(form); form.submit();
   }
 
   /* ── FORMS ── */

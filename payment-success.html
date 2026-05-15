@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Оплата прошла — Science Kids</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" sizes="32x32" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/global.css" />
+  <link rel="stylesheet" href="styles/payment-success.css" />
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main class="success-page">
+  <div class="success-content reveal">
+    <div class="success-icon">✓</div>
+    <h1 class="success-title">Оплата прошла</h1>
+    <p class="success-subtitle">// заказ принят, скоро отправим</p>
+    <p class="success-text">Чек придёт на указанный email. По вопросам доставки мы свяжемся с вами.</p>
+    <a href="/" class="btn-back">← В каталог</a>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="components/layout.js"></script>
+<script>
+  localStorage.removeItem('sk_cart');
+
+  function observeReveal() {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => io.observe(el));
+  }
+  observeReveal();
+</script>
+</body>
+</html>
