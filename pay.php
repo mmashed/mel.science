@@ -1,7 +1,6 @@
 <?php
-declare(strict_types=1);
 
-function show_error(string $msg): void {
+function show_error($msg) {
     header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Ошибка</title>'
        . '<style>body{background:#0a0a0a;color:#f0f0f0;font-family:sans-serif;display:flex;'
@@ -74,8 +73,8 @@ foreach ($items as $item) {
 $receipt_json = json_encode($receipt, JSON_UNESCAPED_UNICODE);
 
 // --- Build params ---
-$order_id  = 'SK-' . time() . '-' . bin2hex(random_bytes(3));
-$salt      = bin2hex(random_bytes(4));
+$order_id  = 'SK-' . time() . '-' . bin2hex(openssl_random_pseudo_bytes(3));
+$salt      = bin2hex(openssl_random_pseudo_bytes(4));
 $ts        = (string)time();
 $key       = $test_mode ? $test_secret_key : $secret_key;
 
