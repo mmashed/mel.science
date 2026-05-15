@@ -95,7 +95,6 @@ $params = array(
     'description'         => 'Заказ Science Kids',
     'success_url'         => $success_url,
     'callback_url'        => $callback_url,
-    'callback_on_failure' => '1',
     'receipt_items'       => $receipt_json,
     'unix_timestamp'      => $ts,
     'salt'                => $salt,
