@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // --- Input ---
 $cart_raw = trim(post_val('cart', ''));
 $name     = mb_substr(trim(post_val('name',    '')), 0, 100);
-$contact  = mb_substr(trim(post_val('contact', '')), 0, 15);
+$contact  = mb_substr(trim(post_val('contact', '')), 0, 20);
 $email    = mb_substr(trim(post_val('email',   '')), 0, 64);
 $city     = mb_substr(trim(post_val('city',    '')), 0, 100);
 $address  = mb_substr(trim(post_val('address', '')), 0, 200);
