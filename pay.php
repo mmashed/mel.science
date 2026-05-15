@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
+error_reporting(0);
 
 function show_error($msg) {
     header('Content-Type: text/html; charset=utf-8');
