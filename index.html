@@ -481,7 +481,7 @@
     const btn = document.getElementById('cart-submit-btn');
     btn.textContent = 'Переходим к оплате...'; btn.disabled = true;
     const form = document.createElement('form');
-    form.method = 'POST'; form.action = '/pay_debug.php';
+    form.method = 'POST'; form.action = '/pay.php';
     const fields = { cart: JSON.stringify(items), name, contact: phone.value, email: emailVal, city: cityVal, address: addrVal };
     Object.entries(fields).forEach(([k, v]) => {
       const inp = document.createElement('input'); inp.type = 'hidden'; inp.name = k; inp.value = v; form.appendChild(inp);
