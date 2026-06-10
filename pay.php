@@ -151,6 +151,7 @@ if ($name)      { $params['client_name']     = $name; }
 if ($email)     { $params['client_email']    = $email; }
 if ($email)     { $params['receipt_contact'] = $email; }
 if ($test_mode) { $params['testing']         = '1'; }
+$params['payment_method'] = 'sbp';
 
 // --- Signature ---
 $sig_params = array_filter($params, function($v) { return $v !== '' && $v !== null; });
