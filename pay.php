@@ -188,7 +188,7 @@ header('Content-Type: text/html; charset=utf-8');
   <div class="wrap">
     <div class="spinner"></div>
     <p>Переходим на страницу оплаты&hellip;</p>
-    <form id="pay-form" method="POST" action="https://pay.modulbank.ru/pay">
+    <form id="pay-form" method="POST" action="https://pay.modulbank.ru/pay?tab=sbp-pay">
 <?php foreach ($params as $k => $v): ?>
       <input type="hidden" name="<?php echo htmlspecialchars($k, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars((string)$v, ENT_QUOTES); ?>" />
 <?php endforeach; ?>
