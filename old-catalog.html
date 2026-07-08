@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -14,6 +14,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tektur:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/global.css" />
   <link rel="stylesheet" href="styles/catalog.css" />
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110507896', 'ym');
+      ym(110507896, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/110507896" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body>
 
@@ -25,7 +37,7 @@
     <h1 class="hero-title">Химия.<br>Физика.<br><em>Медицина.</em></h1>
     <p class="hero-desc">Научные и химические наборы для детей и взрослых. Оригинальные наборы MEL Science — складские остатки бренда, ушедшего из России. Оставьте заявку — свяжемся и согласуем доставку.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-val">от 800 ₽</div><div class="stat-label">стоимость набора</div></div>
+      <div class="stat"><div class="stat-val">от 1 600 ₽</div><div class="stat-label">стоимость набора</div></div>
       <div class="stat"><div class="stat-val">4 000+</div><div class="stat-label">единиц на складе</div></div>
       <div class="stat"><div class="stat-val">40+</div><div class="stat-label">позиций в наличии</div></div>
     </div>
@@ -192,24 +204,24 @@
   };
 
   const products = [
-    { name: 'Сахарная Змея',        cat: 'Химия Лайт', stock: 89,  price: 800,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png' },
-    { name: 'Коррозия',             cat: 'Химия Про',  stock: 392, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx' },
-    { name: 'Диффузия',             cat: 'Химия Про',  stock: 143, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2' },
-    { name: 'Химия Кислорода',      cat: 'Химия Лайт', stock: 633, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c' },
-    { name: 'Олово 1 опыт',         cat: 'Химия Лайт', stock: 700, price: 800,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
-    { name: 'Искусственное Море',   cat: 'Химия Про',  stock: 149, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey' },
-    { name: 'Жги',                  cat: 'Химия Про',  stock: 123, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg' },
-    { name: 'Химия Материалов',     cat: 'Химия Про',  stock: 134, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot' },
-    { name: 'Химия Зимы',           cat: 'Химия Про',  stock: 94,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj' },
-    { name: 'Цветная Химия',        cat: 'Химия Про',  stock: 103, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb' },
-    { name: 'Египетская Ночь',      cat: 'Химия Про',  stock: 306, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d' },
-    { name: 'Чистая Вода',          cat: 'Химия Про',  stock: 196, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk' },
-    { name: 'Аптека',               cat: 'Медицина',   stock: 371, price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
-    { name: 'Терапия: базис врача', cat: 'Медицина',   stock: 72,  price: 2500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
-    { name: 'Цианотипия',           cat: 'Химия Про',  stock: 14,  price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt' },
-    { name: 'Стартовый Набор',      cat: 'Химия Про',  stock: 136, price: 1500, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1984/v1/mel2_0/chemistry/starter-kit' },
-    { name: 'Физика Света',         cat: 'Физика',     stock: 60,  price: 1000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
-    { name: 'Олово 2 опыта',        cat: 'Химия Про',  stock: 136, price: 1200, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+    { name: 'Сахарная Змея',        cat: 'Химия Лайт', stock: 89,  price: 1600,  img: 'https://elasticbeanstalk-us-east-1-939261147616.s3.amazonaws.com/brics-snake_sugar-snake_en_iks-s-01.png' },
+    { name: 'Коррозия',             cat: 'Химия Про',  stock: 392, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/corrosion-v2-bag/contents_image_bloyjx' },
+    { name: 'Диффузия',             cat: 'Химия Про',  stock: 143, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/diffusion-v2-astm963/contents_image_v2faw2' },
+    { name: 'Химия Кислорода',      cat: 'Химия Лайт', stock: 633, price: 1600,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/oxygen-astm963/contents_image_ltqz3c' },
+    { name: 'Олово 1 опыт',         cat: 'Химия Лайт', stock: 700, price: 1600,  img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
+    { name: 'Искусственное Море',   cat: 'Химия Про',  stock: 149, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/chemgarden-v3/contents_image_v6kyey' },
+    { name: 'Жги',                  cat: 'Химия Про',  stock: 123, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/burn/contents_image_httzzg' },
+    { name: 'Химия Материалов',     cat: 'Химия Про',  stock: 134, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/materials-v3/contents_image_gl4yot' },
+    { name: 'Химия Зимы',           cat: 'Химия Про',  stock: 94,  price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/xmas-v2/contents_image_pxcouj' },
+    { name: 'Цветная Химия',        cat: 'Химия Про',  stock: 103, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/colors-v2/contents_image_pl72gb' },
+    { name: 'Египетская Ночь',      cat: 'Химия Про',  stock: 306, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/sfx-v3/contents_image_kf3m0d' },
+    { name: 'Чистая Вода',          cat: 'Химия Про',  stock: 196, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/pure-water-en71/contents_image_au6zbk' },
+    { name: 'Аптека',               cat: 'Медицина',   stock: 371, price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
+    { name: 'Терапия: базис врача', cat: 'Медицина',   stock: 72,  price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
+    { name: 'Цианотипия',           cat: 'Химия Про',  stock: 14,  price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/printing-v2/contents_image_uj6umt' },
+    { name: 'Стартовый Набор',      cat: 'Химия Про',  stock: 136, price: 3000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1984/v1/mel2_0/chemistry/starter-kit' },
+    { name: 'Физика Света',         cat: 'Физика',     stock: 60,  price: 2000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
+    { name: 'Олово 2 опыта',        cat: 'Химия Про',  stock: 136, price: 2400, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1920/v1/box/tin-v2/contents_image_fsqtgj' },
   ];
 
   /* ── CART ── */
