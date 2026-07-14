@@ -198,9 +198,12 @@
   };
 
   const products = [
-    { name: 'Физика Света',         cat: 'Физика',   stock: 60,  price: 2000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
-    { name: 'Аптека',               cat: 'Медицина', stock: 371, price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
-    { name: 'Терапия: базис врача', cat: 'Медицина', stock: 72,  price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
+    { name: 'Физика Света',         cat: 'Физика',      stock: 60,  price: 2000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1500/v1/box/screen-v2/contents_image_sbcgaq' },
+    { name: 'Аптека',               cat: 'Медицина',    stock: 371, price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
+    { name: 'Терапия: базис врача', cat: 'Медицина',    stock: 72,  price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
+    { name: 'Сахарная Змея',        cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_07_03_g8ce4d.png' },
+    { name: 'Олово 1 опыт',         cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/%D0%9F%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82_MEL_Chemistry_Lite_%D0%B2_%D1%83%D0%BF%D0%B0%D0%BA%D0%BE%D0%B2%D0%BA%D0%B5_dtgubp.png' },
+    { name: 'Химия Кислорода',      cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_27_20_xgseas.png' },
   ];
 
   const bundles = [
@@ -209,7 +212,6 @@
     { name: 'Химия ПРО 10 в 1 + стартовый набор',       cat: 'Химия Про', price: 21800, tag: '// 10+1 наборов · С огнём',             desc: '10 профессиональных наборов плюс стартовый — программа на полгода. Включает «Жги» и «Чистую Воду», все ключевые темы химии Про.',                                                         img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591828/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_05_31_kpkf5f.png',  url: '/chemistry/bundle-pro-10', stock: '3 набора' },
     { name: 'Химия Комбо ПРО 12 в 1 + стартовый набор', cat: 'Химия Про', price: 26000, tag: '// 12+1 наборов · Редкие наборы',       desc: '12 профессиональных наборов MEL Science плюс стартовый — максимальное погружение. Включает редкие наборы: Цианотипия, Этюд в ультрафиолете.',                                          img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778591696/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_32_06_gmkrzy.png',  url: '/chemistry/bundle-combo-12', stock: '2 набора' },
     { name: 'Химия Супер Про 14 в 1 + стартовый набор', cat: 'Химия Про', price: 28000, tag: '// 14+1 наборов · Полная коллекция',    desc: '14 профессиональных наборов MEL Science плюс стартовый — полная коллекция химии Про. Всё, что было выпущено.',                                                                              img: 'https://res.cloudinary.com/djbkipxo8/image/upload/q_auto/f_auto/v1778590647/ChatGPT_Image_12_%D0%BC%D0%B0%D1%8F_2026_%D0%B3._15_39_57_kdkxz1.png',  url: '/chemistry/bundle-super-14', stock: '1 набор' },
-    { name: 'Химия Лайт 3 в 1',                          cat: 'Семья',     price: 1600,   tag: '// 3 набора · Для детей 8+',        desc: '3 набора MEL Science для первого знакомства с химией всей семьёй — сахарная змея, оловянное дерево и химия кислорода.',                                                                    img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607896/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_38_09_zqzemu.png',   url: '/chemistry/bundle-lite-3', stock: '3 набора' },
   ];
 
   /* ── CART ── */
@@ -300,8 +302,11 @@
     if (filter === 'all' || filter === 'Химия') {
       bundles.forEach(b => { grid.appendChild(makeBundleCard(b, idx++)); });
     }
-    if (filter !== 'Химия') {
-      const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+    {
+      let filtered;
+      if (filter === 'all') filtered = products;
+      else if (filter === 'Химия') filtered = products.filter(p => p.cat === 'Химия Лайт');
+      else filtered = products.filter(p => p.cat === filter);
       filtered.forEach(p => {
         const badge    = getBadge(p.stock);
         const desc     = descriptions[p.name] || '';
