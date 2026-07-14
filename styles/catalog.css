@@ -38,6 +38,7 @@
 .card:hover .card-img img { transform: scale(1.04); }
 .card-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #0f0f0f; position: relative; }
 .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; display: block; }
+.card-img-contain img { object-fit: contain; }
 .card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .1em; }
 .card-badge { position: absolute; top: 12px; left: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; font-weight: 500; }
 .badge-critical { background: var(--red); color: #fff; }
@@ -67,7 +68,8 @@
 .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: .06em; margin-bottom: 6px; }
 .modal-product { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .08em; margin-bottom: 24px; border-left: 2px solid var(--accent); padding-left: 10px; }
 
-.detail-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 20px; display: block; }
+.detail-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 20px; display: block; background: #0f0f0f; }
+.detail-img.contain { object-fit: contain; }
 .detail-category { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
 .detail-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: .04em; line-height: 1.1; margin-bottom: 16px; }
 .detail-desc { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 24px; }

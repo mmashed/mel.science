@@ -264,8 +264,14 @@
   }
 
   /* ── CATALOG ── */
+  function pluralizeShtuki(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'штука';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'штуки';
+    return 'штук';
+  }
   function getBadge(stock) {
-    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
+    if (stock < 10)  return { cls: 'badge-critical', label: `Осталось ${stock} ${pluralizeShtuki(stock)}` };
     if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
     if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
     return               { cls: 'badge-high',     label: 'Много на складе' };

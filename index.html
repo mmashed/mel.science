@@ -203,7 +203,7 @@
     { name: 'Терапия: базис врача', cat: 'Медицина',    stock: 72,  price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
     { name: 'Сахарная Змея',        cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_07_03_g8ce4d.png' },
     { name: 'Олово 1 опыт',         cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/%D0%9F%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82_MEL_Chemistry_Lite_%D0%B2_%D1%83%D0%BF%D0%B0%D0%BA%D0%BE%D0%B2%D0%BA%D0%B5_dtgubp.png' },
-    { name: 'Химия Кислорода',      cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_27_20_xgseas.png' },
+    { name: 'Химия Кислорода',      cat: 'Химия Лайт',  stock: 3,   price: 1600, img: 'https://res.cloudinary.com/dwwscstuo/image/upload/v1783607416/mel-science/ChatGPT_Image_9_%D0%B8%D1%8E%D0%BB._2026_%D0%B3._17_27_20_xgseas.png', contain: true },
   ];
 
   const bundles = [
@@ -254,8 +254,14 @@
   }
 
   /* ── CATALOG ── */
+  function pluralizeShtuki(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'штука';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'штуки';
+    return 'штук';
+  }
   function getBadge(stock) {
-    if (stock < 10)  return { cls: 'badge-critical', label: 'Последние штуки' };
+    if (stock < 10)  return { cls: 'badge-critical', label: `Осталось ${stock} ${pluralizeShtuki(stock)}` };
     if (stock < 50)  return { cls: 'badge-low',      label: 'Мало' };
     if (stock < 100) return { cls: 'badge-mid',      label: 'В наличии' };
     return               { cls: 'badge-high',     label: 'Много на складе' };
@@ -316,7 +322,7 @@
         card.className = 'card reveal';
         card.style.transitionDelay = `${(idx % 12) * 40}ms`;
         card.innerHTML = `
-          <div class="card-img">
+          <div class="card-img${p.contain ? ' card-img-contain' : ''}">
             <img src="${p.img}" alt="${p.name}" loading="lazy"
               onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>нет фото</div>'" />
             <span class="card-badge ${badge.cls}">${badge.label}</span>
@@ -408,6 +414,7 @@
   function openDetailModal(p) {
     document.getElementById('detail-img').src = p.img;
     document.getElementById('detail-img').alt = p.name;
+    document.getElementById('detail-img').classList.toggle('contain', !!p.contain);
     document.getElementById('detail-category').textContent = p.cat;
     document.getElementById('detail-name').textContent = p.name;
     document.getElementById('detail-desc').textContent = descriptions[p.name] || '';
