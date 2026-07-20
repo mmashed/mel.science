@@ -7,7 +7,7 @@
 .stat { padding: 16px 24px; border-right: 1px solid var(--line); flex: 1; }
 .stat:last-child { border-right: none; }
 .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--accent); letter-spacing: .04em; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.price-old { text-decoration: line-through; color: var(--text-muted); font-weight: 400; }
+.price-old { text-decoration: line-through; color: var(--text-muted); font-weight: 400; opacity: .55; }
 .price-new { color: var(--accent); }
 .stat-val .price-old { font-size: .6em; }
 .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; }

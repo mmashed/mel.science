@@ -288,7 +288,7 @@
   function saveCart() { localStorage.setItem('sk_cart', JSON.stringify(cart)); }
   function formatPrice(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
   function halfPrice(n) { return Math.round(n / 2); }
-  function priceHTML(n) { return `<span class="price-old">${formatPrice(n)}</span><span class="price-new">${formatPrice(halfPrice(n))}</span>`; }
+  function priceHTML(n) { return `<span class="price-new">${formatPrice(halfPrice(n))}</span><span class="price-old">${formatPrice(n)}</span>`; }
   function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
   function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
 
