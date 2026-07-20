@@ -218,12 +218,14 @@
   let cart = JSON.parse(localStorage.getItem('sk_cart') || '{}');
   function saveCart() { localStorage.setItem('sk_cart', JSON.stringify(cart)); }
   function formatPrice(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
+  function halfPrice(n) { return Math.round(n / 2); }
+  function priceHTML(n) { return `<span class="price-old">${formatPrice(n)}</span><span class="price-new">${formatPrice(halfPrice(n))}</span>`; }
   function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
   function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
 
   function addToCart(p) {
     if (cart[p.name]) cart[p.name].qty++;
-    else cart[p.name] = { name: p.name, img: p.img, price: p.price, qty: 1 };
+    else cart[p.name] = { name: p.name, img: p.img, price: halfPrice(p.price), qty: 1 };
     saveCart(); updateCartUI();
   }
 
@@ -285,7 +287,7 @@
         <div class="card-name">${b.name}</div>
         <div class="card-desc">${b.desc}</div>
         <div class="card-footer">
-          <div class="card-price">${formatPrice(b.price)}</div>
+          <div class="card-price">${priceHTML(b.price)}</div>
           <div class="card-actions">
             <span class="card-btn" data-action="detail">Подробнее</span>
             <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[b.name].qty})` : 'В корзину'}</span>
@@ -332,7 +334,7 @@
             <div class="card-name">${p.name}</div>
             ${desc ? `<div class="card-desc">${desc}</div>` : ''}
             <div class="card-footer">
-              <div class="card-price">${formatPrice(p.price)}</div>
+              <div class="card-price">${priceHTML(p.price)}</div>
               <div class="card-actions">
                 <span class="card-btn" data-action="detail">Подробнее</span>
                 <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
@@ -418,7 +420,7 @@
     document.getElementById('detail-category').textContent = p.cat;
     document.getElementById('detail-name').textContent = p.name;
     document.getElementById('detail-desc').textContent = descriptions[p.name] || '';
-    document.getElementById('detail-price').textContent = formatPrice(p.price);
+    document.getElementById('detail-price').innerHTML = priceHTML(p.price);
     const dcb = document.getElementById('detail-cart-btn');
     dcb.dataset.name = p.name;
     dcb.classList.toggle('in-cart', !!cart[p.name]);
