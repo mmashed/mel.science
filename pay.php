@@ -43,6 +43,7 @@ $contact  = mb_substr(trim(post_val('contact', '')), 0, 20);
 $email    = mb_substr(trim(post_val('email',   '')), 0, 64);
 $city     = mb_substr(trim(post_val('city',    '')), 0, 100);
 $address  = mb_substr(trim(post_val('address', '')), 0, 200);
+$promo    = mb_substr(trim(post_val('promo',   '')), 0, 32);
 
 if (!$cart_raw || !$contact || !$city) {
     show_error('Не заполнены обязательные поля: телефон и город.');
@@ -102,6 +103,7 @@ $order_snapshot = array(
     'address' => $address,
     'items'   => $items,
     'amount'  => $amount,
+    'promo'   => $promo,
 );
 file_put_contents($orders_dir . '/' . $order_id . '.json', json_encode($order_snapshot, JSON_UNESCAPED_UNICODE));
 
@@ -126,6 +128,7 @@ if (!empty($sheets_url)) {
         'amount'   => $amount . ' руб.',
         'order_id' => $order_id,
         'status'   => 'Ожидает оплаты',
+        'promo'    => $promo,
     ), JSON_UNESCAPED_UNICODE);
     $sh_ctx = stream_context_create(array('http' => array(
         'method' => 'POST', 'header' => "Content-Type: application/json\r\n",

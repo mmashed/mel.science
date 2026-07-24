@@ -216,6 +216,14 @@
     <button class="modal-close" onclick="closeCartModal()">×</button>
     <h2 class="modal-title" style="margin-bottom:24px">Корзина</h2>
     <div id="cart-modal-body"></div>
+    <div class="promo-row" id="promo-row" style="display:none">
+      <label class="promo-label">Промокод</label>
+      <div class="promo-input-wrap">
+        <input type="text" id="cart-promo" class="promo-input" placeholder="Введите промокод" />
+        <button type="button" class="promo-btn" onclick="applyPromo()">Применить</button>
+      </div>
+      <p class="promo-message" id="promo-message"></p>
+    </div>
     <div id="cart-form-wrap" style="display:none">
       <div class="field"><label>Имя</label><input type="text" id="cart-name" placeholder="Как вас зовут" /></div>
       <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" id="phone-cart" placeholder="+7 900 000-00-00" autocomplete="tel" /></div>
@@ -261,6 +269,33 @@
   function priceHTML(n) { return `<span class="price-new">${formatPrice(halfPrice(n))}</span><span class="price-old">${formatPrice(n)}</span>`; }
   function cartTotal() { return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0); }
   function cartCount() { return Object.values(cart).reduce((s, i) => s + i.qty, 0); }
+
+  const PROMO_CODES = { EFAWUF: 0.20, PJIOSD: 0.10 };
+  let promo = JSON.parse(localStorage.getItem('sk_promo') || 'null');
+  function savePromo() { localStorage.setItem('sk_promo', JSON.stringify(promo)); }
+  function promoDiscount(subtotal) { return promo ? Math.round(subtotal * promo.discount) : 0; }
+  function applyPromo() {
+    const input = document.getElementById('cart-promo');
+    const msg = document.getElementById('promo-message');
+    const code = input.value.trim().toUpperCase();
+    if (!code) {
+      promo = null; savePromo();
+      msg.textContent = ''; msg.className = 'promo-message';
+      renderCartModal();
+      return;
+    }
+    if (PROMO_CODES[code]) {
+      promo = { code, discount: PROMO_CODES[code] };
+      savePromo();
+      msg.textContent = `Промокод применён: −${Math.round(promo.discount * 100)}%`;
+      msg.className = 'promo-message success';
+    } else {
+      promo = null; savePromo();
+      msg.textContent = 'Промокод не найден';
+      msg.className = 'promo-message error';
+    }
+    renderCartModal();
+  }
 
   function addToCart(p) {
     if (cart[p.name]) cart[p.name].qty++;
@@ -424,9 +459,11 @@
     const body     = document.getElementById('cart-modal-body');
     const formWrap = document.getElementById('cart-form-wrap');
     const items    = Object.values(cart);
+    const promoRow = document.getElementById('promo-row');
     if (!items.length) {
       body.innerHTML = '<div class="cart-empty">// корзина пуста</div>';
       formWrap.style.display = 'none';
+      promoRow.style.display = 'none';
       return;
     }
     let html = '<div class="cart-items">';
@@ -447,14 +484,23 @@
       </div>`;
     });
     html += '</div>';
-    html += `<div class="cart-summary"><span class="cart-total-label">Итого</span><span class="cart-total-val">${formatPrice(cartTotal())}</span></div>`;
+    const subtotal = cartTotal();
+    const discount = promoDiscount(subtotal);
+    if (promo) {
+      html += `<div class="cart-summary-line"><span>Промежуточный итог</span><span>${formatPrice(subtotal)}</span></div>`;
+      html += `<div class="cart-summary-line"><span>Промокод ${promo.code} (−${Math.round(promo.discount * 100)}%)</span><span class="discount-val">−${formatPrice(discount)}</span></div>`;
+    }
+    html += `<div class="cart-summary"><span class="cart-total-label">Итого</span><span class="cart-total-val">${formatPrice(subtotal - discount)}</span></div>`;
     body.innerHTML = html;
     document.getElementById('cart-success').classList.remove('show');
     formWrap.style.display = '';
+    promoRow.style.display = '';
   }
 
   function openCartModal() {
     renderCartModal();
+    const promoInput = document.getElementById('cart-promo');
+    if (promoInput) promoInput.value = promo ? promo.code : '';
     document.getElementById('cart-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -481,11 +527,12 @@
     offerChk.setCustomValidity('');
     const items = Object.values(cart);
     if (!items.length) return;
+    const payItems = promo ? items.map(i => ({ name: i.name, img: i.img, qty: i.qty, price: Math.round(i.price * (1 - promo.discount)) })) : items;
     const btn = document.getElementById('cart-submit-btn');
     btn.textContent = 'Переходим к оплате...'; btn.disabled = true;
     const form = document.createElement('form');
     form.method = 'POST'; form.action = '/pay.php';
-    const fields = { cart: JSON.stringify(items), name, contact: phone.value, email: emailVal, city: cityVal, address: addrVal };
+    const fields = { cart: JSON.stringify(payItems), name, contact: phone.value, email: emailVal, city: cityVal, address: addrVal, promo: promo ? promo.code : '' };
     Object.entries(fields).forEach(([k, v]) => {
       const inp = document.createElement('input'); inp.type = 'hidden'; inp.name = k; inp.value = v; form.appendChild(inp);
     });
