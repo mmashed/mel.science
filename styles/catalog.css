@@ -21,6 +21,11 @@
 .field input { width: 100%; background: var(--bg2); border: 1px solid var(--line); color: var(--text); font-family: 'Tektur', sans-serif; font-size: 14px; padding: 12px 16px; outline: none; transition: border-color .15s; border-radius: 0; -webkit-appearance: none; }
 .field input:focus { border-color: var(--accent); }
 .field input::placeholder { color: var(--text-muted); }
+.info-tip { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; margin-left: 6px; border: 1px solid var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-muted); cursor: help; vertical-align: middle; text-transform: none; }
+.info-tip:hover, .info-tip:focus, .info-tip.active { border-color: var(--accent); color: var(--accent); outline: none; }
+.info-tip-bubble { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); width: 200px; background: var(--bg3); border: 1px solid var(--line); color: var(--text-dim); font-family: 'Tektur', sans-serif; font-size: 11px; font-weight: 400; line-height: 1.5; text-transform: none; letter-spacing: normal; padding: 10px 12px; opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 20; }
+.info-tip:hover .info-tip-bubble, .info-tip:focus .info-tip-bubble, .info-tip.active .info-tip-bubble { opacity: 1; pointer-events: auto; }
+.info-tip-bubble strong { color: var(--text); font-weight: 400; }
 .btn-submit { width: 100%; background: var(--accent); color: var(--bg); font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: .1em; border: none; padding: 16px; cursor: pointer; transition: background .15s, transform .1s; margin-top: 8px; }
 .btn-submit:hover { background: #d6ff1a; transform: translateY(-1px); }
 .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
@@ -103,8 +108,6 @@
 .cart-summary { border-top: 1px solid var(--line); padding-top: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
 .cart-total-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; }
 .cart-total-val { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--accent); letter-spacing: .04em; }
-.cart-summary-line { display: flex; justify-content: space-between; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.cart-summary-line .discount-val { color: var(--accent); }
 
 .promo-row { margin-bottom: 20px; }
 .promo-label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted); margin-bottom: 6px; }
@@ -112,6 +115,12 @@
 .promo-input { flex: 1; min-width: 0; background: var(--bg2); border: 1px solid var(--line); color: var(--text); font-family: 'Tektur', sans-serif; font-size: 14px; padding: 12px 16px; outline: none; transition: border-color .15s; border-radius: 0; -webkit-appearance: none; text-transform: uppercase; }
 .promo-input:focus { border-color: var(--accent); }
 .promo-input::placeholder { color: var(--text-muted); text-transform: none; }
+.promo-input:-webkit-autofill, .promo-input:-webkit-autofill:hover, .promo-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg2) inset;
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  transition: background-color 9999s ease-in-out 0s;
+}
 .promo-btn { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 0 18px; cursor: pointer; transition: all .15s; white-space: nowrap; }
 .promo-btn:hover { background: var(--accent); color: var(--bg); }
 .promo-message { font-family: 'IBM Plex Mono', monospace; font-size: 11px; margin-top: 8px; letter-spacing: .05em; min-height: 14px; }
@@ -137,4 +146,5 @@
   .card-price { font-size: 17px; }
   .modal { padding: 24px; }
   .float-cart { bottom: 16px; right: 16px; padding: 12px 16px; font-size: 11px; }
+  .info-tip-bubble { width: 170px; }
 }
