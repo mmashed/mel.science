@@ -1,5 +1,6 @@
 /* ── BUNDLE HERO ── */
-.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; border-bottom: 1px solid var(--line); }
+/* 100vh минус фиксированное меню (55px) и хлебные крошки (48px) */
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 103px); border-bottom: 1px solid var(--line); }
 .hero-left { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
 .hero-stats { display: flex; gap: 0; margin-top: 40px; }
 .stat { padding: 20px 28px; border: 1px solid var(--line); border-right: none; }
@@ -12,8 +13,9 @@
 .bundle-fire-label { display: inline-block; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 16px; }
 
 /* ── BREADCRUMBS ── */
-/* margin-top = высота фиксированного nav из global.css */
-.breadcrumbs { margin-top: 55px; display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 8px; padding: 16px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+/* margin-top = высота фиксированного nav (55px) из global.css.
+   Фиксированная высота 48px — чтобы hero мог вычесть её из 100vh. */
+.breadcrumbs { margin-top: 55px; height: 48px; display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 0 60px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--line); overflow: hidden; }
 .breadcrumbs a { color: var(--text-muted); text-decoration: none; transition: color .15s; }
 .breadcrumbs a:hover { color: var(--accent); }
 .breadcrumbs-sep { color: var(--line); }
@@ -79,7 +81,8 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .breadcrumbs { padding: 14px 24px; }
+  /* hero тут min-height:auto, поэтому крошки могут переноситься свободно */
+  .breadcrumbs { height: auto; overflow: visible; flex-wrap: wrap; padding: 14px 24px; }
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--line); }
   .hero-form-wrap { padding: 60px 24px; }
@@ -93,7 +96,7 @@
   .bundle-set-hover-img { display: none; }
 }
 @media (max-width: 600px) {
-  .breadcrumbs { padding: 12px 20px; }
+  .breadcrumbs { padding: 12px 20px; row-gap: 4px; }
   .hero-left { padding: 48px 20px; }
   .hero-form-wrap { padding: 48px 20px; }
   .hero-stats { flex-direction: column; }
