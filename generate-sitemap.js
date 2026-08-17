@@ -16,18 +16,23 @@ const PAGE_OVERRIDES = {
 };
 
 // Файлы и директории, которые не должны попасть в sitemap
-const EXCLUDED = new Set(['404.html']);
+const EXCLUDED = new Set(['404.html', 'payment-success.html', 'old-catalog.html']);
 const EXCLUDED_DIRS = new Set(['reference']);
 
-function getHtmlFiles(dir) {
-  return fs.readdirSync(dir, { withFileTypes: true })
-    .filter(entry => {
-      if (entry.isDirectory()) return false;
-      if (!entry.name.endsWith('.html')) return false;
-      if (EXCLUDED.has(entry.name)) return false;
-      return true;
-    })
-    .map(entry => entry.name);
+function getHtmlFiles(dir, base = '') {
+  let results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const relPath = base ? `${base}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      if (EXCLUDED_DIRS.has(entry.name)) continue;
+      results = results.concat(getHtmlFiles(path.join(dir, entry.name), relPath));
+      continue;
+    }
+    if (!entry.name.endsWith('.html')) continue;
+    if (EXCLUDED.has(relPath)) continue;
+    results.push(relPath);
+  }
+  return results;
 }
 
 function fileToUrl(filename) {
