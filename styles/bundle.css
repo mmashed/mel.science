@@ -11,6 +11,13 @@
 /* ── FIRE LABEL ── */
 .bundle-fire-label { display: inline-block; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 16px; }
 
+/* ── BREADCRUMBS ── */
+.breadcrumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+.breadcrumbs a { color: var(--text-muted); text-decoration: none; transition: color .15s; }
+.breadcrumbs a:hover { color: var(--accent); }
+.breadcrumbs-sep { color: var(--line); }
+.breadcrumbs-current { color: var(--text-dim); }
+
 /* ── HERO GALLERY ── */
 .bundle-gallery { display: flex; flex-direction: column; gap: 1px; background: var(--line); width: 100%; height: 100%; }
 .bundle-gallery-main { flex: 1; overflow: hidden; }
@@ -71,6 +78,7 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
+  .breadcrumbs { padding: 14px 24px; }
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--line); }
   .hero-form-wrap { padding: 60px 24px; }
@@ -84,6 +92,7 @@
   .bundle-set-hover-img { display: none; }
 }
 @media (max-width: 600px) {
+  .breadcrumbs { padding: 12px 20px; }
   .hero-left { padding: 48px 20px; }
   .hero-form-wrap { padding: 48px 20px; }
   .hero-stats { flex-direction: column; }
