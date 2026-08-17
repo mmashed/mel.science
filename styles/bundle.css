@@ -2,6 +2,7 @@
 .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; border-bottom: 1px solid var(--line); }
 .hero-left { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
 .hero-stats { display: flex; gap: 0; margin-top: 40px; }
+
 .stat { padding: 20px 28px; border: 1px solid var(--line); border-right: none; }
 .stat:last-child { border-right: 1px solid var(--line); }
 .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); letter-spacing: .04em; }
@@ -78,6 +79,17 @@
 .other-bundle-price .price-old { margin-right: 6px; }
 
 /* ── RESPONSIVE ── */
+/* Десктоп: hero ровно 100vh, поэтому отступы и заголовок сжимаются
+   по высоте окна — иначе на невысоких экранах контент обрезается. */
+@media (min-width: 901px) {
+  .hero-left { padding: clamp(44px, 7vh, 80px) 60px; }
+  .hero-left .breadcrumbs { margin-bottom: clamp(12px, 2vh, 24px); }
+  .hero-left .hero-title { font-size: clamp(44px, min(6vw, 9vh), 88px); margin-bottom: clamp(16px, 2.5vh, 28px); }
+  .hero-left .hero-desc { margin-bottom: clamp(20px, 3vh, 40px); }
+  .hero-left .hero-stats { margin-top: clamp(18px, 3vh, 40px); }
+  .hero-left .bundle-cta { margin-top: clamp(18px, 3vh, 40px); }
+  .hero-left .stat { padding: clamp(12px, 2vh, 20px) 28px; }
+}
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--line); }
