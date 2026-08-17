@@ -12,7 +12,8 @@
 .bundle-fire-label { display: inline-block; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; margin-bottom: 16px; }
 
 /* ── BREADCRUMBS ── */
-.breadcrumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+/* margin-top = высота фиксированного nav из global.css */
+.breadcrumbs { margin-top: 55px; display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 8px; padding: 16px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
 .breadcrumbs a { color: var(--text-muted); text-decoration: none; transition: color .15s; }
 .breadcrumbs a:hover { color: var(--accent); }
 .breadcrumbs-sep { color: var(--line); }
