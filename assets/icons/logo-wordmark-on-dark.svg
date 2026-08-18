@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 68" width="250" height="68" role="img" aria-label="Science Kids">
+  <title>Science Kids</title>
+  <rect width="250" height="68" fill="#0a0a0a"/>
+  <!-- Шрифт Bebas Neue: без него подставится Oswald / Impact / Arial Narrow. -->
+  <text x="20" y="44"
+        font-family="'Bebas Neue', 'Oswald', Impact, 'Arial Narrow', sans-serif"
+        font-size="22" letter-spacing="2.64" fill="#f0f0f0"><tspan>SCIENCE</tspan><tspan fill="#c8ff00">.</tspan><tspan>KIDS</tspan></text>
+</svg>
