@@ -103,6 +103,19 @@ if ($state === 'COMPLETE') {
     ));
     @file_get_contents('https://api.web3forms.com/submit', false, $ctx);
 
+    // Дублируем письмо своей отправкой с сервера — параллельно с Web3Forms.
+    // Если почта не настроена в config.php, sk_notify молча ничего не делает.
+    $mailer_file = __DIR__ . '/mailer.php';
+    if (file_exists($mailer_file)) {
+        require_once $mailer_file;
+        sk_notify(
+            "Оплата получена — Science Kids — {$order_id}",
+            $msg,
+            isset($notify_emails) ? $notify_emails : array(),
+            isset($mail_from) ? $mail_from : ''
+        );
+    }
+
     // Google Sheets: update status of existing row to "Оплачен"
     if (!empty($sheets_url)) {
         $sheets_payload = json_encode(array(

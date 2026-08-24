@@ -22,6 +22,19 @@ $sno = 'usn_income';
 // Ключ Web3Forms для email-уведомлений (не менять):
 $w3f_key = 'b19e7dd9-9b38-4009-a408-10fe3764d836';
 
+// ── Отправка писем с сервера (работает параллельно с Web3Forms) ──
+// Адреса, на которые дублируются заявки и оплаченные заказы.
+// Можно указать сколько угодно. Пустой массив = отправка выключена.
+$notify_emails = array(
+    'yanko@softwarelead.pro',
+    'ВТОРОЙ-ЯЩИК@example.com',
+);
+
+// Ящик на домене сайта, от чьего имени уходят письма.
+// Создайте его в панели Beget («Почта» → «Создать ящик»), иначе письма
+// не пройдут проверку SPF/DKIM и попадут в спам.
+$mail_from = 'noreply@science-kids.ru';
+
 // URL Google Apps Script для записи заявок в таблицу:
 $sheets_url = 'https://script.google.com/macros/s/AKfycbxOvJskB0s3kFSaM2bQbpDNOZ_ODauHX2730JauNPCFOoCKphBdlFdXqUNCkCEig52N/exec';
 ?>

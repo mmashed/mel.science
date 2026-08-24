@@ -667,6 +667,7 @@
   async function submitForm(form, successEl, bodyEl) {
     const obj = {};
     new FormData(form).forEach((v, k) => { obj[k] = v; });
+    fetch('/lead.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ page: location.pathname }, obj)) }).catch(() => {});
     try {
       const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(obj) });
       const json = await res.json();
