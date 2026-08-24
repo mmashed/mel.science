@@ -83,4 +83,4 @@ $ok = sk_notify($subject, $body, $emails, $from);
 
 echo json_encode($ok
     ? array('success' => true)
-    : array('success' => false, 'reason' => 'send_failed'));
+    : array('success' => false, 'reason' => $GLOBALS['sk_mail_error'] ? $GLOBALS['sk_mail_error'] : 'send_failed'));
