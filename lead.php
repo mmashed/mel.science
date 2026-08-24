@@ -69,11 +69,18 @@ $body = "Новая заявка с сайта\n\n"
       . ($page    !== '' ? "\nСтраница: {$page}\n" : '')
       . 'Время: ' . date('d.m.Y H:i');
 
-$ok = sk_notify(
-    $subject,
-    $body,
-    isset($notify_emails) ? $notify_emails : array(),
-    isset($mail_from) ? $mail_from : ''
-);
+// Причину неудачи возвращаем огрублённо, без адресов: нужно лишь отличить
+// «почта не прописана в config.php» от «прописана, но отправка не прошла».
+$emails = isset($notify_emails) ? $notify_emails : array();
+$from   = isset($mail_from) ? $mail_from : '';
 
-echo json_encode(array('success' => $ok));
+if (empty($emails) || empty($from)) {
+    echo json_encode(array('success' => false, 'reason' => 'not_configured'));
+    exit;
+}
+
+$ok = sk_notify($subject, $body, $emails, $from);
+
+echo json_encode($ok
+    ? array('success' => true)
+    : array('success' => false, 'reason' => 'send_failed'));
