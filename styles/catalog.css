@@ -2,8 +2,11 @@
 .hero::after { content: 'MEL'; position: absolute; right: -20px; bottom: -60px; font-family: 'Bebas Neue', sans-serif; font-size: 320px; color: rgba(255,255,255,.025); pointer-events: none; line-height: 1; user-select: none; }
 .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 88px); line-height: .95; letter-spacing: .02em; margin-bottom: 28px; }
 .hero-title em { font-style: normal; color: var(--accent); }
-/* Длинный описательный заголовок: при базовом кегле он вылезает из колонки hero */
-.hero-title--long { font-size: clamp(36px, 4vw, 60px); }
+/* Длинный описательный заголовок.
+   Bebas Neue содержит только латиницу: кириллица в нём подменяется системным
+   шрифтом, и строка выглядит набранной двумя гарнитурами. Tektur покрывает
+   и кириллицу, и латиницу, поэтому все слова единообразны. */
+.hero-title--long { font-family: 'Tektur', sans-serif; font-weight: 700; font-size: clamp(24px, 2.8vw, 42px); line-height: 1.15; letter-spacing: 0; }
 .hero-desc { color: var(--text-dim); font-size: 15px; line-height: 1.7; max-width: 480px; margin-bottom: 40px; }
 .hero-stats { display: flex; border: 1px solid var(--line); }
 .stat { padding: 16px 24px; border-right: 1px solid var(--line); flex: 1; }
