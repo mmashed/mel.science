@@ -5,7 +5,7 @@
 
 .stat { padding: 20px 28px; border: 1px solid var(--line); border-right: none; }
 .stat:last-child { border-right: 1px solid var(--line); }
-.stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); letter-spacing: .04em; }
+.stat-val { font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--accent); letter-spacing: .01em; }
 .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
 .hero-form-wrap { padding: 80px 60px; display: flex; align-items: center; justify-content: center; }
 
@@ -34,7 +34,7 @@
 .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
 .benefit-card { background: var(--bg2); padding: 32px 28px; }
 .benefit-icon { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
-.benefit-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .04em; margin-bottom: 10px; }
+.benefit-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: .01em; margin-bottom: 10px; }
 .benefit-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
 
 /* ── BUNDLE SETS ── */
@@ -42,7 +42,7 @@
 .bundle-sets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
 .bundle-set-item { background: var(--bg2); padding: 28px 24px; position: relative; overflow: hidden; transition: padding-right .35s ease; }
 .bundle-set-item:hover { padding-right: 114px; }
-.bundle-set-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: .04em; }
+.bundle-set-name { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: .01em; }
 .bundle-set-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 8px; }
 .bundle-set-hover-img { position: absolute; top: 0; right: 0; width: 90px; height: 100%; object-fit: cover; opacity: 0; transform: translateX(100%); transition: transform .35s ease, opacity .3s; pointer-events: none; }
 .bundle-set-item:hover .bundle-set-hover-img { transform: translateX(0); opacity: 1; }
@@ -57,7 +57,7 @@
 .bundle-order-section { padding: 80px 40px; }
 .bundle-order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
 .bundle-order-info { background: var(--bg2); padding: 60px 48px; }
-.bundle-price-big { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--accent); letter-spacing: .02em; line-height: 1; }
+.bundle-price-big { font-family: var(--font-display); font-weight: 700; font-size: 52px; color: var(--accent); letter-spacing: 0em; line-height: 1; }
 .bundle-price-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 12px; margin-bottom: 40px; }
 .bundle-actions { display: flex; flex-direction: column; gap: 12px; }
 .btn-bundle-cart { display: block; padding: 16px 24px; background: var(--accent); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; border: none; cursor: pointer; transition: opacity .15s; text-align: center; }
@@ -74,7 +74,7 @@
 .other-bundle-link img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: opacity .4s ease; }
 .other-bundle-link:hover img { opacity: .8; }
 .other-bundle-meta { padding: 16px 20px 20px; }
-.other-bundle-name { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: .04em; line-height: 1.2; }
+.other-bundle-name { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .01em; line-height: 1.2; }
 .other-bundle-price { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .08em; margin-top: 6px; }
 .other-bundle-price .price-old { margin-right: 6px; }
 
@@ -84,7 +84,7 @@
 @media (min-width: 901px) {
   .hero-left { padding: clamp(44px, 7vh, 80px) 60px; }
   .hero-left .breadcrumbs { margin-bottom: clamp(12px, 2vh, 24px); }
-  .hero-left .hero-title { font-size: clamp(44px, min(6vw, 9vh), 88px); margin-bottom: clamp(16px, 2.5vh, 28px); }
+  .hero-left .hero-title { font-size: clamp(30px, min(4vw, 6vh), 58px); margin-bottom: clamp(16px, 2.5vh, 28px); }
   .hero-left .hero-desc { margin-bottom: clamp(20px, 3vh, 40px); }
   .hero-left .hero-stats { margin-top: clamp(18px, 3vh, 40px); }
   .hero-left .bundle-cta { margin-top: clamp(18px, 3vh, 40px); }

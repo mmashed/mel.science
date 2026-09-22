@@ -9,7 +9,7 @@
 
 .legal-body { display: flex; flex-direction: column; gap: 48px; }
 .legal-group {}
-.legal-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: .04em; color: var(--accent); margin-bottom: 20px; line-height: 1.1; }
+.legal-section-title { font-family: var(--font-display); font-weight: 700; font-size: 23px; letter-spacing: .01em; color: var(--accent); margin-bottom: 20px; line-height: 1.1; }
 
 .legal-para { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 14px; }
 .legal-para:last-child { margin-bottom: 0; }

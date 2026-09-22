@@ -2,7 +2,7 @@
 .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
 .benefit-card { background: var(--bg2); padding: 32px 28px; }
 .benefit-icon { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
-.benefit-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .04em; margin-bottom: 10px; }
+.benefit-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: .01em; margin-bottom: 10px; }
 .benefit-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
 
 @media (max-width: 900px) {
