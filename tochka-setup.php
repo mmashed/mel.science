@@ -50,6 +50,23 @@ if ($action === 'subscribe') {
             'url'          => $callback_url,
         )
     ));
+} elseif ($action === 'pay') {
+    // Пробное создание платёжной ссылки на вымышленном заказе.
+    // Корзину и оформление заказа не затрагивает: проверяем только,
+    // что запрос собран верно и банк его принимает.
+    $res = tochka_create_payment(
+        'TEST-' . time(),
+        array(array('name' => 'Пробный набор', 'price' => 10.00, 'qty' => 1)),
+        array('name' => 'Проверка связи', 'email' => 'test@example.com', 'phone' => '+79000000000'),
+        'Проверка интеграции Science Kids'
+    );
+    $body = show('Create Payment Operation With Receipt', $res);
+    if ($body && isset($body['Data']['paymentLink'])) {
+        echo "Ссылка на оплату: " . $body['Data']['paymentLink'] . "\n";
+        echo "operationId: " . $body['Data']['operationId'] . "\n";
+        echo "\nВ песочнице по ссылке перейти нельзя — это нормально,\n";
+        echo "оплата проверяется только на боевом слое.\n";
+    }
 } elseif ($action === 'pem') {
     // Открытый ключ для проверки подписи уведомлений — вписать в $tochka_webhook_pem
     $pem = tochka_webhook_pem();
@@ -74,6 +91,8 @@ if ($action === 'subscribe') {
     show('Get Webhooks', tochka_api('/webhook/v1.0/' . rawurlencode($tochka_client_id)));
 
     echo "Дальше:\n";
+    echo "  ?k=...&do=pay       — пробно создать платёжную ссылку (корзину не трогает)\n";
     echo "  ?k=...&do=subscribe — подписаться на уведомления об оплате\n";
     echo "  ?k=...&do=test      — попросить банк прислать тестовое уведомление\n";
+    echo "  ?k=...&do=pem       — получить ключ для проверки подписи уведомлений\n";
 }
