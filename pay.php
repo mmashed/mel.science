@@ -137,6 +137,46 @@ if (!empty($sheets_url)) {
     @file_get_contents($sheets_url, false, $sh_ctx);
 }
 
+// --- Точка Банк: создаём платёжную ссылку и уводим покупателя на неё ---
+if (!empty($payment_provider) && $payment_provider === 'tochka') {
+    require __DIR__ . '/tochka.php';
+
+    // Чек по 54-ФЗ уходит на email, поэтому он обязателен именно для Точки
+    if ($email === '') {
+        show_error('Укажите e-mail — на него придёт кассовый чек.');
+    }
+
+    $res = tochka_create_payment(
+        $order_id,
+        $items,
+        array(
+            'name'  => $name !== '' ? $name : 'Покупатель',
+            'email' => $email,
+            'phone' => preg_replace('/[^\d+]/', '', $contact),
+        ),
+        'Заказ Science Kids ' . $order_id
+    );
+
+    $link = isset($res['body']['Data']['paymentLink']) ? $res['body']['Data']['paymentLink'] : '';
+    if (!$res['ok'] || $link === '') {
+        // Детали в ответ покупателю не выводим — только в лог для разбора
+        @file_put_contents(
+            $orders_dir . '/' . $order_id . '.error.log',
+            date('c') . ' HTTP ' . $res['code'] . ' ' . $res['error'] . ' ' . substr($res['raw'], 0, 2000)
+        );
+        show_error('Не удалось создать платёж. Попробуйте ещё раз или свяжитесь с нами.');
+    }
+
+    // operationId понадобится, чтобы сверить статус при уведомлении
+    if (isset($res['body']['Data']['operationId'])) {
+        $order_snapshot['operationId'] = $res['body']['Data']['operationId'];
+        file_put_contents($orders_dir . '/' . $order_id . '.json', json_encode($order_snapshot, JSON_UNESCAPED_UNICODE));
+    }
+
+    header('Location: ' . $link, true, 302);
+    exit;
+}
+
 $params = array(
     'merchant'            => $merchant_id,
     'amount'              => $amount,
