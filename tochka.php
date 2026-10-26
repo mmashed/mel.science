@@ -63,6 +63,96 @@ function tochka_api($path, $method = 'GET', $body = null) {
     );
 }
 
+/* ─────────── Проверка подписи уведомления ───────────
+   Вебхук приходит не обычным JSON, а подписанным JWT (RS256):
+   тело вида <header>.<payload>.<signature>. Подпись проверяется
+   открытым ключом банка — без этого «оплатить» заказ смог бы любой,
+   кто отправит запрос на наш адрес. */
+
+function tochka_b64url_decode($s) {
+    $s = strtr($s, '-_', '+/');
+    $pad = strlen($s) % 4;
+    if ($pad) { $s .= str_repeat('=', 4 - $pad); }
+    return base64_decode($s);
+}
+
+/** Длина в нотации ASN.1 DER */
+function tochka_asn1_len($len) {
+    if ($len < 128) { return chr($len); }
+    $out = '';
+    while ($len > 0) { $out = chr($len & 0xFF) . $out; $len >>= 8; }
+    return chr(0x80 | strlen($out)) . $out;
+}
+
+/** Целое в нотации ASN.1 DER (со старшим нулём, если выставлен знаковый бит) */
+function tochka_asn1_int($bin) {
+    if (ord($bin[0]) > 0x7F) { $bin = "\x00" . $bin; }
+    return "\x02" . tochka_asn1_len(strlen($bin)) . $bin;
+}
+
+/** Собирает PEM открытого ключа из модуля и экспоненты JWK */
+function tochka_jwk_to_pem($n_b64, $e_b64) {
+    $seq = tochka_asn1_int(tochka_b64url_decode($n_b64))
+         . tochka_asn1_int(tochka_b64url_decode($e_b64));
+    $rsa = "\x30" . tochka_asn1_len(strlen($seq)) . $seq;
+    $bit = "\x03" . tochka_asn1_len(strlen($rsa) + 1) . "\x00" . $rsa;
+    $alg = "\x30\x0d\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01\x05\x00";
+    $spki = "\x30" . tochka_asn1_len(strlen($alg . $bit)) . $alg . $bit;
+    return "-----BEGIN PUBLIC KEY-----\n"
+         . chunk_split(base64_encode($spki), 64, "\n")
+         . "-----END PUBLIC KEY-----\n";
+}
+
+/** Открытый ключ банка: из config.php либо с его JWKS-адреса (с кэшем на сутки) */
+function tochka_webhook_pem() {
+    if (!empty($GLOBALS['tochka_webhook_pem'])) {
+        return (string) $GLOBALS['tochka_webhook_pem'];
+    }
+    if (empty($GLOBALS['tochka_jwks_url'])) {
+        return '';
+    }
+    $cache = __DIR__ . '/orders/.tochka-jwks.pem';
+    if (file_exists($cache) && (time() - filemtime($cache)) < 86400) {
+        return file_get_contents($cache);
+    }
+    $ch = curl_init((string) $GLOBALS['tochka_jwks_url']);
+    curl_setopt_array($ch, array(CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 15));
+    $raw = curl_exec($ch);
+    curl_close($ch);
+    $jwks = json_decode($raw, true);
+    if (!isset($jwks['keys'][0]['n'], $jwks['keys'][0]['e'])) {
+        return file_exists($cache) ? file_get_contents($cache) : '';
+    }
+    $pem = tochka_jwk_to_pem($jwks['keys'][0]['n'], $jwks['keys'][0]['e']);
+    @file_put_contents($cache, $pem);
+    return $pem;
+}
+
+/**
+ * Проверяет подпись уведомления и возвращает его содержимое.
+ * null — подпись не сошлась или ключ недоступен; такое уведомление принимать нельзя.
+ */
+function tochka_verify_webhook($body) {
+    $pem = tochka_webhook_pem();
+    if ($pem === '') { return null; }
+
+    $parts = explode('.', trim($body));
+    if (count($parts) !== 3) { return null; }
+
+    $header = json_decode(tochka_b64url_decode($parts[0]), true);
+    if (!isset($header['alg']) || $header['alg'] !== 'RS256') { return null; }
+
+    $ok = openssl_verify(
+        $parts[0] . '.' . $parts[1],
+        tochka_b64url_decode($parts[2]),
+        $pem,
+        OPENSSL_ALGO_SHA256
+    );
+    if ($ok !== 1) { return null; }
+
+    return json_decode(tochka_b64url_decode($parts[1]), true);
+}
+
 /**
  * Создаёт платёжную ссылку и отправляет покупателю чек по 54-ФЗ.
  * Возвращает ответ tochka_api(); при успехе в body.Data лежат paymentLink и operationId.

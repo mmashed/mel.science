@@ -50,6 +50,14 @@ if ($action === 'subscribe') {
             'url'          => $callback_url,
         )
     ));
+} elseif ($action === 'pem') {
+    // Открытый ключ для проверки подписи уведомлений — вписать в $tochka_webhook_pem
+    $pem = tochka_webhook_pem();
+    if ($pem === '') {
+        echo "Ключ получить не удалось. Заполните \$tochka_jwks_url в config.php.\n";
+    } else {
+        echo "Вставьте это в config.php как \$tochka_webhook_pem:\n\n{$pem}\n";
+    }
 } elseif ($action === 'test') {
     // Банк пришлёт тестовое уведомление на $callback_url
     show('Send Webhook (тест)', tochka_api(

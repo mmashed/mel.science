@@ -21,6 +21,11 @@ $tochka_merchant_id   = '';
 $tochka_payment_modes = array('card', 'sbp');
 // Произвольная строка — пароль к служебной странице /tochka-setup.php
 $tochka_setup_key     = '';
+// Проверка подписи уведомлений об оплате. Нужно заполнить ОДНО из двух:
+// либо открытый ключ банка в формате PEM, либо адрес, откуда его забрать.
+// PEM можно получить готовым: /tochka-setup.php?k=<ключ>&do=pem
+$tochka_webhook_pem   = '';
+$tochka_jwks_url      = '';
 // Данные продавца для кассового чека
 $tochka_supplier_name  = 'ИП Янко Виталий Сергеевич';
 $tochka_supplier_inn   = '781711142300';

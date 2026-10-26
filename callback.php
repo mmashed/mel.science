@@ -14,34 +14,79 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$data = $_POST;
-if (empty($data)) {
-    http_response_code(400);
-    exit;
-}
+$is_tochka = (!empty($payment_provider) && $payment_provider === 'tochka');
 
-// Extract received signature
-$received_sig = isset($data['signature']) ? $data['signature'] : '';
-unset($data['signature']);
+if ($is_tochka) {
+    // Точка присылает подписанный JWT в теле запроса, а не поля формы
+    require __DIR__ . '/tochka.php';
 
-// Choose key: test vs production
-$is_test = isset($data['testing']) && (string)$data['testing'] === '1';
-$key     = $is_test ? $test_secret_key : $secret_key;
+    $claims = tochka_verify_webhook(file_get_contents('php://input'));
+    if ($claims === null) {
+        http_response_code(403);
+        exit;
+    }
 
-// Recompute signature
-$sig_params = array_filter($data, function($v) { return $v !== '' && $v !== null; });
-ksort($sig_params);
-$parts = array();
-foreach ($sig_params as $k => $v) {
-    $parts[] = $k . '=' . base64_encode((string)$v);
-}
-$sig_str      = implode('&', $parts);
-$inner        = strtolower(sha1($key . $sig_str));
-$expected_sig = strtolower(sha1($key . $inner));
+    // Чужие события просто подтверждаем, чтобы банк не повторял попытки
+    $type   = isset($claims['webhookType']) ? $claims['webhookType'] : '';
+    $status = isset($claims['status'])      ? $claims['status']      : '';
+    if ($type !== 'acquiringInternetPayment' || $status !== 'APPROVED') {
+        http_response_code(200);
+        echo 'OK';
+        exit;
+    }
 
-if (!hash_equals($expected_sig, $received_sig)) {
-    http_response_code(403);
-    exit;
+    $order_id_in = isset($claims['paymentLinkId']) ? (string) $claims['paymentLinkId'] : '';
+
+    // Защита от повторной обработки: банк может прислать уведомление не один раз
+    $paid_mark = __DIR__ . '/orders/' . basename($order_id_in) . '.paid';
+    if ($order_id_in !== '' && file_exists($paid_mark)) {
+        http_response_code(200);
+        echo 'OK';
+        exit;
+    }
+    if ($order_id_in !== '') {
+        @file_put_contents($paid_mark, date('c'));
+    }
+
+    // Приводим к тем же полям, с которыми работает код ниже
+    $data = array(
+        'order_id'       => $order_id_in,
+        'amount'         => isset($claims['amount'])      ? $claims['amount']      : '',
+        'currency'       => 'RUB',
+        'transaction_id' => isset($claims['operationId']) ? $claims['operationId'] : '',
+        'payment_method' => isset($claims['paymentType']) ? $claims['paymentType'] : '',
+        'state'          => 'COMPLETE',
+    );
+} else {
+    $data = $_POST;
+    if (empty($data)) {
+        http_response_code(400);
+        exit;
+    }
+
+    // Extract received signature
+    $received_sig = isset($data['signature']) ? $data['signature'] : '';
+    unset($data['signature']);
+
+    // Choose key: test vs production
+    $is_test = isset($data['testing']) && (string)$data['testing'] === '1';
+    $key     = $is_test ? $test_secret_key : $secret_key;
+
+    // Recompute signature
+    $sig_params = array_filter($data, function($v) { return $v !== '' && $v !== null; });
+    ksort($sig_params);
+    $parts = array();
+    foreach ($sig_params as $k => $v) {
+        $parts[] = $k . '=' . base64_encode((string)$v);
+    }
+    $sig_str      = implode('&', $parts);
+    $inner        = strtolower(sha1($key . $sig_str));
+    $expected_sig = strtolower(sha1($key . $inner));
+
+    if (!hash_equals($expected_sig, $received_sig)) {
+        http_response_code(403);
+        exit;
+    }
 }
 
 $state = isset($data['state']) ? $data['state'] : '';
