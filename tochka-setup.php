@@ -68,12 +68,14 @@ if ($action === 'subscribe') {
         echo "оплата проверяется только на боевом слое.\n";
     }
 } elseif ($action === 'pem') {
-    // Открытый ключ для проверки подписи уведомлений — вписать в $tochka_webhook_pem
-    $pem = tochka_webhook_pem();
-    if ($pem === '') {
-        echo "Ключ получить не удалось. Заполните \$tochka_jwks_url в config.php.\n";
+    // Открытые ключи банка для проверки подписи уведомлений
+    $pems = tochka_webhook_pems();
+    if (!$pems) {
+        echo "Ключ получить не удалось. Проверьте \$tochka_jwks_url в config.php.\n";
     } else {
-        echo "Вставьте это в config.php как \$tochka_webhook_pem:\n\n{$pem}\n";
+        echo 'Ключей получено: ' . count($pems) . "\n\n";
+        echo implode("\n", $pems);
+        echo "\nПодпись уведомлений проверяется этими ключами.\n";
     }
 } elseif ($action === 'test') {
     // Банк пришлёт тестовое уведомление на $callback_url

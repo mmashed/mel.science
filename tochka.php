@@ -103,29 +103,69 @@ function tochka_jwk_to_pem($n_b64, $e_b64) {
          . "-----END PUBLIC KEY-----\n";
 }
 
-/** Открытый ключ банка: из config.php либо с его JWKS-адреса (с кэшем на сутки) */
-function tochka_webhook_pem() {
+/** Выбирает из ответа JWKS все ключи: он бывает и одиночным, и списком */
+function tochka_jwks_keys($decoded) {
+    if (!is_array($decoded)) { return array(); }
+    if (isset($decoded['keys']) && is_array($decoded['keys'])) {
+        $raw = $decoded['keys'];
+    } elseif (isset($decoded['n'], $decoded['e'])) {
+        $raw = array($decoded);
+    } else {
+        $raw = $decoded;
+    }
+    $out = array();
+    foreach ($raw as $k) {
+        if (is_array($k) && isset($k['n'], $k['e'])) { $out[] = $k; }
+    }
+    return $out;
+}
+
+/**
+ * Открытые ключи банка: из config.php либо с его JWKS-адреса (с кэшем на сутки).
+ * Ключей может быть несколько — например, при смене ключа банк какое-то время
+ * подписывает и старым, и новым. Возвращаем все, проверять будем по очереди.
+ *
+ * @return array список PEM
+ */
+function tochka_webhook_pems() {
     if (!empty($GLOBALS['tochka_webhook_pem'])) {
-        return (string) $GLOBALS['tochka_webhook_pem'];
+        return tochka_split_pems((string) $GLOBALS['tochka_webhook_pem']);
     }
     if (empty($GLOBALS['tochka_jwks_url'])) {
-        return '';
+        return array();
     }
     $cache = __DIR__ . '/orders/.tochka-jwks.pem';
     if (file_exists($cache) && (time() - filemtime($cache)) < 86400) {
-        return file_get_contents($cache);
+        return tochka_split_pems(file_get_contents($cache));
     }
     $ch = curl_init((string) $GLOBALS['tochka_jwks_url']);
-    curl_setopt_array($ch, array(CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 15));
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+    ));
     $raw = curl_exec($ch);
     curl_close($ch);
-    $jwks = json_decode($raw, true);
-    if (!isset($jwks['keys'][0]['n'], $jwks['keys'][0]['e'])) {
-        return file_exists($cache) ? file_get_contents($cache) : '';
+
+    $keys = tochka_jwks_keys(json_decode($raw, true));
+    if (!$keys) {
+        // Банк недоступен — старый кэш лучше, чем ничего
+        return file_exists($cache) ? tochka_split_pems(file_get_contents($cache)) : array();
     }
-    $pem = tochka_jwk_to_pem($jwks['keys'][0]['n'], $jwks['keys'][0]['e']);
-    @file_put_contents($cache, $pem);
-    return $pem;
+    $pems = array();
+    foreach ($keys as $k) {
+        $pems[] = tochka_jwk_to_pem($k['n'], $k['e']);
+    }
+    @file_put_contents($cache, implode('', $pems));
+    return $pems;
+}
+
+/** Разбирает склеенные PEM-блоки в список */
+function tochka_split_pems($blob) {
+    preg_match_all('/-----BEGIN PUBLIC KEY-----.*?-----END PUBLIC KEY-----/s', $blob, $m);
+    return $m[0] ? $m[0] : array();
 }
 
 /**
@@ -133,8 +173,8 @@ function tochka_webhook_pem() {
  * null — подпись не сошлась или ключ недоступен; такое уведомление принимать нельзя.
  */
 function tochka_verify_webhook($body) {
-    $pem = tochka_webhook_pem();
-    if ($pem === '') { return null; }
+    $pems = tochka_webhook_pems();
+    if (!$pems) { return null; }
 
     $parts = explode('.', trim($body));
     if (count($parts) !== 3) { return null; }
@@ -142,15 +182,14 @@ function tochka_verify_webhook($body) {
     $header = json_decode(tochka_b64url_decode($parts[0]), true);
     if (!isset($header['alg']) || $header['alg'] !== 'RS256') { return null; }
 
-    $ok = openssl_verify(
-        $parts[0] . '.' . $parts[1],
-        tochka_b64url_decode($parts[2]),
-        $pem,
-        OPENSSL_ALGO_SHA256
-    );
-    if ($ok !== 1) { return null; }
-
-    return json_decode(tochka_b64url_decode($parts[1]), true);
+    $signed = $parts[0] . '.' . $parts[1];
+    $sig    = tochka_b64url_decode($parts[2]);
+    foreach ($pems as $pem) {
+        if (openssl_verify($signed, $sig, $pem, OPENSSL_ALGO_SHA256) === 1) {
+            return json_decode(tochka_b64url_decode($parts[1]), true);
+        }
+    }
+    return null;
 }
 
 /**

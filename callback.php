@@ -14,13 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$is_tochka = (!empty($payment_provider) && $payment_provider === 'tochka');
+// Точка присылает подписанный JWT отдельной строкой, а не полями формы.
+// Узнаём её по виду тела, а не по $payment_provider: банк проверяет
+// доступность адреса тестовым уведомлением ещё до того, как мы переключим
+// на него оплату, и на этот запрос тоже нужно ответить кодом 200.
+$raw_body  = file_get_contents('php://input');
+$is_tochka = (bool) preg_match('~^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$~', trim($raw_body));
 
 if ($is_tochka) {
-    // Точка присылает подписанный JWT в теле запроса, а не поля формы
     require __DIR__ . '/tochka.php';
 
-    $claims = tochka_verify_webhook(file_get_contents('php://input'));
+    $claims = tochka_verify_webhook($raw_body);
     if ($claims === null) {
         http_response_code(403);
         exit;
