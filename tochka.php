@@ -76,6 +76,10 @@ function tochka_b64url_decode($s) {
     return base64_decode($s);
 }
 
+function tochka_b64url_encode($s) {
+    return rtrim(strtr(base64_encode($s), '+/', '-_'), '=');
+}
+
 /** Длина в нотации ASN.1 DER */
 function tochka_asn1_len($len) {
     if ($len < 128) { return chr($len); }
