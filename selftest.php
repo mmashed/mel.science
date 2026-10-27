@@ -74,6 +74,78 @@ if ($action === 'sheets') {
     exit;
 }
 
+if ($action === 'rehearse') {
+    // Боевая репетиция: настоящий заказ на 10 рублей, который можно оплатить
+    // своей картой. Делает ровно то же, что pay.php — пишет снимок заказа,
+    // строку в таблицу и создаёт платёжную ссылку, — но корзину покупателя
+    // не затрагивает и провайдер при этом может оставаться прежним.
+    if (strpos(tochka_base(), '/sandbox') !== false) {
+        echo "Сейчас задана песочница — по её ссылкам оплатить нельзя.\n";
+        echo "Для репетиции поставьте в config.php боевой адрес:\n";
+        echo "  \$tochka_base = 'https://enter.tochka.com/uapi';\n";
+        exit;
+    }
+
+    $order_id = 'SK-TEST-' . date('Ymd-His');
+    $items    = array(array('name' => 'Проверка оплаты', 'price' => 10.00, 'qty' => 1));
+    $email    = isset($_GET['email']) ? trim($_GET['email']) : '';
+    if ($email === '') {
+        echo "Добавьте к адресу свой e-mail — на него придёт кассовый чек:\n";
+        echo "  ?k=...&do=rehearse&email=вы@почта.ru\n";
+        exit;
+    }
+
+    $dir = __DIR__ . '/orders';
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+        file_put_contents($dir . '/.htaccess', "Deny from all\n");
+    }
+    file_put_contents($dir . '/' . $order_id . '.json', json_encode(array(
+        'name' => 'Боевая репетиция', 'phone' => '+70000000000', 'email' => $email,
+        'city' => 'Проверка', 'address' => '', 'items' => $items,
+        'amount' => '10.00', 'promo' => '',
+    ), JSON_UNESCAPED_UNICODE));
+    echo "1. Снимок заказа сохранён: orders/{$order_id}.json\n";
+
+    if (!empty($sheets_url)) {
+        $ctx = stream_context_create(array('http' => array(
+            'method' => 'POST', 'header' => "Content-Type: application/json\r\n",
+            'content' => json_encode(array(
+                'action' => 'new_row', 'type' => 'ПРОВЕРКА',
+                'name' => 'Боевая репетиция', 'phone' => '+70000000000',
+                'email' => $email, 'city' => 'Проверка', 'address' => '',
+                'items' => 'Проверка оплаты x1', 'amount' => '10.00 руб.',
+                'order_id' => $order_id, 'status' => 'Ожидает оплаты', 'promo' => '',
+            ), JSON_UNESCAPED_UNICODE),
+            'timeout' => 15, 'ignore_errors' => true,
+        )));
+        @file_get_contents($sheets_url, false, $ctx);
+        echo "2. Строка «Ожидает оплаты» отправлена в таблицу\n";
+    } else {
+        echo "2. Таблица не настроена, строку не пишу\n";
+    }
+
+    $res  = tochka_create_payment($order_id, $items,
+        array('name' => 'Боевая репетиция', 'email' => $email, 'phone' => '+70000000000'),
+        'Проверка оплаты Science Kids');
+    $link = isset($res['body']['Data']['paymentLink']) ? $res['body']['Data']['paymentLink'] : '';
+
+    if (!$res['ok'] || $link === '') {
+        echo "3. ОШИБКА: ссылку создать не удалось (HTTP {$res['code']})\n";
+        echo substr((string) $res['raw'], 0, 1500) . "\n";
+        exit;
+    }
+    echo "3. Ссылка создана\n\n";
+    echo "Оплатите 10 рублей своей картой:\n{$link}\n\n";
+    echo "После оплаты должно произойти всё сразу:\n";
+    echo "  - строка {$order_id} в таблице сменит статус на «Оплачен»\n";
+    echo "  - на почту придёт письмо «Оплата получена»\n";
+    echo "  - на ваш e-mail придёт кассовый чек от оператора фискальных данных\n\n";
+    echo "Если статус не сменился — уведомление от банка не дошло или не прошло\n";
+    echo "проверку подписи. Пришлите мне этот номер заказа, разберёмся.\n";
+    exit;
+}
+
 if ($action === 'mail') {
     $mailer = __DIR__ . '/mailer.php';
     if (!file_exists($mailer)) { echo "Нет файла mailer.php.\n"; exit; }
@@ -277,3 +349,7 @@ echo $failed === 0 ? "Ошибок нет.\n" : "Ошибок: {$failed}. Смо
 echo "\nПроверки с последствиями (запускать по одной):\n";
 echo "  ?k=...&do=sheets - прогнать выдуманный заказ через таблицу\n";
 echo "  ?k=...&do=mail   - отправить одно письмо на все адреса\n";
+echo "  ?k=...&do=rehearse&email=вы@почта.ru\n";
+echo "                   - боевая репетиция: настоящий заказ на 10 рублей,\n";
+echo "                     который нужно оплатить картой. Только когда в\n";
+echo "                     config.php стоит боевой адрес Точки.\n";
