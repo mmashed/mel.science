@@ -86,9 +86,21 @@ if ($action === 'subscribe') {
     ));
 } else {
     // customerCode — в объекте с "customerType": "Business"
-    show('Get Customers List', tochka_api('/open-banking/v1.0/customers'));
-    // merchantId торговой точки
-    show('Get Retailers', tochka_api('/acquiring/v1.0/retailers'));
+    $customers = show('Get Customers List', tochka_api('/open-banking/v1.0/customers'));
+    // merchantId торговой точки. customerCode обязателен — берём из config.php,
+    // а если его там ещё нет, подставляем из ответа выше.
+    $cc = !empty($tochka_customer_code) ? $tochka_customer_code : '';
+    if ($cc === '' && isset($customers['Data']['Customer'][0]['customerCode'])) {
+        $cc = $customers['Data']['Customer'][0]['customerCode'];
+    }
+    if ($cc === '') {
+        echo "=== Get Retailers ===
+Пропущено: неизвестен customerCode.
+
+";
+    } else {
+        show('Get Retailers', tochka_api('/acquiring/v1.0/retailers?customerCode=' . rawurlencode($cc)));
+    }
     // Текущие подписки на уведомления
     show('Get Webhooks', tochka_api('/webhook/v1.0/' . rawurlencode($tochka_client_id)));
 

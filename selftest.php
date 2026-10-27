@@ -225,7 +225,8 @@ echo '  адрес: ' . tochka_base() . "\n";
 if (empty($tochka_token)) {
     bad('Не задан $tochka_token');
 } else {
-    $r = tochka_api('/acquiring/v1.0/retailers');
+    // Самый простой метод без параметров: он же отдаёт customerCode
+    $r = tochka_api('/open-banking/v1.0/customers');
     if ($r['ok']) {
         ok('Банк отвечает', 'HTTP ' . $r['code']);
     } elseif ($r['code'] === 401 || $r['code'] === 403) {
