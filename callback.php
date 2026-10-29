@@ -23,16 +23,21 @@ function sk_wh_log($line) {
     $dir = __DIR__ . '/orders';
     if (!is_dir($dir)) {
         @mkdir($dir, 0755, true);
-        @file_put_contents($dir . '/.htaccess', "Deny from all
-");
+        @file_put_contents($dir . '/.htaccess', "Deny from all\n");
     }
-    $file  = $dir . '/.webhook.log';
-    $lines = file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
-    $lines[] = date('c') . ' ' . $line;
-    if (count($lines) > 200) { $lines = array_slice($lines, -200); }
-    @file_put_contents($file, implode("
-", $lines) . "
-");
+    $file = $dir . '/.webhook.log';
+    // Дописываем под блокировкой: банк присылает уведомления одновременно,
+    // и «прочитать - дополнить - записать» теряло строки.
+    @file_put_contents($file, date('c') . ' ' . $line . "\n", FILE_APPEND | LOCK_EX);
+
+    // Подрезаем, только когда файл разросся, — редко и без гонки за каждую запись
+    clearstatcache(true, $file);
+    if (@filesize($file) > 262144) {
+        $lines = @file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines) {
+            @file_put_contents($file, implode("\n", array_slice($lines, -200)) . "\n", LOCK_EX);
+        }
+    }
 }
 
 // Точка присылает подписанный JWT отдельной строкой, а не полями формы.
