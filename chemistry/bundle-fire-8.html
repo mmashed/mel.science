@@ -355,7 +355,7 @@
       <div class="field"><label>Телефон <span style="color:var(--accent)">*</span></label><input type="tel" id="phone-cart" placeholder="+7 900 000-00-00" autocomplete="tel" /></div>
       <div class="field"><label>Город <span style="color:var(--accent)">*</span></label><input type="text" id="cart-city" placeholder="Москва" /></div>
       <div class="field"><label>Адрес доставки<span class="info-tip" tabindex="0">?<span class="info-tip-bubble">После оформления мы свяжемся с вами, чтобы согласовать удобный способ доставки. <strong>Доставку по России стоимостью до 1500 ₽ оплачиваем сами.</strong></span></span></label><input type="text" id="cart-address" placeholder="Улица, дом, квартира" /></div>
-      <div class="field"><label>E-mail для чека</label><input type="email" id="cart-email" placeholder="example@mail.ru" autocomplete="email" /></div>
+      <div class="field"><label>E-mail для чека <span style="color:var(--accent)">*</span></label><input type="email" id="cart-email" placeholder="example@mail.ru" autocomplete="email" /></div>
       <div class="check-field">
         <input type="checkbox" id="cart-agree-privacy" />
         <label for="cart-agree-privacy">Соглашаюсь с <a href="/privacy" target="_blank">политикой конфиденциальности</a></label>
@@ -496,7 +496,11 @@
     if (!cityVal) { if (cityInput) { cityInput.setCustomValidity('Укажите город'); cityInput.reportValidity(); } return; }
     if (cityInput) cityInput.setCustomValidity('');
     const addrVal  = (document.getElementById('cart-address') || {value:''}).value.trim();
-    const emailVal = (document.getElementById('cart-email')   || {value:''}).value.trim();
+    const emailInput = document.getElementById('cart-email');
+    const emailVal    = emailInput ? emailInput.value.trim() : '';
+    // Чек по 54-ФЗ уходит на почту — без неё банк не создаст платёж
+    if (!emailVal) { if (emailInput) { emailInput.setCustomValidity('Укажите e-mail - на него придёт чек'); emailInput.reportValidity(); } return; }
+    if (emailInput) emailInput.setCustomValidity('');
     const privacyChk = document.getElementById('cart-agree-privacy');
     const offerChk   = document.getElementById('cart-agree-offer');
     if (!privacyChk.checked) { privacyChk.setCustomValidity('Необходимо ваше согласие'); privacyChk.reportValidity(); return; }
