@@ -14,6 +14,27 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+/**
+ * Короткий журнал уведомлений об оплате. Без него отказ выглядит как
+ * тишина: заказ не подтвердился, а почему — узнать неоткуда.
+ * Лежит в orders/, которая закрыта .htaccess. Храним последние 200 строк.
+ */
+function sk_wh_log($line) {
+    $dir = __DIR__ . '/orders';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0755, true);
+        @file_put_contents($dir . '/.htaccess', "Deny from all
+");
+    }
+    $file  = $dir . '/.webhook.log';
+    $lines = file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
+    $lines[] = date('c') . ' ' . $line;
+    if (count($lines) > 200) { $lines = array_slice($lines, -200); }
+    @file_put_contents($file, implode("
+", $lines) . "
+");
+}
+
 // Точка присылает подписанный JWT отдельной строкой, а не полями формы.
 // Узнаём её по виду тела, а не по $payment_provider: банк проверяет
 // доступность адреса тестовым уведомлением ещё до того, как мы переключим
@@ -26,6 +47,7 @@ if ($is_tochka) {
 
     $claims = tochka_verify_webhook($raw_body);
     if ($claims === null) {
+        sk_wh_log('Точка: ОТКАЗ, подпись не сошлась или ключ недоступен; тело: ' . substr($raw_body, 0, 60));
         http_response_code(403);
         exit;
     }
@@ -33,7 +55,12 @@ if ($is_tochka) {
     // Чужие события просто подтверждаем, чтобы банк не повторял попытки
     $type   = isset($claims['webhookType']) ? $claims['webhookType'] : '';
     $status = isset($claims['status'])      ? $claims['status']      : '';
+    sk_wh_log('Точка: подпись верна; событие ' . $type . '; статус ' . $status
+        . '; заказ ' . (isset($claims['paymentLinkId']) ? $claims['paymentLinkId'] : 'не указан')
+        . '; поля: ' . implode(', ', array_keys($claims)));
+
     if ($type !== 'acquiringInternetPayment' || $status !== 'APPROVED') {
+        sk_wh_log('Точка: пропускаю — не оплата по платёжной ссылке');
         http_response_code(200);
         echo 'OK';
         exit;
@@ -44,6 +71,7 @@ if ($is_tochka) {
     // Защита от повторной обработки: банк может прислать уведомление не один раз
     $paid_mark = __DIR__ . '/orders/' . basename($order_id_in) . '.paid';
     if ($order_id_in !== '' && file_exists($paid_mark)) {
+        sk_wh_log('Точка: повтор по заказу ' . $order_id_in . ', уже обработан');
         http_response_code(200);
         echo 'OK';
         exit;
@@ -88,9 +116,14 @@ if ($is_tochka) {
     $expected_sig = strtolower(sha1($key . $inner));
 
     if (!hash_equals($expected_sig, $received_sig)) {
+        sk_wh_log('Модульбанк: ОТКАЗ, подпись не сошлась; заказ '
+            . (isset($data['order_id']) ? $data['order_id'] : 'не указан'));
         http_response_code(403);
         exit;
     }
+    sk_wh_log('Модульбанк: подпись верна; заказ '
+        . (isset($data['order_id']) ? $data['order_id'] : 'не указан')
+        . '; статус ' . (isset($data['state']) ? $data['state'] : ''));
 }
 
 $state = isset($data['state']) ? $data['state'] : '';
@@ -164,6 +197,9 @@ if ($state === 'COMPLETE') {
             isset($mail_from) ? $mail_from : ''
         );
     }
+
+    sk_wh_log('Заказ ' . $order_id . ' отмечен оплаченным; сумма ' . $amount
+        . '; снимок заказа ' . ($snap ? 'найден' : 'НЕ найден'));
 
     // Google Sheets: update status of existing row to "Оплачен"
     if (!empty($sheets_url)) {
