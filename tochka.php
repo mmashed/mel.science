@@ -16,6 +16,17 @@ function tochka_base() {
 }
 
 /**
+ * Боевой токен, отправленный в песочницу (или наоборот), — частая ошибка
+ * в настройке: банк отвечает «Forbidden by consent», и причина неочевидна.
+ */
+function tochka_sandbox_mismatch() {
+    $token   = isset($GLOBALS['tochka_token']) ? trim((string) $GLOBALS['tochka_token']) : '';
+    $sandbox = (strpos(tochka_base(), '/sandbox') !== false);
+    if ($token === '') { return false; }
+    return $sandbox !== ($token === 'sandbox.jwt.token');
+}
+
+/**
  * @param string     $path   путь после базового адреса, например /acquiring/v1.0/payments_with_receipt
  * @param string     $method GET, POST, PUT, DELETE
  * @param array|null $body   тело запроса, будет отправлено как JSON

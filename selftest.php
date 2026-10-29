@@ -225,6 +225,12 @@ echo '  адрес: ' . tochka_base() . "\n";
 if (empty($tochka_token)) {
     bad('Не задан $tochka_token');
 } else {
+    if (tochka_sandbox_mismatch()) {
+        bad('Адрес и токен из разных слоёв',
+            strpos(tochka_base(), '/sandbox') !== false
+                ? 'в песочницу отправляется боевой токен'
+                : 'на боевой адрес отправляется токен песочницы');
+    }
     // Самый простой метод без параметров: он же отдаёт customerCode
     $r = tochka_api('/open-banking/v1.0/customers');
     if ($r['ok']) {

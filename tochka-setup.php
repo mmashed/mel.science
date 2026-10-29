@@ -36,7 +36,14 @@ function show($title, $res) {
     return $res['body'];
 }
 
-echo "Адрес API: " . tochka_base() . "\n\n";
+echo "Адрес API: " . tochka_base() . "\n";
+if (tochka_sandbox_mismatch()) {
+    echo "ВНИМАНИЕ: адрес — песочница, а токен похож на боевой.\n";
+    echo "Песочница принимает только токен sandbox.jwt.token, на любой другой\n";
+    echo "она отвечает «Forbidden by consent». Поставьте боевой адрес:\n";
+    echo "  \$tochka_base = 'https://enter.tochka.com/uapi';\n";
+}
+echo "\n";
 
 $action = isset($_GET['do']) ? $_GET['do'] : '';
 
