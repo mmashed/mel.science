@@ -308,7 +308,7 @@
   };
 
   const products = [
-    { name: 'Аптека',               cat: 'Медицина', stock: 371, price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
+    { name: 'Аптека',               cat: 'Медицина', stock: 371, price: 5000, page: '/medicine/pharmacy', img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-pharmacy-part1/contents_image_p1iuje' },
     { name: 'Терапия: базис врача', cat: 'Медицина', stock: 72,  price: 5000, img: 'https://res.cloudinary.com/mel-science/image/upload/f_webp,q_auto:eco,w_1880/v1/box/med-therapy/contents_image_yelhae' },
   ];
 
@@ -420,7 +420,9 @@
           <div class="card-footer">
             <div class="card-price">${priceHTML(p.price)}</div>
             <div class="card-actions">
-              <span class="card-btn" data-action="detail">Подробнее</span>
+              ${p.page
+                ? `<a class="card-btn" data-action="detail" href="${p.page}">Подробнее</a>`
+                : `<span class="card-btn" data-action="detail">Подробнее</span>`}
               <span class="card-btn card-btn-cart ${inCart ? 'in-cart' : ''}" data-action="cart" data-name="${safeName}">${inCart ? `В корзине (${cart[p.name].qty})` : 'В корзину'}</span>
             </div>
           </div>
@@ -428,6 +430,8 @@
       card.addEventListener('click', e => {
         const btn = e.target.closest('[data-action]');
         if (btn && btn.dataset.action === 'cart') { addToCart(p); return; }
+        // У наборов со своей страницей «Подробнее» — ссылка, модалка ей не нужна
+        if (btn && btn.dataset.action === 'detail' && p.page) return;
         openDetailModal(p);
       });
       grid.appendChild(card);

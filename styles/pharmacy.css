@@ -1,0 +1,71 @@
+/* Страница набора «Аптека». Hero, benefits, order и other-bundles берутся
+   из bundle.css — здесь только то, чего нет ни в одной другой странице. */
+
+/* ── ЛИД: для чего нужен набор ── */
+.pharm-lead-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1px; background: var(--line); margin-top: 48px; }
+.pharm-lead-text { background: var(--bg2); padding: 48px 44px; }
+.pharm-lead-text p { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
+.pharm-lead-text p + p { margin-top: 16px; }
+.pharm-lead-text strong { color: var(--text); font-weight: 500; }
+.pharm-uses { background: var(--bg2); display: flex; flex-direction: column; }
+.pharm-use { padding: 28px 32px; border-bottom: 1px solid var(--line); }
+.pharm-use:last-child { border-bottom: none; }
+.pharm-use-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+.pharm-use-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: .01em; margin-bottom: 8px; }
+.pharm-use-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+/* ── ЧТО ВХОДИТ ── */
+.pharm-contents-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 48px; }
+.pharm-contents-col { background: var(--bg2); padding: 36px 32px; }
+.pharm-contents-head { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.pharm-contents-list { list-style: none; }
+.pharm-contents-list li { font-size: 13px; color: var(--text-dim); line-height: 1.5; padding: 7px 0 7px 18px; position: relative; }
+.pharm-contents-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-muted); }
+.pharm-contents-head--second { margin-top: 28px; }
+.pharm-contents-note { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .06em; line-height: 1.7; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+/* ── ПРОЕКТЫ ── */
+.exp-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); margin-top: 48px; }
+.exp { background: var(--bg2); display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+.exp-body { padding: 44px 40px; }
+.exp-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+.exp-title { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: .01em; margin-bottom: 14px; }
+.exp-text { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
+.exp-text + .exp-text { margin-top: 14px; }
+.exp-facts { list-style: none; margin-top: 24px; border-top: 1px solid var(--line); }
+.exp-facts li { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+.exp-facts .exp-fact-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; padding-top: 2px; }
+
+/* Слот под фото. Пока фотографий нет — показывается заглушка;
+   чтобы поставить снимок, замените .exp-photo-slot на <img class="exp-photo"> */
+.exp-media { background: var(--bg3); display: flex; align-items: stretch; min-height: 340px; }
+.exp-photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .4s ease; }
+.exp-photo-slot { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 1px dashed var(--line); font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .12em; }
+.exp-photo-slot-mark { font-size: 11px; color: var(--text-muted); }
+.exp-photo-slot-hint { font-size: 9px; color: var(--line); letter-spacing: .08em; }
+/* Чётные проекты — фото слева, текст справа */
+.exp:nth-child(even) .exp-media { order: 2; }
+.exp:nth-child(even) .exp-body { order: 1; }
+
+/* Две карточки вместо четырёх в .other-bundles-grid */
+.other-bundles-grid--two { grid-template-columns: repeat(2, 1fr); }
+
+/* ── ПРИМЕЧАНИЕ ── */
+.pharm-note { background: var(--bg2); border: 1px solid var(--line); padding: 28px 32px; margin-top: 48px; }
+.pharm-note-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+.pharm-note-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .pharm-lead-grid { grid-template-columns: 1fr; }
+  .pharm-lead-text { padding: 36px 24px; }
+  .pharm-contents-grid { grid-template-columns: 1fr; }
+  .exp { grid-template-columns: 1fr; }
+  .exp-media { min-height: 260px; order: 1 !important; }
+  .exp-body { padding: 32px 24px; order: 2 !important; }
+}
+@media (max-width: 600px) {
+  .exp-title { font-size: 20px; }
+  .exp-facts li { grid-template-columns: 1fr; gap: 4px; }
+  .pharm-note { padding: 24px 20px; }
+}
