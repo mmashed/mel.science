@@ -36,13 +36,9 @@
 .exp-facts li { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--text-dim); line-height: 1.5; }
 .exp-facts .exp-fact-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; padding-top: 2px; }
 
-/* Слот под фото. Пока фотографий нет — показывается заглушка;
-   чтобы поставить снимок, замените .exp-photo-slot на <img class="exp-photo"> */
+/* Фото опыта. bg3 остаётся фоном, пока картинка грузится */
 .exp-media { background: var(--bg3); display: flex; align-items: stretch; min-height: 340px; }
 .exp-photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .4s ease; }
-.exp-photo-slot { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 1px dashed var(--line); font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .12em; }
-.exp-photo-slot-mark { font-size: 11px; color: var(--text-muted); }
-.exp-photo-slot-hint { font-size: 9px; color: var(--line); letter-spacing: .08em; }
 /* Чётные проекты — фото слева, текст справа */
 .exp:nth-child(even) .exp-media { order: 2; }
 .exp:nth-child(even) .exp-body { order: 1; }
